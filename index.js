@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const PORT = 3000 // || something goes here
+const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const passport = require('./passport-config');
 const session = require('express-session');
@@ -21,7 +21,10 @@ app.use('/register', require('./routes/register'));
 app.use('/login', require('./routes/login'));
 app.use('/logout', require('./routes/logout'));
 app.use('/product', require('./routes/product'));
+app.use('/category', require('./routes/category'));
 app.use('/cart', require('./routes/cart'));
+app.use('/checkout', require('./routes/checkout'));
+app.use('/order', require('./routes/order'));
 
 app.get('/', (req, res) => {
   console.log('Hello world')

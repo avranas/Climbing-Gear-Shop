@@ -1,6 +1,6 @@
 const express = require('express');
 const productRouter = express.Router();
-var createError = require('http-errors');
+const createError = require('http-errors');
 const Product = require('../models/products');
 const { checkIfLoggedInAsAdmin } = require('../authentication-check');
 
@@ -40,6 +40,17 @@ productRouter.get('/:id', async (req, res, next) => {
 productRouter.post('/', checkIfLoggedInAsAdmin, async (req, res, next) => {
   try {
     const body = req.body;
+    if (body.productName === undefined ||
+      body.description === undefined ||
+      body.price === undefined ||
+      body.categoryName === undefined ||
+      body.brandName === undefined ||
+      body.amountInStock === undefined
+      ) {
+        throw createError(400,
+          'Missing item in the body. Needs a productName, description, price, categoryName, brandName, and amountInStock'
+        );
+    }
     const newProduct = await Product.create({
       productName: body.productName,
       description: body.description,

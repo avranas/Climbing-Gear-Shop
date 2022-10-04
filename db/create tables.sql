@@ -54,6 +54,8 @@ CREATE TABLE cart_items(
 --users have many
 CREATE TABLE orders(
   id SERIAL PRIMARY KEY,
+  subTotal float,
+  taxCharged float,
   totalPrice float,
   orderStatus text, --Placed, shipped, completed
   userId int,

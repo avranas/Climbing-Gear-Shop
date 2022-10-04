@@ -1,5 +1,7 @@
 const { DataTypes } = require('sequelize');
 const db = require('../db/db_setup');
+const Order = require('../models/orders');
+const Product = require('../models/products');
 
 const OrderItem = db.define('order_items', {
   price: DataTypes.FLOAT,
@@ -8,8 +10,6 @@ const OrderItem = db.define('order_items', {
   orderId: DataTypes.INTEGER
 });
 
-Order.hasMany(OrderItem);
-OrderItem.belongsTo(Order);
 Product.hasMany(OrderItem);
 OrderItem.belongsTo(Product);
 

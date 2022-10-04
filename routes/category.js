@@ -1,19 +1,21 @@
 const express = require('express');
 const categoryRouter = express.Router();
-var createError = require('http-errors');
+const createError = require('http-errors');
+const Product = require('../models/products');
 
-categoryRouter.get('/', (req, res, next) => {
-  
+categoryRouter.get('/:name', async (req, res, next) => {
+  try {
+    const dbResponse = await Product.findAll({
+      where: { categoryName: req.params.name }
+    });
+    if (!dbResponse) {
+      throw createError(400, 'No products with that category name exist');
+    }
+    res.status(200).send(dbResponse);
+  } catch (err) {
+    next(err);
+  }
 });
 
-/*
-	•	/category
-	⁃	GET /category (all category data)
-	⁃	GET /category/:id (all products)
-	⁃	POST /category
-	⁃	PUT /category/:id (add product)
-	⁃	PUT /category/:id (name change)
-	⁃	DELETE /category/:id
- */
 
 module.exports = categoryRouter;

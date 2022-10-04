@@ -1,6 +1,6 @@
 const express = require('express');
 const registerRouter = express.Router();
-var createError = require('http-errors');
+const createError = require('http-errors');
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
 const { checkIfNotLoggedIn } = require('../authentication-check');
