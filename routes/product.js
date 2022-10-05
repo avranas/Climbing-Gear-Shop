@@ -1,8 +1,9 @@
 const express = require('express');
 const productRouter = express.Router();
-const createError = require('http-errors');
+const createHttpError = require('http-errors');
 const Product = require('../models/products');
 const { checkIfLoggedInAsAdmin } = require('../authentication-check');
+const OrderItem = require('../models/orderItems');
 
 //Get all products
 productRouter.get('/', async (req, res, next) => {
@@ -17,10 +18,15 @@ productRouter.get('/', async (req, res, next) => {
 //Get one product by id
 productRouter.get('/:id', async (req, res, next) => {
   try {
-    const dbResp = await Product.findOne({
-      where: { id: req.params.id }
+    const productId = req.params.id;
+    const foundProduct = await Product.findOne({
+      where: { id: productId }
     });
-    res.status(200).send(dbResp);
+    console.log(foundProduct)
+    if (foundProduct === null){
+      throw createHttpError(404, `Product with id#${productId} not found`)
+    }
+    res.status(200).send(foundProduct);
   } catch (err) {
     next(err);
   }
@@ -47,7 +53,7 @@ productRouter.post('/', checkIfLoggedInAsAdmin, async (req, res, next) => {
       body.brandName === undefined ||
       body.amountInStock === undefined
       ) {
-        throw createError(400,
+        throw createHttpError(400,
           'Missing item in the body. Needs a productName, description, price, categoryName, brandName, and amountInStock'
         );
     }
@@ -98,7 +104,6 @@ productRouter.put('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
         returning: true
       });
     }
-    console.log(typeof newPrice);
     if (newPrice && typeof newPrice === "number") {
       dbResponse = await Product.update({
         price: newPrice
@@ -127,9 +132,15 @@ productRouter.put('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
         returning: true
       });
     }
+    console.log(dbResponse);
+    //If the ID was found but none of the items in the body were valid
     if (dbResponse === null) {
-      res.status(200).send('Nothing was updated');
+      res.status(400).send('There is nothing in the request body to update the product with');
       return;
+    }
+    //Unable to find ID
+    if (dbResponse[1].length === 0) {
+      res.status(404).send(`Unable to find product with id#${productId}`)
     }
     res.status(200).send(dbResponse[1][0]);
   } catch (err) {
@@ -140,6 +151,18 @@ productRouter.put('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
 productRouter.delete('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
   try {
     const idToDelete = req.params.id;
+    const ordersFound = await OrderItem.findOne({
+      where: { productId: idToDelete }
+    })
+    if (ordersFound) {
+      throw createHttpError(400, `Unable to delete a product that is being used in orders`);
+    }
+    const productToDelete = await Product.findOne({
+      where: { id: idToDelete }
+    })
+    if (!productToDelete) {
+      throw createHttpError(404, `Product with id#${idToDelete} does not exist`);
+    }
     await Product.destroy({
       where: {
         id: idToDelete
@@ -147,7 +170,6 @@ productRouter.delete('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
     });
     res.status(200).send(`Deleted product with id: ${idToDelete}`)
   } catch(err){
-    console.log(err);
     next(err);
   }
 });

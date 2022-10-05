@@ -1,6 +1,6 @@
 const express = require('express');
 const checkoutRouter = express.Router();
-const createError = require('http-errors');
+const createHttpError = require('http-errors');
 const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
 const Order = require('../models/orders');
 const CartItem = require('../models/cartItems');
@@ -21,7 +21,7 @@ checkoutRouter.post('/', checkIfLoggedIn, async (req, res, next) => {
     });
     //If there are no cart items, return "cart is empty!"
     if (dbResponse.length === 0) {
-      throw createError(400, 'Your cart is empty, so an order can not be placed');
+      throw createHttpError(400, 'Your cart is empty, so an order can not be placed');
     }
     //Calculate the tax and total here
     let subTotal = 0;
@@ -65,7 +65,6 @@ checkoutRouter.post('/', checkIfLoggedIn, async (req, res, next) => {
       };
       newOrderItems.push(newOrderItem);
     })
-    console.log(newOrderItems)
     await OrderItem.bulkCreate(newOrderItems);
     //Empty the user's cart after the order has been placed.
     await CartItem.destroy({

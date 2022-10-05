@@ -1,6 +1,6 @@
 const express = require('express');
 const registerRouter = express.Router();
-const createError = require('http-errors');
+const createHttpError = require('http-errors');
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
 const { checkIfNotLoggedIn } = require('../authentication-check');
@@ -15,7 +15,7 @@ registerRouter.post('/', checkIfNotLoggedIn, async (req, res, next) => {
     });
     //dbResponse will be null if nothing is returned from the database
     if (dbResponse != null) {
-      throw createError(400, 'A user with that name already exists');
+      throw createHttpError(400, 'A user with that name already exists');
     }
     const saltRounds = 10;
     bcrypt.genSalt(saltRounds, (err, salt) => {
@@ -25,7 +25,8 @@ registerRouter.post('/', checkIfNotLoggedIn, async (req, res, next) => {
         }
         await User.create({
           username: newUsername,
-          password: hash
+          password: hash,
+          rewardsPoints: 0
         });
       });
     });

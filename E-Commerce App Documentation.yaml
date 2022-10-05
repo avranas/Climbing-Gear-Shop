@@ -1,0 +1,781 @@
+openapi: 3.0.3
+info:
+  title: E-Commerce App
+  version: 1.0.0
+  description: A full stack e-commerce app for my imaginary climbing gear shop
+paths:
+  /login:
+    summary: Log in a user
+    description: This path is used to log in a user with their username and password
+    post:
+      summary: Log in a user
+      description: Attempts to log in a user with their username and password
+      operationId: login
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: 'Successfully logged in as: avranas42'
+          description: Success
+        '401':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Invalid Credentials:
+                  value: Unauthorized
+          description: Invalid Credentials
+      tags:
+        - Login
+  /register:
+    summary: Register a new user
+    description: >-
+      This path is used to create a new user with their username, password,
+      starting weight, and goal weight
+    post:
+      summary: Register new user
+      description: Attempts to register a new user with the user's username and password
+      operationId: register
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: 'Created new user: avranas42'
+          description: Success
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                User already exists:
+                  value: A user with that name already exists
+          description: User already exists
+      tags:
+        - Register
+  /logout:
+    summary: Log out a user
+    description: This path simply logs out a user
+    get:
+      summary: Log out a user
+      description: Simply logs out a user
+      operationId: logout
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: You have been logged out
+          description: Success
+      tags:
+        - Logout
+  /user:
+    summary: Get, delete, and modify user data
+    description: This path is for getting, deleting and modifying user data
+    get:
+      summary: Get logged in user's data
+      description: >-
+        This path retrieves all of the current user's data, excluding its
+        password
+      operationId: get_user
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value:
+                    id: 7
+                    username: avranas42
+                    firstName: Alex
+                    lastName: Vranas
+                    address: 24 Willie Mays Plaza
+                    San Francisco: null
+                    CA 94107: null
+                    rewardsPoints: 1337
+                    createdAt: '2022-09-28'
+                    updatedAt: '2022-09-28'
+          description: ""
+        default:
+          description: ""
+      tags:
+        - User
+    put:
+      summary: Update user data
+      description: Allows the current user to update their name and address
+      operationId: update_user
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                No Update:
+                  value: Nothing was updated
+            application/json:
+              examples:
+                Success:
+                  value: >-
+                    {"firstName":"Alex","lastName":"Vranas","address":"24 Willie
+                    Mays Plaza, San Francisco, CA 94107"}
+          description: ""
+        default:
+          description: ""
+      tags:
+        - User
+    delete:
+      summary: Delete user
+      description: Allows a user to delete their account
+      operationId: delete_user
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: Your account has been deleted
+          description: ""
+        default:
+          description: ""
+      tags:
+        - User
+  /user/:username:
+    summary: Admin get and delete user data
+    description: This path is used by admins to get and delete user data
+    get:
+      summary: Get user by username
+      description: >-
+        This path retrieves all data about a user by its username. Only admins
+        can use this
+      operationId: admin_get_user
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value:
+                    id: 7
+                    username: avranas42
+                    firstName: Alex
+                    lastName: Vranas
+                    address: 24 Willie Mays Plaza
+                    San Francisco: null
+                    CA 94107: null
+                    rewardsPoints: 1337
+                    createdAt: '2022-09-28'
+                    updatedAt: '2022-09-28'
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                User Not Found:
+                  value: No user with that name was found
+          description: ""
+        default:
+          description: Success
+      tags:
+        - User
+    delete:
+      summary: Admin delete user
+      description: Allows an admin to delete a user's account with its username
+      operationId: admin_delete_user
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: User with username avranas42 has been deleted
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                User Not Found:
+                  value: No user with that name was found
+          description: ""
+        default:
+          description: ""
+      tags:
+        - User
+  /product:
+    summary: Get and create product data
+    description: This path is used for getting and creating product data
+    get:
+      summary: Get all products
+      description: Gets all products in the database
+      operationId: get_products
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "id": 1,
+                            "productName": "Sama Harness - Men's Smol",
+                            "description": " Soft, breathable mesh fabric lines the harness for better comfort on the skin and hot days on the wall",
+                            "price": 69.3,
+                            "categoryName": "24",
+                            "brandName": "Petzl",
+                            "amountInStock": 4,
+                            "createdAt": "2022-09-28",
+                            "updatedAt": "2022-09-28"
+                        },
+                        {
+                            "id": 2,
+                            "productName": " Helix Climbing Shoes - Women's",
+                            "description": "With durable, grippy Vibram® XS Edge rubber and a padded mesh tongue, the women's Scarpa Helix climbing shoes deliver the edging you need and the comfort you crave.",
+                            "price": 125,
+                            "categoryName": "climbing shoes",
+                            "brandName": "Scarpa",
+                            "amountInStock": 4,
+                            "createdAt": "2022-09-28",
+                            "updatedAt": "2022-09-28"
+                        },
+                        {
+                            "id": 4,
+                            "productName": "Elektra Lace Climbing Shoes - Women's",
+                            "description": "Built to be the ultimate all-arounders, the women's evolv Elektra Lace climbing shoes are a low-volume, high-performance and comfortable choice for climbers of all levels, in the gym or outdoors.",
+                            "price": 109,
+                            "categoryName": "climbing shoes",
+                            "brandName": "evolv",
+                            "amountInStock": 7,
+                            "createdAt": "2022-09-28",
+                            "updatedAt": "2022-09-28"
+                        }
+                    ]
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Product
+    post:
+      summary: Create a new product
+      description: This allows an admin to create a new product for the shop
+      operationId: create_product
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "id": 5,
+                        "productName": "Sama Harness - Men's Medium",
+                        "description": " Soft, breathable mesh fabric lines the harness for better comfort on the skin and hot days on the wall",
+                        "price": 74.95,
+                        "categoryName": "harnesses",
+                        "brandName": "Petzl",
+                        "amountInStock": 5,
+                        "updatedAt": "2022-10-05",
+                        "createdAt": "2022-10-05"
+                    }
+          description: ""
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Missing item in body:
+                  value: >-
+                    Missing item in the body. Needs a productName, description,
+                    price, categoryName, brandName, and amountInStock
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Product
+  /product/:id:
+    summary: Get, update and delete product by id
+    description: >-
+      This path is used to get, update, or delete the data of a product by its
+      ID
+    get:
+      summary: Get product by ID
+      description: Gets a product with its ID
+      operationId: get_product
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "id": 2,
+                        "productName": " Helix Climbing Shoes - Women's",
+                        "description": "With durable, grippy Vibram® XS Edge rubber and a padded mesh tongue, the women's Scarpa Helix climbing shoes deliver the edging you need and the comfort you crave.",
+                        "price": 125,
+                        "categoryName": "climbing shoes",
+                        "brandName": "Scarpa",
+                        "amountInStock": 4,
+                        "createdAt": "2022-09-28",
+                        "updatedAt": "2022-09-28"
+                    }
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Product Not Found:
+                  value: Product with id#23 not found
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Product
+    put:
+      summary: Edit product data by ID
+      description: This allows an admin to modify the data of a product with its ID
+      operationId: update_product
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "id": 5,
+                        "productName": "Sama Harness - Men's Large",
+                        "description": "Insert description here",
+                        "price": 64.95,
+                        "categoryName": "harnesses",
+                        "brandName": "Petzl",
+                        "amountInStock": 3,
+                        "createdAt": "2022-10-05",
+                        "updatedAt": "2022-10-05"
+                    }
+          description: ""
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                No Update:
+                  value: >-
+                    There is nothing in the request body to update the product
+                    with
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Product Not Found:
+                  value: Unable to find product with id#43
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Product
+    delete:
+      summary: Delete product by ID
+      description: This allows an admin to delete an item from the shop with its ID
+      operationId: delete_product
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: Removed cart item with id#2
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                ID Not Found:
+                  value: Product with id#6 does not exist
+                Product In Order:
+                  value: Unable to delete a product that is being used in orders
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Product
+  /category/:name:
+    summary: Get product data from a certain category
+    description: This path gets all of the product data from a certain category
+    get:
+      summary: Get all products by category
+      description: This retrieves every product from a certain category
+      operationId: get_category
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "id": 2,
+                            "productName": " Helix Climbing Shoes - Women's",
+                            "description": "With durable, grippy Vibram® XS Edge rubber and a padded mesh tongue, the women's Scarpa Helix climbing shoes deliver the edging you need and the comfort you crave.",
+                            "price": 125,
+                            "categoryName": "climbing shoes",
+                            "brandName": "Scarpa",
+                            "amountInStock": 4,
+                            "createdAt": "2022-09-28",
+                            "updatedAt": "2022-09-28"
+                        },
+                        {
+                            "id": 4,
+                            "productName": "Elektra Lace Climbing Shoes - Women's",
+                            "description": "Built to be the ultimate all-arounders, the women's evolv Elektra Lace climbing shoes are a low-volume, high-performance and comfortable choice for climbers of all levels, in the gym or outdoors.",
+                            "price": 109,
+                            "categoryName": "climbing shoes",
+                            "brandName": "evolv",
+                            "amountInStock": 7,
+                            "createdAt": "2022-09-28",
+                            "updatedAt": "2022-09-28"
+                        }
+                    ]
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Not Found:
+                  value: No products with that category name exist
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Category
+  /cart:
+    summary: Get, update, and delete user's cart data
+    description: >-
+      This path is used to get, update, and delete the current user's shopping
+      cart data
+    get:
+      summary: Get cart
+      description: This gets all shopping cart data from the logged in user
+      operationId: get_cart
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Empty Cart:
+                  value: Your shopping cart is empty
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "id": 9,
+                            "quantity": 1,
+                            "userId": 16,
+                            "productId": 2,
+                            "createdAt": "2022-10-05",
+                            "updatedAt": "2022-10-05"
+                        },
+                        {
+                            "id": 10,
+                            "quantity": 1,
+                            "userId": 16,
+                            "productId": 4,
+                            "createdAt": "2022-10-05",
+                            "updatedAt": "2022-10-05"
+                        }
+                    ]
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Cart
+    put:
+      summary: Update cart
+      description: >-
+        This allows the current user to update their shopping cart by adding a
+        new product, removing a product in the cart, or changing the quantity of
+        an product in the cart
+      operationId: update_cart
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Remove Item:
+                  value: Removed product with ID#2 from your shopping cart
+                Success:
+                  value: 'Updated cart to have 2 items with product ID: 4'
+          description: ""
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                No Quantity:
+                  value: Body needs a "quantity"
+                No ProductID:
+                  value: Body needs a "productId"
+                Quantity Out Of Range:
+                  value: Quantity is out of range. It must be between 1 and 99"
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Product ID Not Fount:
+                  value: A product with this ID does not exist"
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Cart
+    delete:
+      summary: Delete cart
+      description: Removes all items from the current user's shopping cart
+      operationId: delete_cart
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: Removed all items from your shopping cart
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Cart
+  /cart/:id:
+    summary: Delete product from cart by id
+    description: >-
+      This path is used to remove an item from the current user's shopping cart
+      by the product ID
+    delete:
+      summary: Delete item from cart
+      description: >-
+        This allows the current user to delete an item from their shopping cart
+        using the cart item's ID
+      operationId: delete_cart_item
+      responses:
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Cart Item Not Found:
+                  value: No cart item with that ID was found
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Cart
+  /checkout:
+    summary: Places an order using the items in the current user's cart
+    description: >-
+      This path creates a new order using the data from the current user's cart,
+      then removes all items from the cart.
+    post:
+      summary: Create new order with cart
+      description: >-
+        This allows the current user to take all of the products in their
+        shopping cart, and use them to create a new order. Returns a json of the
+        new order object
+      operationId: checkout
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "id": 13,
+                        "subTotal": 343,
+                        "taxCharged": 36.8725,
+                        "totalPrice": 379.8725,
+                        "orderStatus": "Placed",
+                        "userId": 16,
+                        "updatedAt": "2022-10-05",
+                        "createdAt": "2022-10-05"
+                    }
+          description: ""
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Empty Cart:
+                  value: Your cart is empty, so an order can not be placed
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Checkout
+  /order:
+    summary: Get all orders from current user
+    description: This path retrieves data from every order ever placed by the current user
+    get:
+      summary: Get all of the user's order
+      description: This retrieves all orders ever placed by the current user
+      operationId: get_orders
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    [
+                        {
+                            "id": 12,
+                            "subTotal": 109,
+                            "taxCharged": 11.7175,
+                            "totalPrice": 120.7175,
+                            "orderStatus": "Placed",
+                            "userId": 16,
+                            "createdAt": "2022-10-05",
+                            "updatedAt": "2022-10-05"
+                        },
+                        {
+                            "id": 13,
+                            "subTotal": 343,
+                            "taxCharged": 36.8725,
+                            "totalPrice": 379.8725,
+                            "orderStatus": "Placed",
+                            "userId": 16,
+                            "createdAt": "2022-10-05",
+                            "updatedAt": "2022-10-05"
+                        }
+                    ]
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Order
+  /order/:id:
+    summary: Get, update, delete order by ID
+    description: This path gets, updates, and deletes data from an order by its ID
+    get:
+      summary: Gets an order from the current user with the order ID
+      description: >-
+        This retrieves an order from the current user using the order's ID. It
+        also includes all of the order items in the order
+      operationId: get_order
+      responses:
+        '200':
+          content:
+            application/json:
+              examples:
+                Success:
+                  value: |-
+                    {
+                        "id": 12,
+                        "subTotal": 109,
+                        "taxCharged": 11.7175,
+                        "totalPrice": 120.7175,
+                        "orderStatus": "Placed",
+                        "userId": 16,
+                        "createdAt": "2022-10-05",
+                        "updatedAt": "2022-10-05",
+                        "order_items": [
+                            {
+                                "id": 31,
+                                "price": 109,
+                                "quantity": 1,
+                                "productId": 4,
+                                "orderId": 12,
+                                "createdAt": "2022-10-05",
+                                "updatedAt": "2022-10-05"
+                            }
+                        ]
+                    }
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Order Not Found:
+                  value: Order with id#15 not found
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Order
+    put:
+      summary: Update order status
+      description: This allows an admin to update the status of an order
+      operationId: update_order
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: Updated order status to Shipped
+          description: ""
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Invalid Entry:
+                  value: Invalid entry for newStatus
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Order Not Found:
+                  value: Unable to find order with id#133
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Order
+    delete:
+      summary: Delete order
+      description: This allows an admin to delete the user by the order's ID
+      operationId: delete_order
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: Deleted order#13
+          description: ""
+        '404':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Order Not Found:
+                  value: No order with that name was found
+          description: ""
+        default:
+          description: ""
+      tags:
+        - Order
+  /user/rewards-points:
+    summary: Add rewards points
+    description: Allows an admin to give a user rewards points
+    put:
+      summary: Add rewards points
+      description: Allows an admin to add rewards points to a user's account
+      operationId: put_user_rewards_points
+      responses:
+        '200':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Success:
+                  value: 'User: avranas42''s new rewards points balance: 10'
+          description: ""
+        '400':
+          content:
+            text/plain; charset=utf-8:
+              examples:
+                Failure:
+                  value: Missing "pointsToAdd" in body
+          description: ""
+        default:
+          description: ""
+      tags:
+        - User

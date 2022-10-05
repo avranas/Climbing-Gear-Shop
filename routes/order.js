@@ -1,6 +1,6 @@
 const express = require('express');
 const orderRouter = express.Router();
-const createError = require('http-errors');
+const createHttpError = require('http-errors');
 const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
 const Order = require('../models/orders');
 const OrderItem = require('../models/orderItems');
@@ -32,21 +32,25 @@ orderRouter.get('/:id', checkIfLoggedIn, async (req, res, next) => {
         required: true
        }]
     });
-    res.status(200).send(dbResponse);
+    console.log(dbResponse)
+    if (!dbResponse) {
+      throw createHttpError(404, `Order with id#${orderId} not found`)
+    } else {
+      res.status(200).send(dbResponse);
+    }
   } catch (err) {
     next(err);
   }  
 });
 
-
 /*
 Update status of order
 {
-  newStatus: "Shipped", "Complete", "On backorder", "Cancelled",
+  "newStatus": "Shipped", "Complete", "On backorder", "Cancelled",
     "Returning", "Returning-Shipped", "Returned" are all valid options
 }
 */
-orderRouter.put('/:id', checkIfLoggedIn, async (req, res, next) => {
+orderRouter.put('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
   try {
     const newStatus = req.body.newStatus;
     if (newStatus !== "Shipped" &&
@@ -58,17 +62,21 @@ orderRouter.put('/:id', checkIfLoggedIn, async (req, res, next) => {
       newStatus !== "Returning-Shipped" &&
       newStatus !== "Returned"
     ) {
-      throw createError(400, 'Invalid entry for newStatus');
+      throw createHttpError(400, 'Invalid entry for newStatus');
     } else {
-      await Order.update({
+      const orderId = req.params.id;
+      const updatedOrder = await Order.update({
         orderStatus: newStatus
       }, {
-        where: { id: req.params.id }
+        where: { id: orderId },
+        returning: true
       });
+      if (updatedOrder[1].length === 0) { //If no order was found
+        throw createHttpError(404, `Unable to find order with id#${orderId}`)
+      }
       res.status(200).send(`Updated order status to ${newStatus}`);
     }
   } catch (err) {
-    console.log(err);
     next(err);
   }
 });
@@ -77,6 +85,12 @@ orderRouter.put('/:id', checkIfLoggedIn, async (req, res, next) => {
 orderRouter.delete('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
   try {
     const idToDelete = req.params.id;
+    const orderToDelete = await Order.findOne({
+      where: { id: idToDelete }
+    });
+    if (!orderToDelete) { 
+      throw createHttpError(404, 'No order with that name was found');
+    }
     await OrderItem.destroy({
       where: { orderId: idToDelete }
     });

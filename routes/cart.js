@@ -1,7 +1,7 @@
 const express = require('express');
 const CartItem = require('../models/cartItems');
 const cartRouter = express.Router();
-var createError = require('http-errors');
+var createHttpError = require('http-errors');
 const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
 const Product = require('../models/products');
 
@@ -32,22 +32,6 @@ cartRouter.get('/', checkIfLoggedIn, async (req, res, next) => {
   }
 });
 
-//Get another user's shopping cart
-cartRouter.get('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
-  try {
-    const idToCheck = req.params.id;
-    const cartData = await getUserCartData(idToCheck, next);
-    if (cartData.length === 0) {
-      res.status(200).send(`User with id#${idToCheck}'s shopping cart is empty`);
-    } else {
-      res.status(200).send(cartData);
-    }
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-});
-
 /*
   Add item to cart
   {
@@ -68,7 +52,7 @@ cartRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
     }
     //If quantity === 0, remove from the cart
     if (body.quantity === 0) {
-      CartItem.destroy({
+      await CartItem.destroy({
         where: {
           userId: userId,
           productId: body.productId
@@ -79,7 +63,7 @@ cartRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
     }
     //Quantity can only be in a range from 1 to 99
     if (body.quantity < 1 || body.quantity > 99) {
-      throw createError(400, "quantity is out of range");
+      throw createError(400, "Quantity is out of range. It must be between 1 and 99");
     }
     //Check if the product actually exists
     const product = await Product.findOne({
@@ -88,7 +72,7 @@ cartRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
       }
     });
     if (!product) {
-      throw createError(400, "A product with this ID does not exist");
+      throw createError(404, "A product with this ID does not exist");
     }
     let newCartItem = null;
     //If the item already exists in the user's cart, I should update the quantity
@@ -123,19 +107,33 @@ cartRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
 
 //Remove all items from the shopping cart
 cartRouter.delete('/', async (req, res, next) => { 
-  await CartItem.destroy({
-    where: { userId: req.user.id }
-  });
-  res.status(200).send(`Removed all items from your shopping cart`);
+  try {
+    await CartItem.destroy({
+      where: { userId: req.user.id }
+    });
+    res.status(200).send(`Removed all items from your shopping cart`);
+  } catch (err) {
+    next(err);
+  }
 });
 
 //Remove one item from the shopping cart
 cartRouter.delete('/:id', async (req, res, next) => { 
-  const id = req.params.id;
-  await CartItem.destroy({
-    where: { id: id }
-  });
-  res.status(200).send(`Removed cart item with id#${id}`);
+  try {
+    const id = req.params.id;
+    const itemToDelete = await CartItem.findOne({
+      where: { id: id }
+    });
+    if (!itemToDelete) { 
+      throw createHttpError(404, 'No cart item with that ID was found');
+    }
+    await CartItem.destroy({
+      where: { id: id }
+    });
+    res.status(200).send(`Removed cart item with id#${id}`);
+  } catch (err) {
+    next(err);
+  }
 });
 
 module.exports = cartRouter;

@@ -31,9 +31,9 @@ app.get('/', (req, res) => {
   res.status(200).send('Hello world');
 });
 
-app.get('/', (err, req, res, next) => {
+app.use((err, req, res, next) => {
   if (!res.headersSent) {
-    res.status(500 || err.status).send(err);
+    res.status(err.status || 500).send(err.message);
   }
   console.log(err);
 });

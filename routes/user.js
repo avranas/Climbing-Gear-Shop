@@ -1,7 +1,7 @@
 const express = require('express');
 const User = require('../models/users');
 const userRouter = express.Router();
-const createError = require('http-errors');
+const createHttpError = require('http-errors');
 const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
 const CartItem = require('../models/cartItems');
 const Order = require('../models/orders');
@@ -12,15 +12,15 @@ const getUserData = async (username, next) => {
       where: { username: username }
     });
     if (!foundUser) {
-      throw createError(400, "No user with that name was found");
+      throw createHttpError(400, "No user with that name was found");
     }
     //Copy the json data of the db response then hide the password
     let copy = JSON.parse(JSON.stringify(foundUser));
     delete copy['password'];
     return copy;
   } catch (err) {
-    console.log(err);
     next(err);
+    return null;
   }
 }
 
@@ -38,39 +38,56 @@ userRouter.get('/', checkIfLoggedIn, async (req, res, next) => {
 userRouter.get('/:username', checkIfLoggedInAsAdmin, async (req, res, next) => {
   try {
     const userData = await getUserData(req.params.username, next);
-    res.status(200).send(userData);
+    if (userData) {
+      res.status(200).send(userData);
+    }
   } catch (err) {
     next(err);
   }
 });
+
 /*
   An admin can compensate a user with more rewards points
   {
-    pointsToAdd: 10
+    "pointsToAdd": 10
   }
 */
-userRouter.put('/', checkIfLoggedInAsAdmin, async (req, res, next) => {
+userRouter.put('/rewards-points/:username', checkIfLoggedInAsAdmin, async (req, res, next) => {
   try {
-    const user = req.user;
-    const dbResponse = body.pointsToAdd;
-    dbResponse = await User.findOne({
-      where: { id: user.id }
+    const username = req.params.username;
+    const pointsToAdd = req.body.pointsToAdd;
+    const dbResponse = await User.findOne({
+      where: { username: username }
     });
+    if (!dbResponse) {
+      throw createHttpError(404, 'No user with that name exists');
+    }
     const currentPoints = dbResponse.rewardsPoints;
     const newBalance = currentPoints + pointsToAdd;
-    if (pointsToAdd && typeof newRewardsPoints === "number") {
+    if (pointsToAdd && typeof pointsToAdd === "number") {
       await User.update({
         rewardsPoints: newBalance
-      }, { where: { username: user.username },
+      }, { where: { username: username },
       returning: true
-    });
+      });
+      res.status(200).send(`User: ${username}'s new rewards points balance: ${newBalance}`);
+    } else {
+      res.status(400).send(`Missing "pointsToAdd" in body`)
     }
-    res.status(200).send(`User: ${user.username}'s new rewards points balance: ${newBalance}`);
   } catch (err) {
     next(err);
   }
 });
-//Update logged in user's first name, last name, address, and/or rewards points
+
+/*
+  An admin can compensate a user with more rewards points
+  {
+    "newFirstName": "Alex",
+    "newLastName": "Vranas",
+    "newAddress": "24 Willie Mays Plaza, San Francisco, CA 94107"
+  }
+*/
+//Update logged in user's first name, last name, address
 userRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
   try {
     const body = req.body;
@@ -85,7 +102,6 @@ userRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
         }, { where: { username: user.username },
         returning: true
       });
-      updatedUserData.firstName = newFirstName;
     }
     if (newLastName) {
       dbResponse = await User.update({
@@ -93,7 +109,6 @@ userRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
       }, { where: { username: user.username },
       returning: true
     });
-      updatedUserData.lastName = newLastName;
     }
     if (newAddress) {
       dbResponse = await User.update({
@@ -101,7 +116,6 @@ userRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
       }, { where: { username: user.username },
       returning: true
     });
-      updatedUserData.address = newAddress;
     }
     if (dbResponse === null) {
       res.status(200).send('Nothing was updated');
@@ -158,7 +172,7 @@ userRouter.delete('/:username', checkIfLoggedInAsAdmin, async (req, res, next) =
       where: { username: usernameToDelete }
     });
     if (!userToDelete) { 
-      throw createError(400, 'No user with that name was found');
+      throw createHttpError(404, 'No user with that name was found');
     }
     await deleteUser(userToDelete.id, next);
     res.status(200).send(`User with username ${usernameToDelete} has been deleted`);
