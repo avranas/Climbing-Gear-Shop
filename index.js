@@ -4,8 +4,10 @@ const PORT = process.env.PORT || 3000;
 const bodyParser = require('body-parser');
 const passport = require('./passport-config');
 const session = require('express-session');
+const cors = require('cors');
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.use(session({
   secret: process.env.SESSION_SECRET,

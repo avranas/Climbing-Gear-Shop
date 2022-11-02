@@ -1,6 +1,7 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import API from './api/api';
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
 
