@@ -3,15 +3,27 @@ const registerRouter = express.Router();
 const createHttpError = require('http-errors');
 const User = require('../models/users');
 const bcrypt = require('bcrypt');
-const { checkIfNotLoggedIn } = require('../authentication-check');
+const { checkNotAuthenticated } = require('./authentication-check');
 
-registerRouter.post('/', checkIfNotLoggedIn, async (req, res, next) => {
+registerRouter.post('/', checkNotAuthenticated, async (req, res, next) => {
   try {
-    const newUsername = req.body.username;
-    const newPassword = req.body.password;
-    //Check if that username already exists
+    const body = req.body;
+    const newUserEmail = body.userEmail;
+    const newFirstName = body.firstName;
+    const newLastName = body.lastName;
+    const newPassword = body.password;
+    if (!newUserEmail) {
+      throw createHttpError(400, '"userEmail" is missing from the request body');
+    } else if (!newFirstName) {
+      throw createHttpError(400, '"firstName" is missing from the request body');
+    } else if (!newLastName) {
+      throw createHttpError(400, '"lastName" is missing from the request body');
+    } else if (!newPassword) {
+      throw createHttpError(400, '"password" is missing from the request body');
+    }
+    //Check if that userEmail already exists
     const dbResponse = await User.findOne({
-      where: { username: newUsername }
+      where: { userEmail: newUserEmail }
     });
     //dbResponse will be null if nothing is returned from the database
     if (dbResponse != null) {
@@ -24,14 +36,16 @@ registerRouter.post('/', checkIfNotLoggedIn, async (req, res, next) => {
           throw err;
         }
         await User.create({
-          username: newUsername,
+          userEmail: newUserEmail,
           password: hash,
+          firstName: newFirstName,
+          lastName: newLastName,
           rewardsPoints: 0
         });
       });
     });
 
-    res.status(200).send(`Account created: ${newUsername}`)
+    res.status(200).send(`Account created: ${newUserEmail}`)
   } catch (err) {
     next(err)
   }

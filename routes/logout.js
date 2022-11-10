@@ -1,8 +1,8 @@
 const express = require('express');
 const logoutRouter = express.Router();
-const { checkIfLoggedIn } = require('../authentication-check');
+const { checkAuthenticated } = require('./authentication-check');
 
-logoutRouter.get('/', checkIfLoggedIn, (req, res, next) => {
+logoutRouter.get('/', checkAuthenticated, (req, res, next) => {
   req.logout((err) => {
     if (err) { return next(err); }
       else

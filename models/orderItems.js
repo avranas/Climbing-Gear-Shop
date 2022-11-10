@@ -7,7 +7,8 @@ const OrderItem = db.define('order_items', {
   price: DataTypes.FLOAT,
   quantity: DataTypes.INTEGER,
   productId: DataTypes.INTEGER,
-  orderId: DataTypes.INTEGER
+  orderId: DataTypes.INTEGER,
+  optionSelection: DataTypes.TEXT
 });
 
 Product.hasMany(OrderItem);

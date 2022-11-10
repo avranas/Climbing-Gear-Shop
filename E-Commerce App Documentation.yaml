@@ -6,10 +6,10 @@ info:
 paths:
   /login:
     summary: Log in a user
-    description: This path is used to log in a user with their username and password
+    description: This path is used to log in a user with their userEmail and password
     post:
       summary: Log in a user
-      description: Attempts to log in a user with their username and password
+      description: Attempts to log in a user with their userEmail and password
       operationId: login
       responses:
         '200':
@@ -31,11 +31,11 @@ paths:
   /register:
     summary: Register a new user
     description: >-
-      This path is used to create a new user with their username, password,
+      This path is used to create a new user with their userEmail, password,
       starting weight, and goal weight
     post:
       summary: Register new user
-      description: Attempts to register a new user with the user's username and password
+      description: Attempts to register a new user with the user's userEmail and password
       operationId: register
       responses:
         '200':
@@ -88,7 +88,7 @@ paths:
                 Success:
                   value:
                     id: 7
-                    username: avranas42
+                    userEmail: avranas42@gmail.com
                     firstName: Alex
                     lastName: Vranas
                     address: 24 Willie Mays Plaza
@@ -104,7 +104,7 @@ paths:
         - User
     put:
       summary: Update user data
-      description: Allows the current user to update their name and address
+      description: Allows the current user to update their name and home address
       operationId: update_user
       responses:
         '200':
@@ -117,7 +117,7 @@ paths:
               examples:
                 Success:
                   value: >-
-                    {"firstName":"Alex","lastName":"Vranas","address":"24 Willie
+                    {"firstName":"Alex","lastName":"Vranas","homeAddress":"24 Willie
                     Mays Plaza, San Francisco, CA 94107"}
           description: ""
         default:
@@ -140,13 +140,13 @@ paths:
           description: ""
       tags:
         - User
-  /user/:username:
+  /user/:userEmail:
     summary: Admin get and delete user data
     description: This path is used by admins to get and delete user data
     get:
-      summary: Get user by username
+      summary: Get user by userEmail
       description: >-
-        This path retrieves all data about a user by its username. Only admins
+        This path retrieves all data about a user by its userEmail. Only admins
         can use this
       operationId: admin_get_user
       responses:
@@ -157,7 +157,7 @@ paths:
                 Success:
                   value:
                     id: 7
-                    username: avranas42
+                    userEmail: avranas42@gmail.com
                     firstName: Alex
                     lastName: Vranas
                     address: 24 Willie Mays Plaza
@@ -180,7 +180,7 @@ paths:
         - User
     delete:
       summary: Admin delete user
-      description: Allows an admin to delete a user's account with its username
+      description: Allows an admin to delete a user's account with its userEmail
       operationId: admin_delete_user
       responses:
         '200':
@@ -188,7 +188,7 @@ paths:
             text/plain; charset=utf-8:
               examples:
                 Success:
-                  value: User with username avranas42 has been deleted
+                  value: User with userEmail avranas42@gmail.com has been deleted
           description: ""
         '404':
           content:

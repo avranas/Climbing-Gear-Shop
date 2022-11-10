@@ -1,19 +1,19 @@
 CREATE TABLE users(
   id SERIAL PRIMARY KEY,
-  username text,
+  userEmail text,
   password text,
   firstName text,
   lastName text,
-  address text,
+  homeAddress text,
   rewardsPoints int, --Get 1 point for every $1 you spend!
   createdAt date,
   updatedAt date
 );
 
 --Test entry
-INSERT INTO users(username, password, firstName, lastName, address, rewardsPoints, createdAt, updatedAt)
+INSERT INTO users(userEmail, password, firstName, lastName, homeAddress, rewardsPoints, createdAt, updatedAt)
 	VALUES(
-    'avranas42',
+    'avranas42@gmail.com',
     'p@ssw0rd',
     'Alex',
     'Vranas',
@@ -28,12 +28,22 @@ CREATE TABLE products(
   id SERIAL PRIMARY KEY,
   productName text,
   description text,
-  price float,
   categoryName text,
   brandName text,
-  amountInStock int,
+  smallImageFile1, text,
+  smallImageFile2, text,
+  largeImageFile, text,
   createdAt date,
   updatedAt date
+);
+
+CREATE TABLE product_options (
+  id SERIAL PRIMARY KEY,
+  option text,
+  productId int,
+  amountInStock int,
+  price float,
+  FOREIGN KEY (productId) REFERENCES products(id)
 );
 
 CREATE TABLE cart_items(
@@ -41,6 +51,7 @@ CREATE TABLE cart_items(
   quantity int,
   userId int,
   productId int,
+  optionSelection text,
   createdAt date,
   updatedAt date,
   FOREIGN KEY (userId) REFERENCES users(id),
@@ -70,6 +81,7 @@ CREATE TABLE order_items(
   quantity int,
   productId int,
   orderId int,
+  optionSelection text,
   createdAt date,
   updatedAt date,
   FOREIGN KEY (productId) REFERENCES products(id),

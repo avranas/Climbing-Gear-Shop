@@ -6,10 +6,10 @@ const passport = require('passport');
 const User = require('./models/users');
 const bcrypt = require('bcrypt');
 
-const initializePassport = async (passport, getUserByUsername, getUserById) => {
-  const authenticateUser = async (username, password, done) => {
+const initializePassport = async (passport, getUserByEmail, getUserById) => {
+  const authenticateUser = async (userEmail, password, done) => {
     try {
-      const user = await getUserByUsername(username);
+      const user = await getUserByEmail(userEmail);
       if (user == null) {
         return done(null, false);
       }
@@ -24,7 +24,7 @@ const initializePassport = async (passport, getUserByUsername, getUserById) => {
     }
   }
   passport.use(new LocalStrategy({
-    usernameField: 'username',
+    usernameField: 'userEmail',
     passwordField: 'password'
   }, authenticateUser));
   passport.serializeUser((user, done) => done(null, user.id));
@@ -32,8 +32,8 @@ const initializePassport = async (passport, getUserByUsername, getUserById) => {
 };
 
 initializePassport(passport,
-  async newUsername => await User.findOne({
-    where: { username: newUsername }
+  async newUserEmail => await User.findOne({
+    where: { userEmail: newUserEmail }
   }),
   async newId => await User.findOne({
     where: { id: newId }

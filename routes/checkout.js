@@ -1,14 +1,14 @@
 const express = require('express');
 const checkoutRouter = express.Router();
 const createHttpError = require('http-errors');
-const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
+const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
 const Order = require('../models/orders');
 const CartItem = require('../models/cartItems');
 const Product = require('../models/products');
 const OrderItem = require('../models/orderItems');
 
 //Grab info from shopping cart, charge customer, create new Order, empty shopping cart
-checkoutRouter.post('/', checkIfLoggedIn, async (req, res, next) => {
+checkoutRouter.post('/', checkAuthenticated, async (req, res, next) => {
   try {
     const userId = req.user.id;
     //Read all of the cart items
@@ -61,7 +61,8 @@ checkoutRouter.post('/', checkIfLoggedIn, async (req, res, next) => {
         price: i.product.price,
         quantity: i.quantity,
         productId: i.product.id,
-        orderId: newOrder.id
+        orderId: newOrder.id,
+        optionSelection: i.optionSelection
       };
       newOrderItems.push(newOrderItem);
     })

@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export default axios.create({
-  //Assuming this will need to be changed for deployment
-  baseURL: "http://localhost:3000",
+const API = axios.create({
+  //This will need to be changed for deployment
+  baseURL: "http://localhost:3005",
 });
+
+export default API;

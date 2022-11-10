@@ -1,12 +1,12 @@
 const express = require('express');
 const orderRouter = express.Router();
 const createHttpError = require('http-errors');
-const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
+const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
 const Order = require('../models/orders');
 const OrderItem = require('../models/orderItems');
 
 //Get all of a user's orders
-orderRouter.get('/', checkIfLoggedIn, async (req, res, next) => {
+orderRouter.get('/', checkAuthenticated, async (req, res, next) => {
   try {
     const dbResp = await Order.findAll({
       where: { userId: req.user.id }
@@ -19,7 +19,7 @@ orderRouter.get('/', checkIfLoggedIn, async (req, res, next) => {
 
 //Get an order and its order items by ID.
 //The order must belong to the logged in user
-orderRouter.get('/:id', checkIfLoggedIn, async (req, res, next) => {
+orderRouter.get('/:id', checkAuthenticated, async (req, res, next) => {
   try {
     const orderId = req.params.id;
     const dbResponse = await Order.findOne({
@@ -50,7 +50,7 @@ Update status of order
     "Returning", "Returning-Shipped", "Returned" are all valid options
 }
 */
-orderRouter.put('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
+orderRouter.put('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
     const newStatus = req.body.newStatus;
     if (newStatus !== "Shipped" &&
@@ -82,14 +82,14 @@ orderRouter.put('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
 });
 
 //Delete order and all of its OrderItems
-orderRouter.delete('/:id', checkIfLoggedInAsAdmin, async (req, res, next) => {
+orderRouter.delete('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
     const idToDelete = req.params.id;
     const orderToDelete = await Order.findOne({
       where: { id: idToDelete }
     });
     if (!orderToDelete) { 
-      throw createHttpError(404, 'No order with that name was found');
+      throw createHttpError(404, 'No order with that id was found');
     }
     await OrderItem.destroy({
       where: { orderId: idToDelete }

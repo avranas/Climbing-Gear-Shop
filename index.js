@@ -17,6 +17,8 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+//Allows us to request images with the "/images" route in the "/assets/images" folder
+app.use('/images', express.static(__dirname + '/assets/images'));
 
 app.use('/user', require('./routes/user'));
 app.use('/register', require('./routes/register'));
@@ -27,6 +29,7 @@ app.use('/category', require('./routes/category'));
 app.use('/cart', require('./routes/cart'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/order', require('./routes/order'));
+app.use('/authenticated', require('./routes/authenticated'));
 
 app.get('/', (req, res) => {
   console.log('Hello world')

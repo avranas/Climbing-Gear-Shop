@@ -6,7 +6,8 @@ const User = require('./users');
 const CartItem = db.define('cart_items', {
   quantity: DataTypes.INTEGER,
   userId: DataTypes.INTEGER,
-  productId: DataTypes.INTEGER
+  productId: DataTypes.INTEGER,
+  optionSelection: DataTypes.TEXT
 });
 
 User.hasMany(CartItem);

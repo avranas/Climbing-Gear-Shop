@@ -1,0 +1,90 @@
+.product-card {
+  width: 23rem;
+  height: 25rem;
+  border-style: solid;
+  border-color: #c8c8c8;
+  border-radius: 0.5rem;
+  border-width:  1px;
+  padding: 2rem;
+  margin: 1rem;
+  cursor: pointer;
+  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #696961;
+}
+
+.product-card:hover {
+  transition: box-shadow 100ms;
+  box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem #3b3b38;
+}
+
+.product-image {
+  background-color: white;
+  position: relative;
+  height: 9rem;
+  width: 100%;
+}
+
+.bottom-image img {
+  margin: 0 auto;
+  position: absolute;
+  opacity: 1;
+  height: 9rem;
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.top-image img{
+  position: absolute;
+  opacity: 1;
+  height: 9rem;
+  background-color: white;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.product-image:not(hover) > .bottom-image {
+  transition: opacity 500ms;
+  opacity: 0;
+}
+
+.product-image:hover > .bottom-image {
+  transition: opacity 500ms 150ms;
+  opacity: 1;
+}
+
+.product-image:hover > .top-image {
+  transition: opacity 500ms 150ms;
+  opacity: 0;
+}
+
+.product-image:not(hover) > .top-image {
+  transition: opacity 500ms;
+  opacity: 1;
+}
+
+.product-card h3 {
+  font-size: 1.25rem;
+  padding-top: 3rem;
+  text-align: center;
+}
+
+.product-info:hover {
+  text-decoration: underline;
+}
+
+.product-card p {
+  font-weight: 300;
+  text-align: center;
+}
+
+a:hover, a:visited, a:link, a:active
+{
+    text-decoration: none;
+    color: #111111
+}

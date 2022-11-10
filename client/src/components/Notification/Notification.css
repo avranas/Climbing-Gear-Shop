@@ -1,0 +1,48 @@
+.notification-container {
+  position: fixed;
+  top: -2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  animation: 2s ease-out 0s slideDownAndUp;
+  animation-fill-mode: forwards;
+  pointer-events: none;
+}
+
+
+@keyframes slideDownAndUp {
+  10% {
+    transform: translateY(150%);
+  }
+  100% {
+    transform: translateY(150%);
+  }
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  pointer-events: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  text-align: center;
+  background-color: #c5ffbd;
+  color: rgb(40, 61, 40);
+  bottom: 5rem;
+  border-radius: 5px;
+  border: 1px solid rgba(12, 91, 0, 0.46);
+  cursor: pointer;
+}
+
+.notification-content p {
+  margin: 0.5rem;
+  align-items: center;
+}
+
+.notification-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  background-image: url('../../images/checkmark.png');
+  background-size: cover;
+  align-items: center;
+}

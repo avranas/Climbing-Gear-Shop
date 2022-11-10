@@ -4,10 +4,11 @@ const db = require('../db/db_setup');
 const Product = db.define('products', {
   productName: DataTypes.TEXT,
   description: DataTypes.TEXT,
-  price: DataTypes.FLOAT,
   categoryName: DataTypes.TEXT,
   brandName: DataTypes.TEXT,
-  amountInStock: DataTypes.INTEGER
+  smallImageFile1: DataTypes.TEXT,
+  smallImageFile2: DataTypes.TEXT,
+  largeImageFile: DataTypes.TEXT
 });
 
 module.exports = Product;

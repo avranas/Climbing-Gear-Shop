@@ -2,14 +2,14 @@ const express = require('express');
 const User = require('../models/users');
 const userRouter = express.Router();
 const createHttpError = require('http-errors');
-const { checkIfLoggedIn, checkIfLoggedInAsAdmin } = require('../authentication-check');
+const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
 const CartItem = require('../models/cartItems');
 const Order = require('../models/orders');
 
-const getUserData = async (username, next) => {
+const getUserData = async (userEmail, next) => {
   try {
     const foundUser = await User.findOne({
-      where: { username: username }
+      where: { userEmail: userEmail }
     });
     if (!foundUser) {
       throw createHttpError(400, "No user with that name was found");
@@ -25,19 +25,19 @@ const getUserData = async (username, next) => {
 }
 
 //Get logged in user's data
-userRouter.get('/', checkIfLoggedIn, async (req, res, next) => {
+userRouter.get('/', checkAuthenticated, async (req, res, next) => {
   try {
-    const userData = await getUserData(req.user.username, next);
+    const userData = await getUserData(req.user.userEmail, next);
     res.status(200).send(userData);
   } catch (err) {
     next(err);
   }
 });
 
-//Get user by username
-userRouter.get('/:username', checkIfLoggedInAsAdmin, async (req, res, next) => {
+//Get user by userEmail
+userRouter.get('/:userEmail', checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
-    const userData = await getUserData(req.params.username, next);
+    const userData = await getUserData(req.params.userEmail, next);
     if (userData) {
       res.status(200).send(userData);
     }
@@ -52,12 +52,12 @@ userRouter.get('/:username', checkIfLoggedInAsAdmin, async (req, res, next) => {
     "pointsToAdd": 10
   }
 */
-userRouter.put('/rewards-points/:username', checkIfLoggedInAsAdmin, async (req, res, next) => {
+userRouter.put('/rewards-points/:userEmail', checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
-    const username = req.params.username;
+    const userEmail = req.params.userEmail;
     const pointsToAdd = req.body.pointsToAdd;
     const dbResponse = await User.findOne({
-      where: { username: username }
+      where: { userEmail: userEmail }
     });
     if (!dbResponse) {
       throw createHttpError(404, 'No user with that name exists');
@@ -67,10 +67,10 @@ userRouter.put('/rewards-points/:username', checkIfLoggedInAsAdmin, async (req, 
     if (pointsToAdd && typeof pointsToAdd === "number") {
       await User.update({
         rewardsPoints: newBalance
-      }, { where: { username: username },
+      }, { where: { userEmail: userEmail },
       returning: true
       });
-      res.status(200).send(`User: ${username}'s new rewards points balance: ${newBalance}`);
+      res.status(200).send(`User: ${userEmail}'s new rewards points balance: ${newBalance}`);
     } else {
       res.status(400).send(`Missing "pointsToAdd" in body`)
     }
@@ -84,36 +84,36 @@ userRouter.put('/rewards-points/:username', checkIfLoggedInAsAdmin, async (req, 
   {
     "newFirstName": "Alex",
     "newLastName": "Vranas",
-    "newAddress": "24 Willie Mays Plaza, San Francisco, CA 94107"
+    "newHomeAddress": "24 Willie Mays Plaza, San Francisco, CA 94107"
   }
 */
-//Update logged in user's first name, last name, address
-userRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
+//Update logged in user's first name, last name, home address
+userRouter.put('/', checkAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const user = req.user;
     const newFirstName = body.newFirstName;
     const newLastName = body.newLastName;
-    const newAddress = body.newAddress;
+    const newHomeAddress = body.newHomeAddress;
     let dbResponse = null;
     if (newFirstName) {
       dbResponse = await User.update({
           firstName: newFirstName
-        }, { where: { username: user.username },
+        }, { where: { userEmail: user.userEmail },
         returning: true
       });
     }
     if (newLastName) {
       dbResponse = await User.update({
         lastName: newLastName
-      }, { where: { username: user.username },
+      }, { where: { userEmail: user.userEmail },
       returning: true
     });
     }
-    if (newAddress) {
+    if (newHomeAddress) {
       dbResponse = await User.update({
-        address: newAddress
-      }, { where: { username: user.username },
+        homeAddress: newHomeAddress
+      }, { where: { userEmail: user.userEmail },
       returning: true
     });
     }
@@ -124,7 +124,7 @@ userRouter.put('/', checkIfLoggedIn, async (req, res, next) => {
     const returnThis = {
       firstName: dbObject.firstName,
       lastName: dbObject.lastName,
-      address: dbObject.address,
+      homeAddress: dbObject.homeAddress,
     }
     res.status(200).send(returnThis);
   } catch (err) {
@@ -150,9 +150,8 @@ const deleteUser = async (userId, next) => {
   }
 }
 
-//TODO NEXT: fix this this needs to delete all of the things
 //Delete own user account if logged in
-userRouter.delete('/', checkIfLoggedIn, async (req, res, next) => {
+userRouter.delete('/', checkAuthenticated, async (req, res, next) => {
   try {
     await deleteUser(req.user.id, next);
     res.status(200).send('Your account has been deleted');
@@ -164,18 +163,18 @@ userRouter.delete('/', checkIfLoggedIn, async (req, res, next) => {
 //Delete another user account by id if logged in as admin
 //This deletes all of the user's cart items and orders, so
 //this should never be used on a customer who has a pending order
-userRouter.delete('/:username', checkIfLoggedInAsAdmin, async (req, res, next) => {
+userRouter.delete('/:userEmail', checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
     //Check if a user actually exists
-    const usernameToDelete = req.params.username;
+    const userEmailToDelete = req.params.userEmail;
     const userToDelete = await User.findOne({
-      where: { username: usernameToDelete }
+      where: { userEmail: userEmailToDelete }
     });
     if (!userToDelete) { 
       throw createHttpError(404, 'No user with that name was found');
     }
     await deleteUser(userToDelete.id, next);
-    res.status(200).send(`User with username ${usernameToDelete} has been deleted`);
+    res.status(200).send(`User with userEmail ${userEmailToDelete} has been deleted`);
   } catch (err) {
     next(err);
   }

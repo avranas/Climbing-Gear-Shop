@@ -1,0 +1,51 @@
+
+#search-bar {
+  position: relative;
+  display: flex;
+  height: 1.75rem;
+  border-radius: 4px;
+  border: solid;
+  border-color: #BBBBBB;
+  border-width: 2px;
+  height: 3rem;
+  width: 30rem;
+}
+
+#search-text:focus {
+  outline: none;
+}
+
+#search-bar:focus-within {
+  border: solid;
+  border-width: 2px;
+  border-color: blue;
+}
+
+#search-text {
+  border: none;
+  line-height: 5rem;
+  width: 30rem;
+  padding: 0.5rem;
+}
+
+#clear-button { 
+  position: absolute;
+  right: 3rem;
+  top: 1rem;
+  background-color: rgba(0,0,0,0);
+  background-image: url("../../images/gray-x.png");
+  background-size: cover;
+  width: 1rem;
+  height: 1rem;
+  border: none;
+}
+
+#search-button {
+  background-color: rgba(0,0,0,0);
+  background-image: url("../../images/search.png");
+  background-size: cover;
+  width: 2rem;
+  height: 2rem;
+  margin: 0.4rem;
+  border: none;
+}
