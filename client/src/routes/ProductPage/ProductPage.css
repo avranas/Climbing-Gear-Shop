@@ -1,11 +1,14 @@
 #product {
   display: flex;
+  justify-content: right;
+}
+
+#product-image {
+  height: 60rem;
 }
 
 #product-image img {
-  display: block;
-  max-width: 100%;
-  height: auto;
+  align-items: center;
   border-style: solid;
   border-color: #c8c8c8;
   border-radius: 0.5rem;
@@ -37,27 +40,4 @@ select {
   padding-top: 1rem;
   font-size: 0.75rem;
   font-weight: 600;
-}
-
-#submit {
-  background-color: #005014;
-  border-color: #005014;
-  border-width: 0.22rem;
-  color: white;
-  margin-top: 1.8rem;
-  width: 15rem;
-  height: 2.5rem;
-  border-radius: 0.25rem;
-  font-size: 1.2rem;
-}
-
-#submit:hover {
-  transition: 300ms;
-  background-color: white;
-  color: #005014;
-  box-shadow: 0.05rem 0.05rem 0.05rem 0.05rem #c9cec9;
-}
-
-#submit:not(hover) {
-  transition: 300ms;
 }

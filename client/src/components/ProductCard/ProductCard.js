@@ -1,12 +1,15 @@
 import "./ProductCard.css";
 import { Link } from "react-router-dom";
-import { numberToUSD } from "../../utils/numberToUSD";
+import numberToUSD from "../../utils/numberToUSD";
 //Props are productName, brandName, description, price, and imageURL,
 const ProductCard = (props) => {
+
+
+
   //Renders a card for a single product
   return (
-    <Link to={`/product/${props.id}`}>
-      <div className="product-card">
+    <div className="product-card">
+      <Link to={`/product/${props.id}`}>
         <div className="product-image">
           <div className="top-image">
             <img
@@ -24,10 +27,16 @@ const ProductCard = (props) => {
         <div className="product-info">
           <h3>{props.brandName}</h3>
           <p>{props.productName}</p>
-          <p>{numberToUSD(props.price)}</p>
+          
+          {
+            props.highestPrice === props.lowestPrice ?
+            <p>{numberToUSD(props.lowestPrice)}</p>
+            :
+            <p>{`${numberToUSD(props.lowestPrice)} - ${numberToUSD(props.highestPrice)}`}</p>
+          }
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 export default ProductCard;

@@ -7,6 +7,7 @@
 
 .form-page h2 {
   text-align: center;
+  margin: 2rem;
 }
 
 .form-header-wrap {
@@ -22,21 +23,18 @@
 
 .form-page input {
   line-height: 2rem;
-  margin-left: 1rem;
   font-size: 1.1rem;
   font-weight: 300;
   width: 18rem;
 }
 
 .form-page label {
-  margin-left: 1rem;
   font-weight: 600;
   font-size: 0.785rem;
 }
 
 .input-error-box {
   margin-top: 0.5rem;
-  margin-left: 1rem;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
@@ -62,4 +60,8 @@
 
 .form-break {
   height: 1.5rem;
+}
+
+.form-page-footer {
+  padding-bottom: 1rem;
 }

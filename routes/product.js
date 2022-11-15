@@ -6,10 +6,16 @@ const { checkAuthenticatedAsAdmin } = require("./authentication-check");
 const OrderItem = require("../models/orderItems");
 const ProductOption = require("../models/productOptions");
 
-//Get all products without options
+//Get all products with options
 productRouter.get("/", async (req, res, next) => {
   try {
-    const dbResp = await Product.findAll();
+    const dbResp = await Product.findAll({
+      include: [{
+        model: ProductOption,
+        required: true
+      }]
+    });
+    console.log(dbResp);
     res.status(200).send(dbResp);
   } catch (err) {
     next(err);
@@ -56,10 +62,10 @@ productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, ne
     const body = req.body;
     //Check to make sure productOptionID exist
     const response = await Product.findOne({
-      where: { id: body.id}
+      where: { id: id}
     });
     if (response === null) {
-      throw createHttpError(404, `ProductOption with id#${id} not found`);
+      throw createHttpError(404, `Product with id#${id} not found`);
     }
     //Check to make sure all required entries exist
     if (
@@ -73,7 +79,7 @@ productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, ne
       );
     }
     const newProductOption = await ProductOption.create({
-      productId: body.productId,
+      productId: id,
       option: body.option,
       price: body.price,
       amountInStock: body.amountInStock
@@ -93,6 +99,7 @@ productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, ne
       "smallImageFile1": "rope1-1.webp",
       "smallImageFile2": "rope1-2.webp",
       "largeImageFile": "rope1-3.jpg",
+      "optionType": "Length",
       "options": [
           {
               "amountInStock": 5,
@@ -120,6 +127,7 @@ productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, ne
     "smallImageFile1": "chalk1-1.jpg",
     "smallImageFile2": "chalk1-2.jpg",
     "largeImageFile": "chalk1-3.jpg",
+    "optionType": "None",
     options: [
       {
         "option": "Default",
@@ -137,13 +145,14 @@ productRouter.post("/", checkAuthenticatedAsAdmin, async (req, res, next) => {
       body.description === undefined ||
       body.categoryName === undefined ||
       body.brandName === undefined ||
+      body.optionType === undefined ||
       body.smallImageFile1 === undefined ||
       body.smallImageFile2 === undefined ||
       body.largeImageFile === undefined
     ) {
       throw createHttpError(
         400,
-        "Missing item in the body. Needs a productName, description, categoryName, brandName, smallImageFile1, smallImageFile2, largeImageFile, "
+        "Missing item in the body. Needs a productName, description, categoryName, brandName, smallImageFile1, smallImageFile2, largeImageFile, and optionType "
       );
     }
     body.options.forEach((e) => {
@@ -164,6 +173,7 @@ productRouter.post("/", checkAuthenticatedAsAdmin, async (req, res, next) => {
         description: body.description,
         categoryName: body.categoryName,
         brandName: body.brandName,
+        optionType: body.optionType,
         smallImageFile1: body.smallImageFile1,
         smallImageFile2: body.smallImageFile2,
         largeImageFile: body.largeImageFile,
@@ -210,12 +220,12 @@ productRouter.put(
       const productOptionId = req.params.id;
       const newOption = body.option;
       const newPrice = body.price;
-      const newAmountInStock = body.option;
+      const newAmountInStock = body.amountInStock;
       let dbResponse = null;
       if (newOption) {
         dbResponse = await ProductOption.update(
           {
-            newOption: newOption,
+            option: newOption,
           },
           { where: { id: productOptionId }, returning: true }
         );
@@ -325,6 +335,29 @@ productRouter.put("/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
     next(err);
   }
 });
+
+//Delete one productOption
+productRouter.delete(
+  "/option/:id",
+  checkAuthenticatedAsAdmin,
+  async (req, res, next) => {
+    try {
+      const idToDelete = req.params.id;
+      const productOptionToDelete = await ProductOption.findOne({
+        where: { id: idToDelete }
+      });
+      if (!productOptionToDelete) { 
+        throw createHttpError(404, 'No product option with that id was found');
+      }
+      await ProductOption.destroy({
+        where: { id: idToDelete }
+      });
+      res.status(200).send(`Deleted product option with id: ${idToDelete}`)
+    } catch (err) {
+      next(err);
+    }
+  }
+)
 
 //Delete a product and all of its options
 productRouter.delete(

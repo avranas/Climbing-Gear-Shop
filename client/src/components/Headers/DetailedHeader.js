@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
-import SearchBar from './SearchBar/SearchBar';
-import HeaderUserButtons from './HeaderUserButtons';
+import SearchBar from '../SearchBar/SearchBar';
+import HeaderUserButtons from '../HeaderUserButtons';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectUser } from "../slices/userSlice";
+import { selectUser } from "../../slices/userSlice";
 import { useEffect } from 'react';
-import axios from '../api/api';
+import axios from '../../api/api';
+import './Header.css';
+import { selectCart, loadCartData } from '../../slices/cartSlice';
 
 const DetailedHeader = (props) => {
 
+  const cart = useSelector(selectCart);
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
 
@@ -20,10 +23,10 @@ const DetailedHeader = (props) => {
         console.log(err);
       }
     }
-    if (user.loggedIn) {
-      getUserData();
-    }
-  });
+    loadCartData(dispatch);
+    getUserData();
+  }, [dispatch]);
+  const cartItemsCount = cart.cartItems.length
 
   return (
     <header className='container'>
@@ -37,7 +40,19 @@ const DetailedHeader = (props) => {
       }
       <HeaderUserButtons />
       <Link to='/cart'>
-        <div id="cart-icon" />
+        <div id="cart-icon">
+          {
+            cartItemsCount > 9 ?
+            <div className="cart-items-count" id="double-digit">
+              {cartItemsCount}
+            </div>
+            : cartItemsCount !== 0 ?
+            <div className="cart-items-count" id="single-digit">
+              {cartItemsCount}
+            </div>
+            : null
+          }
+        </div>
       </Link>
     </header>
   );

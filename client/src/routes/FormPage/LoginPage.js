@@ -44,21 +44,26 @@ const LoginPage = (props) => {
         userEmail: userEmailInput,
         password: passwordInput
       }
-      const response = await axios.post('/login', requestBody);
-      console.log('response:')
-      console.log(response)
+      await axios.post('/login', requestBody);
       //If the passwords don't match, an error will be thrown
       const userData = await axios.get('/user');
       dispatch({ type: 'user/loadUserData', payload: userData.data});
       navigate('/');
       createNotification(dispatch, "You are now logged in!");
+      //If there are items in the guest's cart, move the data to
+      //the server and clear it in localStorage
+      const guestCart = JSON.parse(localStorage.getItem('guestCart'));
+      if (!guestCart) {
+        return;
+      }
+      await axios.put('/cart/convert-guest-cart', guestCart);
+      localStorage.removeItem('guestCart');
     } catch (err) {
       console.log(err)
       console.log(err.response.status)
       if (err.response.status === 401) {
         setInvalidLoginError('Email or password was incorrect!');
       }
-
       console.log(err);
     }
   }
@@ -119,7 +124,7 @@ const LoginPage = (props) => {
           <div className='form-break'></div>
           <div className='form-break'></div>
         </div>
-        <p>Don't have an account? <Link to="/register">Register</Link></p>
+        <p className="form-page-footer">Don't have an account? <Link to="/register">Register</Link></p>
       </div>
     </main>
   );

@@ -215,7 +215,7 @@ const RegisterPage = (props) => {
       <div className='form-header-wrap'>
         <h2>Create a new account</h2>
         <div className="form">
-          <label htmlFor="user-email">Email (You will use this to log in, fake emails are okay)</label><br/>
+          <label htmlFor="user-email">Email</label><br/>
           <input onKeyUp={handleKeyPress} type="email" id="user-email" name="user-email" onChange={handleUserEmailChange}/><br/>
           {
             emailError &&
@@ -269,13 +269,10 @@ const RegisterPage = (props) => {
           <div className='form-break'></div>
           <div className='form-break'></div>
         </div>
-        <p>Already have an account? <Link to="/login">Sign in</Link></p>
+          <p className="form-page-footer">Already have an account? <Link to="/login">Sign in</Link></p>
       </div>
     </main>
   );
 };
 
 export default RegisterPage;
-
-
-//TODO: notifcations as an array (support for more than one)

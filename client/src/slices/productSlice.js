@@ -6,14 +6,30 @@ export const loadProduct = createAsyncThunk(
   async (productID) => {
     try {
       const response = await axios.get(`/product/${productID}`);
-      const data = response.data;
+      const product = response.data.product;
+      const productOptions = response.data.productOptions;
+      let lowestPrice = Infinity;
+      let highestPrice = 0;
+      productOptions.forEach(e => {
+        if (e.price < lowestPrice) {
+          lowestPrice = e.price;
+        }
+        if (e.price > highestPrice) {
+          highestPrice = e.price;
+        }
+      });
       const payload = {
-        brandName: data.brandName,
-        categoryName: data.categoryName,
-        description: data.description,
-        largeImageFile: data.largeImageFile,
-        price: data.price,
-        productName: data.productName
+        id: productID,
+        brandName: product.brandName,
+        categoryName: product.categoryName,
+        description: product.description,
+        optionType: product.optionType,
+        smallImageFile1: product.smallImageFile1,
+        largeImageFile: product.largeImageFile,
+        productName: product.productName,
+        productOptions: productOptions,
+        highestPrice: highestPrice,
+        lowestPrice: lowestPrice
       }
       return payload;
     } catch (err) {
@@ -30,9 +46,13 @@ const productSlice = createSlice({
       brandName: '',
       categoryName: '',
       description: '',
+      optionType: '',
+      smallImageFile1: '',
       largeImageFile: '',
-      price: '',
       productName: '',
+      lowestPrice: 0,
+      highestPrice: 0,
+      productOptions: [],
       isLoading: true,
       hasError: false
     }
@@ -44,7 +64,6 @@ const productSlice = createSlice({
     },
     [loadProduct.fulfilled]: (state, action) => {
       state.product = action.payload;
-      //console.log(JSON.parse(JSON.stringify(state)));
       state.product.isLoading = false;
       state.product.hasError = false;
     },

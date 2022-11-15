@@ -1,0 +1,36 @@
+/*Splash*/
+
+#splash {
+  display: flex;
+  width: 100%;
+  height: 50rem;
+  background-image: url("../../images/splash.jpg");
+  background-size: cover;
+  align-items:center;
+} 
+
+#splash h1 {
+  width: 100%;
+  padding: 2rem;
+  color: #0e0e0f;
+  justify-content: center;
+  text-align: center;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: 600;
+  opacity: 0.9;
+  background-image: linear-gradient(to bottom right, rgb(255, 255, 255), rgb(255, 252, 238));
+}
+
+#home-page h2 {
+  padding: 2rem;
+}
+
+#shop-all-products-button-holder {
+  padding: 2rem;
+  text-align: center;
+}
+
+#footer-break {
+  position: relative;
+  height: 10rem;
+}

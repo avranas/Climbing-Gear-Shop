@@ -30,6 +30,7 @@ CREATE TABLE products(
   description text,
   categoryName text,
   brandName text,
+  optionType text,
   smallImageFile1, text,
   smallImageFile2, text,
   largeImageFile, text,

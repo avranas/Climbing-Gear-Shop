@@ -44,7 +44,34 @@ const productListSlice = createSlice({
     [loadProductList.fulfilled]: (state, action) => {
       state.productList.isLoading = false;
       state.productList.hasError = false;
-      state.productList.listOfProducts = action.payload;
+      const payload = action.payload;
+      //Go through the product_options in the payload to find the range of prices
+
+      const newProducts = []
+      payload.forEach(product => {
+        let lowestPrice = Infinity;
+        let highestPrice = 0;
+        product.product_options.forEach(option => {
+          const price = option.price;
+          if (price < lowestPrice) {
+            lowestPrice = price;
+          }
+          if( price > highestPrice) {
+            highestPrice = price;
+          }
+        });
+        const newProduct = {
+          id: product.id,
+          productName: product.productName,
+          brandName: product.brandName,
+          smallImageFile1: product.smallImageFile1,
+          smallImageFile2: product.smallImageFile2,       
+          lowestPrice: lowestPrice,
+          highestPrice: highestPrice,
+        }
+        newProducts.push(newProduct);
+      });
+      state.productList.listOfProducts = newProducts;
     },
     [loadProductList.rejected]: (state, action) => {
       state.productList.isLoading = false;

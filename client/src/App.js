@@ -1,8 +1,8 @@
 import './App.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import DetailedHeader from './components/DetailedHeader';
-import SimpleHeader from'./components/SimpleHeader';
-import HomePage from './routes/HomePage';
+import DetailedHeader from './components/Headers/DetailedHeader';
+import SimpleHeader from'./components/Headers/SimpleHeader';
+import HomePage from './routes/HomePage/HomePage';
 import RegisterPage from './routes/FormPage/RegisterPage';
 import LoginPage from './routes/FormPage/LoginPage';
 import ProductListPage from './routes/ProductListPage/ProductListPage';
@@ -17,6 +17,8 @@ import {
 } from "react-router-dom";
 import Logout from './routes/Logout';
 import ProductPage from './routes/ProductPage/ProductPage';
+import AddedToCart from './routes/AddedToCart/AddedToCart';
+import Cart from './routes/Cart/Cart';
 
 function App() {
 
@@ -49,6 +51,14 @@ function App() {
         <Route
           path='/product/:id'
           element={<DetailedHeader />}
+        />
+        <Route
+          path="/added-to-cart"
+          element={<DetailedHeader/>}
+        />
+        <Route
+          path="/cart"
+          element={<DetailedHeader/>}
         />
         <Route
           path='/register'
@@ -92,6 +102,14 @@ function App() {
         <Route
           path="/product/:id"
           element={<ProductPage/>}
+        />
+        <Route
+          path="/added-to-cart"
+          element={<AddedToCart/>}
+        />
+        <Route
+          path="/cart"
+          element={<Cart/>}
         />
       </Routes>
       {

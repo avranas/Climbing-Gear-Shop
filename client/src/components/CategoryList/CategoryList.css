@@ -1,0 +1,35 @@
+
+#category-list {
+  display: flex;
+}
+
+.category-box {
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
+}
+.category-box p {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.category-box img {
+  margin: 1rem;
+  width: 14rem;
+  height: 14rem;
+  padding: 2rem;
+  background: rgb(2,0,36);
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(255,255,255,1) 0%, rgb(225, 222, 210) 100%);
+  border-radius: 0.5rem;
+}
+
+.category-box:hover {
+  text-decoration: underline;
+  
+}
+
+.category-box:hover {
+  -webkit-filter: brightness(109%);
+  filter: brightness(109%);
+}

@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import shoesPic from '../images/shoes.png';
-import harnessPic from '../images/harness.png';
-import ropePic from '../images/rope.png';
-import carabinerPic from '../images/carabiner.png';
-import chalkPic from '../images/chalk.png';
-
+import shoesPic from '../../images/shoes.png';
+import harnessPic from '../../images/harness.png';
+import ropePic from '../../images/rope.png';
+import carabinerPic from '../../images/carabiner.png';
+import chalkPic from '../../images/chalk.png';
+import './CategoryList.css';
 
 
 const CategoryList = (props) => {
@@ -15,7 +15,7 @@ const CategoryList = (props) => {
   };
 
   return (
-    <div id="category-list" className="d-flex justify-content-around flex-wrap">
+    <div id="category-list" className="container d-flex justify-content-around flex-wrap">
       <Link to="/products?category=shoes" style={linkStyle}>
         <div className="category-box">
           <img src={shoesPic} alt="shoes"/>

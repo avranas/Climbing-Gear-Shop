@@ -6,6 +6,7 @@ const Product = db.define('products', {
   description: DataTypes.TEXT,
   categoryName: DataTypes.TEXT,
   brandName: DataTypes.TEXT,
+  optionType: DataTypes.TEXT,
   smallImageFile1: DataTypes.TEXT,
   smallImageFile2: DataTypes.TEXT,
   largeImageFile: DataTypes.TEXT

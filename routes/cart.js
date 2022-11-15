@@ -4,6 +4,7 @@ const cartRouter = express.Router();
 var createHttpError = require('http-errors');
 const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
 const Product = require('../models/products');
+const ProductOption = require('../models/productOptions');
 
 const getUserCartData = async (userId, next) => {
   try {
@@ -33,7 +34,6 @@ cartRouter.get('/', checkAuthenticated, async (req, res, next) => {
 });
 
 /*
-  Add item to cart
   {
     quantity:
     productId:
@@ -44,14 +44,14 @@ cartRouter.put('/', checkAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const userId = req.user.id;
-    //quantity and productId are both required
+    //quantity, productId and optionSelection are required
     if (body.productId === undefined) {
       throw createError(400, 'Body needs a "productId"');
     }
     if (body.quantity === undefined) {
       throw createError(400, 'Body needs a "quantity"');
     }
-    if (body.quantity === undefined) {
+    if (body.optionSelection === undefined) {
       throw createError(400, 'Body needs an "optionSelection"');
     }
     //If quantity === 0, remove from the cart
@@ -81,14 +81,11 @@ cartRouter.put('/', checkAuthenticated, async (req, res, next) => {
     let newCartItem = null;
     //If the item already exists in the user's cart and it's the same option, I should update the quantity
     const cartData = await getUserCartData(userId, next);
-    const foundProduct = cartData.find( i => i.productId === body.productId);
-    console.log(foundProduct.dataValues)
-    console.log('foundProduct.optionSelection is')
-    console.log(foundProduct.optionSelection)
-    console.log('body.optionSelection is')
-    console.log(body.optionSelection)
-    console.log(foundProduct.optionSelection === body.optionSelection)
-    if (foundProduct && foundProduct.optionSelection === body.optionSelection) {
+    const foundProduct = cartData.find(i =>
+      i.productId === Number(body.productId) && 
+      i.optionSelection === body.optionSelection
+    );
+    if (foundProduct) {
       newCartItem = await CartItem.update({
         quantity: body.quantity
         }, { 
@@ -102,7 +99,6 @@ cartRouter.put('/', checkAuthenticated, async (req, res, next) => {
       });
     } else {
       //Add the new product to the cart
-      console.log(body.optionSelection)
       newCartItem = await CartItem.create({
         quantity: body.quantity,
         productId: body.productId,
@@ -118,8 +114,72 @@ cartRouter.put('/', checkAuthenticated, async (req, res, next) => {
   }
 });
 
+/*Takes an array of cart items, and adds them to the cart
+A cart item:
+{
+  quantity:
+  productId:
+  optionSelection:
+}
+*/
+cartRouter.put('/convert-guest-cart', async (req, res, next) => {
+  try {
+    const body = req.body;
+    const user = req.user;
+    const newCartItems = []
+    //Get the current cart for use later
+    const currentCart = await CartItem.findAll({
+      where: { userId: user.id },
+    });
+    const cartItemsToDestroy = [];
+    body.forEach(i => {
+      //quantity, productId and optionSelection are required
+      if (i.productId === undefined) {
+        throw createError(400, 'An element is missing its "productId"');
+      }
+      if (i.quantity === undefined) {
+        throw createError(400, 'An element is missing its "quantity"');
+      }
+      if (i.optionSelection === undefined) {
+        throw createError(400, 'An element is missing its "optionSelection"');
+      }
+      //Quantity can only be in a range from 1 to 99
+      if (i.quantity < 1 || i.quantity > 99) {
+        throw createError(400, "Quantity is out of range. It must be between 1 and 99");
+      }
+      //If the item is already in the user's cart, delete it, so it can be replaced
+      //by the new one with an updated quantity
+      const foundItem = currentCart.find(j =>
+        Number(i.productId) === j.productId &&
+        i.optionSelection === j.optionSelection
+      );
+      newCartItems.push({
+        quantity: i.quantity,
+        optionSelection: i.optionSelection,
+        productId: i.productId,
+        userId: user.id
+      })
+      if (foundItem) {
+        cartItemsToDestroy.push(foundItem.id);
+      }
+    });
+    await CartItem.destroy({
+      where: { id: cartItemsToDestroy }
+    });
+    //Add the new product to the cart
+    const response = await CartItem.bulkCreate(
+      newCartItems
+    , {
+      returning: true
+    });
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
 //Remove all items from the shopping cart
-cartRouter.delete('/', async (req, res, next) => { 
+cartRouter.delete('/', checkAuthenticated, async (req, res, next) => { 
   try {
     await CartItem.destroy({
       where: { userId: req.user.id }
@@ -131,7 +191,7 @@ cartRouter.delete('/', async (req, res, next) => {
 });
 
 //Remove one item from the shopping cart
-cartRouter.delete('/:id', async (req, res, next) => { 
+cartRouter.delete('/:id', checkAuthenticated, async (req, res, next) => { 
   try {
     const id = req.params.id;
     const itemToDelete = await CartItem.findOne({
