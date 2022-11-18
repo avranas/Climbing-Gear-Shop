@@ -1,3 +1,11 @@
+.App {
+  position: absolute;
+  width: 100%;
+  min-height: 100%;    
+  background: linear-gradient(rgb(248, 250, 253) 0%, rgba(248, 250, 253, 0) 413px);
+  background-image: linear-gradient(rgb(248, 250, 253) 0%, rgba(248, 250, 253, 0) 413px);
+  color: rgb(34, 37, 49);
+}
 
 footer {
   width: 100%;
@@ -74,4 +82,29 @@ footer p {
   border-color: #003c0f;
   box-shadow: none;
   color: white;
+}
+
+.option-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.styled-box {
+  background-color: white;
+  box-shadow: rgb(88 102 126 / 8%) 0px 4px 24px, rgb(88 102 126 / 12%) 0px 1px 2px;
+  border-radius: 0.5rem;
+  border-width:  1px;
+}
+
+.styled-link-box:hover {
+  transition: all 200ms;
+  box-shadow: 0rem 0rem 1rem 0.01rem #d4cbd6;
+  -webkit-filter: brightness(109%);
+  filter: brightness(109%);
+}
+
+
+.styled-link-box {
+  -webkit-transition: all 200ms ease;
+  transition: all 200ms ease;
 }

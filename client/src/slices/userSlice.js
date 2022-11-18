@@ -21,6 +21,7 @@ const userSlice = createSlice({
       user.lastName = payload.lastName;
       user.homeAddress = payload.homeAddress;
       user.rewardsPoints = payload.rewardsPoints;
+      user.loggedIn = true;
     },
     eraseUserData(state, action){
       const user = state.user;
@@ -29,17 +30,11 @@ const userSlice = createSlice({
       user.lastName = null;
       user.homeAddress = null;
       user.rewardsPoints = null;
+      user.loggedIn = false;
     },
-    logIn(state, action){
-      state.user.loggedIn = true;
-
-    },
-    logOut(state, action){
-      state.user.loggedIn = false;
-    }
   },
 });
 
 export const selectUser = (state) => state.user.user;
-export const { loadUserData, eraseUserData, logIn, logOut } = userSlice.actions;
+export const { loadUserData, eraseUserData } = userSlice.actions;
 export default userSlice.reducer;

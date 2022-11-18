@@ -9,7 +9,7 @@ categoryRouter.get('/:name', async (req, res, next) => {
     const dbResponse = await Product.findAll({
       where: { categoryName: req.params.name },
       include: [{
-        model: ProductOption,
+        model: ProductOption, as: "productOptions",
         required: true
       }]
     });

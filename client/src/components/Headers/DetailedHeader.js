@@ -17,8 +17,11 @@ const DetailedHeader = (props) => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const response = await axios.get('/user');
-        dispatch({type: 'user/loadUserData', payload: response.data});
+        const authResponse = await axios.get('/authenticated');
+        if (authResponse.data) {
+          const response = await axios.get('/user');
+          dispatch({type: 'user/loadUserData', payload: response.data});
+        }
       } catch (err) {
         console.log(err);
       }
@@ -26,10 +29,10 @@ const DetailedHeader = (props) => {
     loadCartData(dispatch);
     getUserData();
   }, [dispatch]);
-  const cartItemsCount = cart.cartItems.length
 
   return (
-    <header className='container'>
+    <header className='header'>
+      <div className="container" id='detailed-header-content'>
       <Link to="/">
         <div className="logo" />
       </Link>
@@ -42,18 +45,23 @@ const DetailedHeader = (props) => {
       <Link to='/cart'>
         <div id="cart-icon">
           {
-            cartItemsCount > 9 ?
+            cart.itemCount > 99 ?
             <div className="cart-items-count" id="double-digit">
-              {cartItemsCount}
+              99+
             </div>
-            : cartItemsCount !== 0 ?
+            : cart.itemCount > 9 ?
+            <div className="cart-items-count" id="double-digit">
+              {cart.itemCount}
+            </div>
+            : cart.itemCount !== 0 ?
             <div className="cart-items-count" id="single-digit">
-              {cartItemsCount}
+              {cart.itemCount}
             </div>
             : null
           }
         </div>
       </Link>
+      </div>
     </header>
   );
 };

@@ -212,7 +212,7 @@ const RegisterPage = (props) => {
 
   return (
     <main className="container form-page">
-      <div className='form-header-wrap'>
+      <div className='form-header-wrap styled-box'>
         <h2>Create a new account</h2>
         <div className="form">
           <label htmlFor="user-email">Email</label><br/>

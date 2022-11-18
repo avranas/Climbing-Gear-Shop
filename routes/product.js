@@ -11,12 +11,43 @@ productRouter.get("/", async (req, res, next) => {
   try {
     const dbResp = await Product.findAll({
       include: [{
-        model: ProductOption,
+        model: ProductOption, as: "productOptions",
         required: true
       }]
     });
     console.log(dbResp);
     res.status(200).send(dbResp);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//Request with an array of IDs, sends back an array of product data
+//If the product ID does not exist, nothing will be returned
+/*
+{
+    "ids": "[14,15,16]"
+}
+*/
+productRouter.get("/ids", async (req, res, next) => {
+  try {
+    const IDs = JSON.parse(req.body.ids);
+    if (!Array.isArray(IDs)) {
+      throw createHttpError(400, `req.body is not an array`);
+    }
+    IDs.forEach(i => {
+      if (typeof i !== 'number') {
+        throw createHttpError(400, `An element in req.body is not a number`);
+      }
+    });
+    const response = await Product.findAll({
+      where: {id: IDs},
+      include: [{
+        model: ProductOption, as: "productOptions",
+        required: true
+       }]
+    });
+    res.status(200).send(response);
   } catch (err) {
     next(err);
   }

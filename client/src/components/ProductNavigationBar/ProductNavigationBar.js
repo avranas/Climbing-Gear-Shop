@@ -3,7 +3,7 @@ import "./ProductNavigationBar.css";
 
 const ProductNavigationBar = (props) => {
   return (
-    <section id="product-navigation-bar" className="container">
+    <section id="product-navigation-bar" className="container styled-box">
       <ul className="row">
         <li className="col-2">
           <Link to="/products">All Products</Link>

@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import './FormPage.css';
 import { createNotification } from '../../slices/notificationSlice';
 import axios from 'axios';
+import { loadCartData } from '../../slices/cartSlice';
 
 const LoginPage = (props) => {
   
@@ -56,7 +57,13 @@ const LoginPage = (props) => {
       if (!guestCart) {
         return;
       }
-      await axios.put('/cart/convert-guest-cart', guestCart);
+      await Promise.all(
+        guestCart.map(async i => {
+          await axios.post('/cart', i);
+        })
+      );
+      await axios.post('/cart/convert-guest-cart', guestCart);
+      loadCartData(dispatch);
       localStorage.removeItem('guestCart');
     } catch (err) {
       console.log(err)
@@ -90,7 +97,7 @@ const LoginPage = (props) => {
 
   return (
     <main className="container form-page">
-      <div className='form-header-wrap'>
+      <div className='form-header-wrap styled-box'>
         <h2>Login</h2>
         <div className="form">
           <label htmlFor="user-email">Email</label><br/>

@@ -4,32 +4,25 @@
 }
 
 .category-box {
-  -webkit-transition: all 200ms ease;
-  transition: all 200ms ease;
+  margin: 1rem;
 }
 .category-box p {
-  margin-top: 1rem;
   text-align: center;
   font-size: 1.5rem;
   font-weight: 600;
+  padding-bottom: 1rem;
 }
 
 .category-box img {
-  margin: 1rem;
   width: 14rem;
   height: 14rem;
   padding: 2rem;
-  background: rgb(2,0,36);
-  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(255,255,255,1) 0%, rgb(225, 222, 210) 100%);
-  border-radius: 0.5rem;
+  margin-bottom: 0;
 }
-
+.category-box p {
+  margin-top: 0;
+}
 .category-box:hover {
   text-decoration: underline;
   
-}
-
-.category-box:hover {
-  -webkit-filter: brightness(109%);
-  filter: brightness(109%);
 }

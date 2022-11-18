@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadProduct, selectProduct } from "../../slices/productSlice";
@@ -7,18 +7,24 @@ import redX from "../../images/red-x.png";
 import numberToUSD from "../../utils/numberToUSD";
 import axios from "axios";
 import ProductNavigationBar from "../../components/ProductNavigationBar/ProductNavigationBar";
+import AddedToCartWindow from "../AddedToCartWindow/AddedToCartWindow";
+import { loadCartData } from "../../slices/cartSlice";
+import QuantitySelection from "../../components/QuantitySelection/QuantitySelection";
+import { v4 as uuidv4 } from "uuid";
 
 //Props are productName, brandName, description, price, and imageURL,
 const ProductPage = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [optionSelection, setOptionSelection] = useState("");
   const [quantitySelection, setQuantitySelection] = useState("1");
   const [missingSelectionError, setMissingSelectionError] = useState("");
   const [displayPrice, setDisplayPrice] = useState("");
+  const [currentAmountInStock, setCurrentAmountInStock] = useState(-1);
+  const [outOfStockError, setOutOfStockError] = useState("");
   const [options, setOptions] = useState([]);
   const product = useSelector(selectProduct);
+  const [addedToCartWindowOpen, setAddedToCartWindowOpen] = useState(false);
 
   const addToCart = async () => {
     //options[0] is 'Select'
@@ -32,39 +38,99 @@ const ProductPage = (props) => {
       const newCartItem = {
         quantity: quantitySelection,
         productId: product.id,
-        optionSelection: optionSelection
-      }
+        optionSelection: optionSelection,
+      };
       //If the user is logged in, store cart data in the server,
       //Otherwise, store it in localStorage
-      const loggedInCheck = await axios('/authenticated');
+      const loggedInCheck = await axios("/authenticated");
       //This will return true if the user is logged in
       if (loggedInCheck.data) {
-        await axios.put('/cart', newCartItem);
+        //Add to cart in server
+        const response = await axios.post("/cart", newCartItem);
+        console.log(response);
+        if (response.data === "Not enough in stock. Setting to the max.") {
+          setOutOfStockError(response.data);
+          loadCartData(dispatch);
+          return;
+        }
       } else {
-        dispatch({type: 'cart/addToGuestCart', payload: newCartItem});
+        //Add new item to the guest cart in localStorage
+        newCartItem.id = uuidv4();
+        //localStorage can only accept strings, so I have to use this workaround
+        //where I save stringified arrays, then retrieve the strings, and parse
+        //them into JSON
+        let guestCart = JSON.parse(localStorage.getItem("guestCart"));
+        if (!guestCart) {
+          const newArray = [];
+          newArray.push(newCartItem);
+          localStorage.setItem("guestCart", JSON.stringify(newArray));
+        } else {
+          //If this item is already in the cart, update it with a newer quantity
+          //instead of adding it to the cart
+          let itemAlreadyInCart = false;
+          let outOfStockErrorFound = false;
+          guestCart.forEach((i) => {
+            if (
+              i.productId === newCartItem.productId &&
+              i.optionSelection === newCartItem.optionSelection
+            ) {
+              itemAlreadyInCart = true;
+              i.quantity = (
+                Number(newCartItem.quantity) + Number(i.quantity)
+              ).toString();
+              //If too many items are added, set quantity to amountInStock then display an error message
+              if (i.quantity > currentAmountInStock) {
+                i.quantity = currentAmountInStock;
+                outOfStockErrorFound = true;
+              }
+            }
+          });
+          if (!itemAlreadyInCart) {
+            guestCart.push(newCartItem);
+          }
+          localStorage.setItem("guestCart", JSON.stringify(guestCart));
+          if (outOfStockErrorFound) {
+            setOutOfStockError("Not enough in stock. Setting to the max.");
+            loadCartData(dispatch);
+            return;
+          }
+        }
       }
-      dispatch({type: 'newestCartItem/setNewestCartItem', payload: newCartItem})
-      navigate('/added-to-cart');
+      dispatch({
+        type: "newestCartItem/setNewestCartItem",
+        payload: newCartItem,
+      });
+      loadCartData(dispatch);
+      setAddedToCartWindowOpen(true);
     } catch (err) {
-      console.log('error')
-      console.log(err)
+      console.log(err);
     }
+  };
+
+  const closeWindow = () => {
+    setAddedToCartWindowOpen(false);
   };
 
   const handleOptionSlection = (e) => {
     const option = e.target.value;
-    if (option === options[0]){
+    if (option === options[0]) {
       setOptionSelection(options[0]);
     } else {
-      const foundOption = product.productOptions.find(i => 
-        i.option === option
-      )
+      const foundOption = product.productOptions.find(
+        (i) => i.option === option
+      );
       setDisplayPrice(foundOption.price);
+      setCurrentAmountInStock(foundOption.amountInStock);
+      if (foundOption.amountInStock === 0) {
+        setOutOfStockError("This selection is out of stock");
+      } else {
+        setOutOfStockError("");
+      }
       setOptionSelection(option);
     }
   };
 
-  const handleQuantitySlection = (e) => {
+  const handleQuantitySelection = (e) => {
     setQuantitySelection(e.target.value);
   };
 
@@ -84,14 +150,30 @@ const ProductPage = (props) => {
     setOptions(newOptions);
   }, [product.productOptions]);
 
+  useEffect(() => {
+    const handleClick = (e) => {
+      if (e.target.matches("[data-overlay]")) {
+        setAddedToCartWindowOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [addedToCartWindowOpen]);
+
   //Renders a page for one product
   return (
     <div id="product-page" className="container">
-      <ProductNavigationBar/>
+      <ProductNavigationBar />
+      {addedToCartWindowOpen && (
+        <div>
+          <AddedToCartWindow closeWindow={closeWindow} />
+        </div>
+      )}
       {product.isLoading ? (
         <p>Loading...</p>
       ) : (
-        <div id="product">
+        <div id="product"
+        className="styled-box">
           <div id="product-image">
             <img
               alt="product"
@@ -103,14 +185,15 @@ const ProductPage = (props) => {
             <p>{product.brandName}</p>
             <p>{product.description}</p>
             <div id="price">
-            {
-              product.highestPrice === product.lowestPrice ?
+              {product.highestPrice === product.lowestPrice ? (
                 <p>{numberToUSD(product.lowestPrice)}</p>
-              : optionSelection === options[0] ?
-                <p>{`${numberToUSD(product.lowestPrice)} - ${numberToUSD(product.highestPrice)}`}</p>
-              :
-              <p>{numberToUSD(displayPrice)}</p>
-            }
+              ) : optionSelection === options[0] ? (
+                <p>{`${numberToUSD(product.lowestPrice)} - ${numberToUSD(
+                  product.highestPrice
+                )}`}</p>
+              ) : (
+                <p>{numberToUSD(displayPrice)}</p>
+              )}
             </div>
             <div id="options">
               <div className="option-box">
@@ -137,21 +220,11 @@ const ProductPage = (props) => {
                   Quantity{" "}
                 </label>
                 <br />
-                <select
-                  onChange={handleQuantitySlection}
-                  name="quantity"
-                  id="quantity"
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                  <option value="6">6</option>
-                  <option value="7">7</option>
-                  <option value="8">8</option>
-                  <option value="9">9</option>
-                </select>
+                <QuantitySelection
+                  amountInStock={currentAmountInStock}
+                  handleSelection={handleQuantitySelection}
+                  defaultOption={"1"}
+                />
               </div>
             </div>
             {missingSelectionError && (
@@ -160,10 +233,16 @@ const ProductPage = (props) => {
                 <p>{missingSelectionError}</p>
               </div>
             )}
+            {outOfStockError && (
+              <div className="input-error-box">
+                <img alt="x" src={redX} />
+                <p>{outOfStockError}</p>
+              </div>
+            )}
             <button onClick={addToCart} className="important-button">
               Add to cart
             </button>
-            <br/>
+            <br />
           </div>
         </div>
       )}
@@ -172,9 +251,3 @@ const ProductPage = (props) => {
 };
 
 export default ProductPage;
-
-
-//TODO: Get amount in stock from the server and set a max option here
-//Handle out of stock
-//Adding an item to cart that is already in your cart, should ADD to the quantity,
-//not replace it. Implement this after /cart is done so it'll be easier to test

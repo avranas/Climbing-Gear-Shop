@@ -1,20 +1,14 @@
 .product-card {
+  background-color: white;
   width: 23rem;
   height: 25rem;
   border-style: solid;
   border-color: #c8c8c8;
-  border-radius: 0.5rem;
-  border-width:  1px;
   padding: 2rem;
   margin: 1rem;
   cursor: pointer;
-  box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem #696961;
 }
 
-.product-card:hover {
-  transition: box-shadow 100ms;
-  box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem #3b3b38;
-}
 
 .product-image {
   position: relative;

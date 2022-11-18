@@ -1,18 +1,16 @@
 #product {
   display: flex;
   justify-content: right;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 }
 
 #product-image {
-  height: 60rem;
+  max-height: 40rem;
 }
 
 #product-image img {
   align-items: center;
-  border-style: solid;
-  border-color: #c8c8c8;
-  border-radius: 0.5rem;
-  border-width:  1px;
   padding: 2rem;
   margin: 2rem;
 }
@@ -34,10 +32,4 @@ label {
 select {
   margin-right: 2rem;
   width: 5rem;
-}
-
-.option-label {
-  padding-top: 1rem;
-  font-size: 0.75rem;
-  font-weight: 600;
 }

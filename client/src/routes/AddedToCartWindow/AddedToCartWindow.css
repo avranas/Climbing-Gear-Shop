@@ -1,0 +1,102 @@
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes halfFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  animation: halfFadeIn 200ms;
+  opacity: 0.5;
+}
+
+#added-to-cart-page {
+  background-color: white;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  width: 70rem;
+  border-style: solid;
+  border-color: #c8c8c8;
+  border-radius: 0.5rem;
+  box-shadow: 0rem 0rem 1rem 0.5rem #999b99;
+  animation: fadeIn 200ms;
+}
+
+
+#added-to-cart-content {
+  display: flex;
+  justify-content: center;
+}
+#added-to-cart-head {
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+#added-to-cart-content {
+  padding: 2rem;
+  padding-top: 1rem;
+}
+
+#added-to-cart-image {
+
+  max-height: 10rem;
+  margin-left: 3rem;
+  margin-right: 2rem;
+}
+
+#added-to-cart-image img {
+  max-height: 10rem;
+}
+
+#green-checkmark {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-image: url('../../images/checkmark2.png');
+  background-size: cover;
+}
+
+#added-to-cart-details {
+  margin-left: 2rem;
+  padding: 2rem;
+  line-height: 0.75;
+}
+
+#added-to-cart-head {
+  display: flex;
+  margin-left: 2rem;
+  margin-top: 2rem;
+}
+
+#added-to-cart-head h2 {
+  text-align: center;
+}
+
+#added-to-cart-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+#added-to-cart-buttons button {
+  margin-right: 2rem;
+}

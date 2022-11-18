@@ -25,11 +25,8 @@ const HeaderUserButtons = (props) => {
 
   return (
     <div id="header-user-buttons">
-      {userIsLoggedIn === null ?
-      <div>
-        {/*Return nothing if the server hasn't responded yet*/}
-      </div>
-      : userIsLoggedIn === false ?
+      {
+        userIsLoggedIn === null || userIsLoggedIn === false ?
       <div>
         <Link to="/login">
           <button id="left-button" type="button" className="btn btn-primary">Login</button>

@@ -17,7 +17,6 @@ import {
 } from "react-router-dom";
 import Logout from './routes/Logout';
 import ProductPage from './routes/ProductPage/ProductPage';
-import AddedToCart from './routes/AddedToCart/AddedToCart';
 import Cart from './routes/Cart/Cart';
 
 function App() {
@@ -104,10 +103,6 @@ function App() {
           element={<ProductPage/>}
         />
         <Route
-          path="/added-to-cart"
-          element={<AddedToCart/>}
-        />
-        <Route
           path="/cart"
           element={<Cart/>}
         />
@@ -125,3 +120,5 @@ function App() {
 }
 
 export default App;
+
+//TODO: Time to checkout and place orders!
