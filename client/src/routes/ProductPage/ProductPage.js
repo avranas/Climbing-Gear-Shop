@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadProduct, selectProduct } from "../../slices/productSlice";
 import "./ProductPage.css";
 import redX from "../../images/red-x.png";
-import numberToUSD from "../../utils/numberToUSD";
+import penniesToUSD from "../../utils/penniesToUSD";
 import axios from "axios";
 import ProductNavigationBar from "../../components/ProductNavigationBar/ProductNavigationBar";
 import AddedToCartWindow from "../AddedToCartWindow/AddedToCartWindow";
@@ -112,23 +112,26 @@ const ProductPage = (props) => {
   };
 
   const handleOptionSlection = (e) => {
-    const option = e.target.value;
-    if (option === options[0]) {
-      setOptionSelection(options[0]);
-    } else {
-      const foundOption = product.productOptions.find(
-        (i) => i.option === option
-      );
-      setDisplayPrice(foundOption.price);
-      setCurrentAmountInStock(foundOption.amountInStock);
-      if (foundOption.amountInStock === 0) {
-        setOutOfStockError("This selection is out of stock");
-      } else {
-        setOutOfStockError("");
-      }
-      setOptionSelection(option);
+    setOptionSelection(e.target.value);
+  }
+
+  //Update product information when optionSelection changes
+  useEffect(() => {
+    const foundOption = product.productOptions.find(
+      (i) => i.option === optionSelection
+    );
+    //This will happen when the page is loading
+    if (!foundOption) {
+      return;
     }
-  };
+    setDisplayPrice(foundOption.price);
+    setCurrentAmountInStock(foundOption.amountInStock);
+    if (foundOption.amountInStock === 0) {
+      setOutOfStockError("This selection is out of stock");
+    } else {
+      setOutOfStockError("");
+    }
+  }, [optionSelection, setOutOfStockError, product.productOptions]);
 
   const handleQuantitySelection = (e) => {
     setQuantitySelection(e.target.value);
@@ -142,11 +145,15 @@ const ProductPage = (props) => {
   useEffect(() => {
     //Load options from productSlice, sort it, then display it on the page
     let newOptions = ["Select"];
-    setOptionSelection(newOptions[0]);
     product.productOptions.map((i) => {
       return newOptions.push(i.option);
     });
     newOptions.sort((a, b) => a - b);
+    if(product.productOptions.length === 1) {
+      setOptionSelection(newOptions[1]);
+    } else {
+      setOptionSelection(newOptions[0]);
+    }
     setOptions(newOptions);
   }, [product.productOptions]);
 
@@ -173,60 +180,64 @@ const ProductPage = (props) => {
         <p>Loading...</p>
       ) : (
         <div id="product"
-        className="styled-box">
-          <div id="product-image">
+        className="styled-box row">
+          <div id="product-image" className="col-4">
             <img
               alt="product"
-              src={`http://localhost:3000/images/${product.smallImageFile1}`}
+              src={`${process.env.REACT_APP_SERVER_URL}/images/${product.largeImageFile}`}
             />
           </div>
-          <div id="product-info">
+          <div className="col-1"></div>
+          <div id="product-info" className="col-6">
             <h3>{product.productName}</h3>
             <p>{product.brandName}</p>
             <p>{product.description}</p>
             <div id="price">
               {product.highestPrice === product.lowestPrice ? (
-                <p>{numberToUSD(product.lowestPrice)}</p>
+                <p>{penniesToUSD(product.lowestPrice)}</p>
               ) : optionSelection === options[0] ? (
-                <p>{`${numberToUSD(product.lowestPrice)} - ${numberToUSD(
+                <p>{`${penniesToUSD(product.lowestPrice)} - ${penniesToUSD(
                   product.highestPrice
                 )}`}</p>
               ) : (
-                <p>{numberToUSD(displayPrice)}</p>
+                <p>{penniesToUSD(displayPrice)}</p>
               )}
             </div>
-            <div id="options">
-              <div className="option-box">
-                <label className="option-label" htmlFor={product.optionType}>
-                  {product.optionType}
-                </label>
-                <br />
-                <select
-                  onChange={handleOptionSlection}
-                  name="option"
-                  id="option"
-                >
-                  {options.map((i, key) => {
-                    return (
-                      <option key={key} value={`${i}`}>
-                        {i}
-                      </option>
-                    );
-                  })}
-                </select>
+              <div id="options">
+              {
+                product.productOptions.length > 1 &&
+                <div className="option-box">
+                  <label className="option-label" htmlFor={product.optionType}>
+                    {product.optionType}
+                  </label>
+                  <br />
+                  <select
+                    onChange={handleOptionSlection}
+                    name="option"
+                    id="option"
+                  >
+                    {options.map((i, key) => {
+                      return (
+                        <option key={key} value={`${i}`}>
+                          {i}
+                        </option>
+                      );
+                    })}
+                  </select>
+                </div>
+              }
+                <div className="option-box">
+                  <label className="option-label" htmlFor="quantity">
+                    Quantity{" "}
+                  </label>
+                  <br />
+                  <QuantitySelection
+                    amountInStock={currentAmountInStock}
+                    handleSelection={handleQuantitySelection}
+                    defaultOption={"1"}
+                  />
+                </div>
               </div>
-              <div className="option-box">
-                <label className="option-label" htmlFor="quantity">
-                  Quantity{" "}
-                </label>
-                <br />
-                <QuantitySelection
-                  amountInStock={currentAmountInStock}
-                  handleSelection={handleQuantitySelection}
-                  defaultOption={"1"}
-                />
-              </div>
-            </div>
             {missingSelectionError && (
               <div className="input-error-box">
                 <img alt="x" src={redX} />

@@ -1,41 +1,41 @@
-import redX from '../../images/red-x.png';
-import { Link, useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import './FormPage.css';
-import { createNotification } from '../../slices/notificationSlice';
-import axios from 'axios';
-import { loadCartData } from '../../slices/cartSlice';
+import redX from "../../images/red-x.png";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import "./FormPage.css";
+import { createNotification } from "../../slices/notificationSlice";
+import axios from "axios";
+import { loadCartData } from "../../slices/cartSlice";
 
-const LoginPage = (props) => {
+const LoginPage = ({ next }) => {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [ userEmailInput, setUserEmailInput ] = useState('');
-  const [ passwordInput, setPasswordInput ] = useState('');
-  const [ emailError, setEmailError ] = useState('');
-  const [ passwordError, setPasswordError ] = useState('');
-  const [ invalidLoginError, setInvalidLoginError ] = useState('');
+  const [userEmailInput, setUserEmailInput] = useState("");
+  const [passwordInput, setPasswordInput] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [invalidLoginError, setInvalidLoginError] = useState("");
   const handleUserEmailChange = (e) => {
     setUserEmailInput(e.target.value);
-    setEmailError('');
-  }
+    setEmailError("");
+  };
 
   const handlePasswordChange = (e) => {
     setPasswordInput(e.target.value);
-    setPasswordError('');
-  }
+    setPasswordError("");
+  };
 
   const handleSubmit = async (e) => {
     try {
       let errorFound = false;
-      if (userEmailInput === '') {
-        setEmailError('This field is required');
+      if (userEmailInput === "") {
+        setEmailError("This field is required");
         errorFound = true;
       }
-      if (passwordInput === '') {
-        setPasswordError('This field is required');
+      if (passwordInput === "") {
+        setPasswordError("This field is required");
         errorFound = true;
       }
       if (errorFound) {
@@ -43,49 +43,57 @@ const LoginPage = (props) => {
       }
       const requestBody = {
         userEmail: userEmailInput,
-        password: passwordInput
-      }
-      await axios.post('/login', requestBody);
+        password: passwordInput,
+      };
+      await axios.post("/login", requestBody);
       //If the passwords don't match, an error will be thrown
-      const userData = await axios.get('/user');
-      dispatch({ type: 'user/loadUserData', payload: userData.data});
-      navigate('/');
+      const userData = await axios.get("/user");
+      dispatch({ type: "user/loadUserData", payload: userData.data });
+
+      console.log(next);
+      if (next) {
+        navigate(`/${next}`);
+      } else {
+        navigate("/");
+      }
+
       createNotification(dispatch, "You are now logged in!");
       //If there are items in the guest's cart, move the data to
       //the server and clear it in localStorage
-      const guestCart = JSON.parse(localStorage.getItem('guestCart'));
+      const guestCart = JSON.parse(localStorage.getItem("guestCart"));
       if (!guestCart) {
         return;
       }
       await Promise.all(
-        guestCart.map(async i => {
-          await axios.post('/cart', i);
+        guestCart.map(async (i) => {
+          await axios.post("/cart", i);
         })
       );
-      await axios.post('/cart/convert-guest-cart', guestCart);
       loadCartData(dispatch);
-      localStorage.removeItem('guestCart');
+      localStorage.removeItem("guestCart");
     } catch (err) {
-      console.log(err)
-      console.log(err.response.status)
-      if (err.response.status === 401) {
-        setInvalidLoginError('Email or password was incorrect!');
+      console.log(err);
+      if (err.response.data === "You need to be logged out do that.") {
+        setInvalidLoginError("You are already logged in!");
+      } else if (err.response.data === "Unauthorized") {
+        setInvalidLoginError("Email or password was incorrect!");
+        setPasswordInput("");
       }
       console.log(err);
     }
-  }
+  };
 
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios('/authenticated');
-        if (response.data) {
-         navigate('/profile'); 
-        }
+        // const response = await axios('/authenticated');
+        // if (response.data) {
+        //  navigate('/profile');
+        // }
       } catch (err) {
         console.log(err);
       }
-    }
+    };
     checkAuthentication();
   }, [navigate]);
 
@@ -97,41 +105,63 @@ const LoginPage = (props) => {
 
   return (
     <main className="container form-page">
-      <div className='form-header-wrap styled-box'>
+      <div className="form-header-wrap styled-box">
         <h2>Login</h2>
         <div className="form">
-          <label htmlFor="user-email">Email</label><br/>
-          <input type="email" id="user-email" name="user-email" onChange={handleUserEmailChange} onKeyUp={handleKeyPress}/><br/>
-          {
-            emailError &&
-            <div className='input-error-box'>
-              <img alt="x" src={redX} />
-              <p>{emailError}</p>
-            </div>
-          }
-          <div className='form-break'></div>
-          <label htmlFor="password">Password</label><br/>
-          <input onKeyUp={handleKeyPress} type="password" id="password" name="password" onChange={handlePasswordChange}/>
-          {
-            passwordError &&
-            <div className='input-error-box'>
-              <img alt="x" src={redX} />
-              <p>{passwordError}</p>
-            </div>
-          }
-          <div className='form-break'></div>
-          <input className="form-button "type="submit" value="Submit" onClick={handleSubmit}/>
-          {
-            invalidLoginError &&
-            <div className='input-error-box'>
+          <div className="input-item">
+            <label className="form-label" htmlFor="user-email">Email</label>
+            <input
+              type="email"
+              id="user-email"
+              name="user-email"
+              className="form-control"
+              value={userEmailInput}
+              onChange={handleUserEmailChange}
+              onKeyUp={handleKeyPress}
+            />
+            {emailError && (
+              <div className="input-error-box">
+                <img alt="x" src={redX} />
+                <p>{emailError}</p>
+              </div>
+            )}
+          </div>
+          <div className="input-item">
+            <label className="form-label" htmlFor="password">Password</label>
+            <input
+              className="form-control"
+              onKeyUp={handleKeyPress}
+              type="password"
+              id="password"
+              name="password"
+              value={passwordInput}
+              onChange={handlePasswordChange}
+            />
+            {passwordError && (
+              <div className="input-error-box">
+                <img alt="x" src={redX} />
+                <p>{passwordError}</p>
+              </div>
+            )}
+          </div>
+          <button
+            className="important-button"
+            type="submit"
+            value="Submit"
+            onClick={handleSubmit}
+            >
+            Submit
+          </button>
+          {invalidLoginError && (
+            <div className="input-error-box">
               <img alt="x" src={redX} />
               <p>{invalidLoginError}</p>
             </div>
-          }
-          <div className='form-break'></div>
-          <div className='form-break'></div>
+          )}
         </div>
-        <p className="form-page-footer">Don't have an account? <Link to="/register">Register</Link></p>
+        <p className="form-page-footer">
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </div>
     </main>
   );

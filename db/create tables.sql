@@ -71,6 +71,12 @@ CREATE TABLE orders(
   totalPrice float,
   orderStatus text, --Placed, shipped, completed
   userId int,
+  deliveryStreetAddress1 text,
+  deliveryStreetAddress2 text,
+  deliveryCity text,
+  deliveryState text,
+  deliveryZipCode text,
+  deliveryCountry text,
   createdAt date,
   updatedAt date,
   FOREIGN KEY (userId) REFERENCES users(id)

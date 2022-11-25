@@ -9,9 +9,9 @@ const QuantitySelection = (props) => {
 
   const [ options, setOptions ] = useState([]);
   useEffect(() => {
-    //Cap at amountInStock
+    //Cap at amountInStock or 99
     const newOptions = [];
-    for(let i = 1; i <= props.amountInStock; i++) {
+    for(let i = 1; i <= props.amountInStock && i <= 99; i++) {
       newOptions.push(i);
     }
     setOptions(newOptions);

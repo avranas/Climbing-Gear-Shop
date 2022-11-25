@@ -36,15 +36,16 @@ const getCartFromServer = createAsyncThunk(
     try {
       const response = await axios.get(`/cart`);
       //loop through data to find the total item count
-      let itemCount = 0;
-      let subTotal = 0;
+      const payload = {
+        cartItems: [],
+        itemCount: 0,
+        subTotal: 0
+      }
       response.data.forEach(i => {
-        itemCount += i.quantity;
-        subTotal += (i.quantity * i.product.productOptions[0].price)
+        payload.itemCount += i.quantity;
+        payload.subTotal += (i.quantity * i.product.productOptions[0].price)
       });
-      const payload = response.data;
-      payload.itemCount = itemCount;
-      payload.subTotal = subTotal;
+      payload.cartItems = response.data;
       return payload;
     } catch (err) {
       console.log(err);
@@ -61,12 +62,15 @@ const getCartFromLocalStorage = createAsyncThunk(
       //fetch the product data with one SQL query. Instead I have to
       //fetch each product individually
       const guestCart = JSON.parse(localStorage.getItem("guestCart"));
-      if (!guestCart) {
-        return [];
+      let payload = {
+        subTotal: 0,
+        itemCount: 0,
+        cartItems: []
       }
-      let itemCount = 0;
-      let subTotal = 0;
-      const payload = await Promise.all(
+      if (!guestCart) {
+        return payload;
+      }
+      payload.cartItems = await Promise.all(
         guestCart.map(async (item) => {
           const response = await axios.get(`/product/${item.productId}`);
           const product = response.data.product;
@@ -89,8 +93,8 @@ const getCartFromLocalStorage = createAsyncThunk(
               },
             ],
           };
-          itemCount += Number(item.quantity);
-          subTotal += Number(newProduct.productOptions[0].price * item.quantity);
+          payload.itemCount += Number(item.quantity);
+          payload.subTotal += Number(newProduct.productOptions[0].price * item.quantity);
           return {
             id: item.id,
             quantity: item.quantity,
@@ -99,8 +103,6 @@ const getCartFromLocalStorage = createAsyncThunk(
           };
         })
       );
-      payload.itemCount = itemCount;
-      payload.subTotal = subTotal;
       return payload;
     } catch (err) {
       console.log(err);
@@ -128,7 +130,7 @@ const cartSlice = createSlice({
       state.cart.hasError = false;
     },
     [getCartFromServer.fulfilled]: (state, action) => {
-      state.cart.cartItems = action.payload;
+      state.cart.cartItems = action.payload.cartItems;
       state.cart.itemCount = action.payload.itemCount;
       state.cart.subTotal = action.payload.subTotal;
       state.cart.isLoading = false;
@@ -143,7 +145,7 @@ const cartSlice = createSlice({
       state.cart.hasError = false;
     },
     [getCartFromLocalStorage.fulfilled]: (state, action) => {
-      state.cart.cartItems = action.payload;
+      state.cart.cartItems = action.payload.cartItems;
       state.cart.itemCount = action.payload.itemCount;
       state.cart.subTotal = action.payload.subTotal;
       state.cart.isLoading = false;

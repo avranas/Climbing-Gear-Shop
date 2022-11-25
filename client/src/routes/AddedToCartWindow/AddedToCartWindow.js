@@ -20,7 +20,7 @@ const AddedToCart = (props) => {
           <div id="added-to-cart-image">
             <img
               alt="product"
-              src={`http://localhost:3000/images/${product.smallImageFile1}`}
+              src={`${process.env.REACT_APP_SERVER_URL}/images/${product.smallImageFile1}`}
             />
           </div>
           <div id="added-to-cart-details">

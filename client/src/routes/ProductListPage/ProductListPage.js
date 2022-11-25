@@ -9,14 +9,14 @@ import {
 import capitalizeFirstLetter from '../../utils/capitalizeFirstLetter'
 import "./ProductListPage.css";
 
-const ProductListPage = ({ category }) => {
+const ProductListPage = ({ category , search }) => {
   const dispatch = useDispatch();
   const products = useSelector(selectProductList);
 
   useEffect(() => {
     //load product list on page load
-    dispatch(loadProductList(category));
-  }, [dispatch, category]);
+    dispatch(loadProductList({category, search}));
+  }, [dispatch, category, search]);
 
 
   return (

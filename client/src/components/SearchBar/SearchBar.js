@@ -14,7 +14,7 @@ const SearchBar = (props) => {
     if (searchBarText === "") {
       alert("Search bar can not be empty");
     } else {
-      navigate(`/search-results?search=${searchBarText.toLowerCase()}`);
+      navigate(`/products?search=${searchBarText.toLowerCase()}`);
       setSearchBarText("");
     }
   };

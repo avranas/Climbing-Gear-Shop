@@ -26,11 +26,13 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.17.3",
     "httperror": "^0.2.3",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "pg": "^8.8.0",
     "sequelize": "^6.23.1",
+    "stripe": "^11.1.0",
     "uuid": "^9.0.0"
   }
 }

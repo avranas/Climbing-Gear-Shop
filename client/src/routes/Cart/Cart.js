@@ -6,9 +6,8 @@ import {
   changeQuantityInGuestCart,
   deleteFromGuestCart,
 } from "../../slices/cartSlice";
-import numberToUSD from "../../utils/numberToUSD";
-import { Link } from "react-router-dom";
-
+import penniesToUSD from "../../utils/penniesToUSD";
+import { Link, useNavigate } from "react-router-dom";
 import "./Cart.css";
 import CartQuantitySelection from "../../components/CartQuantitySelection/CartQuantitySelection";
 import axios from "axios";
@@ -16,6 +15,7 @@ import axios from "axios";
 const Cart = (props) => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +58,15 @@ const Cart = (props) => {
     loadCartData(dispatch);
   };
 
+  const continueToCheckout = async () => {
+    const response = await axios('/authenticated');
+    if (response.data) {
+      navigate('/checkout');
+    } else {
+      navigate('/login?next=checkout');
+    }
+  }
+
   return (
     <section id="cart" className="container styled-box">
       <h2>Shopping Cart</h2>
@@ -75,7 +84,7 @@ const Cart = (props) => {
             <div className="cart-item" key={key}>
               <div className="cart-item-image">
                 <img
-                  src={`http://localhost:3000/images/${i.product.smallImageFile1}`}
+                  src={`${process.env.REACT_APP_SERVER_URL}/images/${i.product.smallImageFile1}`}
                   alt="cart item"
                 />
               </div>
@@ -86,7 +95,7 @@ const Cart = (props) => {
                 <p>{i.product.brandName}</p>
                 <p>{i.product.productName}</p>
                 <strong>
-                  <p>{numberToUSD(i.product.productOptions[0].price)}</p>
+                  <p>{penniesToUSD(i.product.productOptions[0].price)}</p>
                 </strong>
                 <div className="cart-item-options">
                   <CartQuantitySelection
@@ -114,12 +123,14 @@ const Cart = (props) => {
           </Link>
         ) : (
           <div>
-            <p>{`Subtotal (${cart.itemCount} items): ${numberToUSD(
+            <p>{`Subtotal (${cart.itemCount} items): ${penniesToUSD(
               cart.subTotal
             )}`}</p>
             <div id="cart-buttons">
-              <button className="important-button">Continue to checkout</button>
-              <button className="semi-important-button">Continue shopping</button>
+              <button onClick={continueToCheckout} className="important-button">Continue to checkout</button>
+              <Link to="/products">
+                <button className="semi-important-button">Continue shopping</button>
+              </Link>
             </div>
           </div>
         )}

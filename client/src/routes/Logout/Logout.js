@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useEffect } from 'react';
-import { createNotification } from '../slices/notificationSlice';
+import { createNotification } from '../../slices/notificationSlice';
 import { useDispatch } from 'react-redux';
 
 const Logout = (props) => {

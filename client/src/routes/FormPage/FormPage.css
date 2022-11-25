@@ -25,24 +25,20 @@
   width: 18rem;
 }
 
-.form-page label {
+.form-label {
   font-weight: 600;
   font-size: 0.785rem;
 }
 
 .input-error-box {
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
   font-size: 0.9rem;
   display: flex;
   align-items: center;
-  border-color: rgb(125, 0, 0);
-  color:rgb(75, 0, 0);
-  background-color: #ffc8c8;
-  border-style: solid;
+  color:rgb(230, 0, 0);
   padding: 0.25rem;
   border-radius: 3px;
   border-width: 1px;
-  width: 18rem;
 }
 
 .input-error-box p {
@@ -60,5 +56,14 @@
 }
 
 .form-page-footer {
-  padding-bottom: 1rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.input-item {
+  margin-bottom: 1rem;
+}
+.input-item-half {
+  margin-bottom: 1rem;
+  width: 50%;
 }

@@ -5,15 +5,26 @@ const bodyParser = require('body-parser');
 const passport = require('./passport-config');
 const session = require('express-session');
 const cors = require('cors');
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+const morgan = require('morgan');
+//Use req.rawBody to access raw JSON
+//Use req.body to access parsed JSON
+app.use(bodyParser.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf
+  }
+}));
 
-app.use(bodyParser.json());
 app.use(cors());
+app.use(morgan('tiny'));
+
 
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
 }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -30,6 +41,7 @@ app.use('/cart', require('./routes/cart'));
 app.use('/checkout', require('./routes/checkout'));
 app.use('/order', require('./routes/order'));
 app.use('/authenticated', require('./routes/authenticated'));
+app.use('/webhook', require('./routes/webhook'))
 
 app.get('/', (req, res) => {
   console.log('Hello world')

@@ -5,15 +5,19 @@ const Product = require("../models/products");
 const { checkAuthenticatedAsAdmin } = require("./authentication-check");
 const OrderItem = require("../models/orderItems");
 const ProductOption = require("../models/productOptions");
+const { Op, Sequelize } = require("sequelize");
 
 //Get all products with options
 productRouter.get("/", async (req, res, next) => {
   try {
     const dbResp = await Product.findAll({
-      include: [{
-        model: ProductOption, as: "productOptions",
-        required: true
-      }]
+      include: [
+        {
+          model: ProductOption,
+          as: "productOptions",
+          required: true,
+        },
+      ],
     });
     console.log(dbResp);
     res.status(200).send(dbResp);
@@ -35,18 +39,61 @@ productRouter.get("/ids", async (req, res, next) => {
     if (!Array.isArray(IDs)) {
       throw createHttpError(400, `req.body is not an array`);
     }
-    IDs.forEach(i => {
-      if (typeof i !== 'number') {
+    IDs.forEach((i) => {
+      if (typeof i !== "number") {
         throw createHttpError(400, `An element in req.body is not a number`);
       }
     });
     const response = await Product.findAll({
-      where: {id: IDs},
-      include: [{
-        model: ProductOption, as: "productOptions",
-        required: true
-       }]
+      where: { id: IDs },
+      include: [
+        {
+          model: ProductOption,
+          as: "productOptions",
+          required: true,
+        },
+      ],
     });
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//Search all products with a search term
+productRouter.get("/search/:term", async (req, res, next) => {
+  try {
+    const term = req.params.term;
+    console.log(term);
+    const response = await Product.findAll({
+      where: {
+        [Op.or]: [
+          {
+            productName: {
+              [Sequelize.Op.iLike]: `%${term}%`,
+            },
+          },
+          {
+            brandName: {
+              [Sequelize.Op.iLike]: `%${term}%`,
+            },
+          },
+          {
+            categoryName: {
+              [Sequelize.Op.iLike]: `%${term}%`,
+            },
+          },
+        ],
+      },
+      include: [
+        {
+          model: ProductOption,
+          as: "productOptions",
+          required: true,
+        },
+      ],
+    });
+    console.log(response);
     res.status(200).send(response);
   } catch (err) {
     next(err);
@@ -87,41 +134,45 @@ Create a new productOption fora product with the productOptionID, option, amount
   "price": 64.95
 }
 */
-productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
-  try {
-    const id = req.params.id;
-    const body = req.body;
-    //Check to make sure productOptionID exist
-    const response = await Product.findOne({
-      where: { id: id}
-    });
-    if (response === null) {
-      throw createHttpError(404, `Product with id#${id} not found`);
+productRouter.post(
+  "/option/:id",
+  checkAuthenticatedAsAdmin,
+  async (req, res, next) => {
+    try {
+      const id = req.params.id;
+      const body = req.body;
+      //Check to make sure productOptionID exist
+      const response = await Product.findOne({
+        where: { id: id },
+      });
+      if (response === null) {
+        throw createHttpError(404, `Product with id#${id} not found`);
+      }
+      //Check to make sure all required entries exist
+      if (
+        body.option === undefined ||
+        body.amountInStock === undefined ||
+        body.price === undefined
+      ) {
+        throw createHttpError(
+          400,
+          "Missing item in the body. Needs an option, amountInStock, and price"
+        );
+      }
+      const newProductOption = await ProductOption.create({
+        productId: id,
+        option: body.option,
+        price: body.price,
+        amountInStock: body.amountInStock,
+      });
+      res.status(200).send(newProductOption);
+    } catch (err) {
+      next(err);
     }
-    //Check to make sure all required entries exist
-    if (
-      body.option === undefined ||
-      body.amountInStock === undefined ||
-      body.price === undefined
-    ) {
-      throw createHttpError(
-        400,
-        "Missing item in the body. Needs an option, amountInStock, and price"
-      );
-    }
-    const newProductOption = await ProductOption.create({
-      productId: id,
-      option: body.option,
-      price: body.price,
-      amountInStock: body.amountInStock
-    });
-    res.status(200).send(newProductOption);
-  } catch (err) {
-    next(err);
   }
-});
+);
 /*
-  //POST new product
+  //POST new product (example)
   {
       "productName": "VR9 9.8 mm Dry-Core Rope",
       "description": "Just getting into the sport or steadily moving through the ranks? The Sterling VR9 9.8 mm Dry-Core rope has a beefy core and 9.8 mm diameter for a lightweight rope on multi-pitch routes.",
@@ -149,9 +200,9 @@ productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, ne
           }
       ]
   }
-  //POST new product
+  //POST new product (example)
   {
-    "productName": "Metolius Super Chalk - 4.5 oz"
+    "productName": "Metolius Super Chalk - 4.5 oz",
     "description": "This 4.5 oz. bag of Metolius Super chalk is perfect for keeping your hands dry on the wall. Keep it in your car for trips to the crag or the gym, or use it to refill your reusable chalk bag.",
     "categoryName": "chalk",
     "brandName": "Metolius",
@@ -159,11 +210,11 @@ productRouter.post("/option/:id", checkAuthenticatedAsAdmin, async (req, res, ne
     "smallImageFile2": "chalk1-2.jpg",
     "largeImageFile": "chalk1-3.jpg",
     "optionType": "None",
-    options: [
+    "options": [
       {
         "option": "Default",
         "amountInStock": 5,
-        "price": 4.95
+        "price": 2
       }
     ]
   }
@@ -226,8 +277,8 @@ productRouter.post("/", checkAuthenticatedAsAdmin, async (req, res, next) => {
     await ProductOption.bulkCreate(newOptions);
     const sendThis = {
       product: newProduct,
-      options: newOptions
-    }
+      options: newOptions,
+    };
     res.status(200).send(sendThis);
   } catch (err) {
     next(err);
@@ -315,6 +366,9 @@ productRouter.put("/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
     const newDescription = body.description;
     const newCategoryName = body.categoryName;
     const newBrandName = body.brandName;
+    const newSmallImageFile1 = body.smallImageFile1;
+    const newSmallImageFile2 = body.smallImageFile2;
+    const newLargeImageFile = body.largeImageFile;
     let dbResponse = null;
     if (newProductName) {
       dbResponse = await Product.update(
@@ -348,6 +402,33 @@ productRouter.put("/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
         { where: { id: productId }, returning: true }
       );
     }
+    if (newSmallImageFile1) {
+      dbResponse = await Product.update(
+        {
+          smallImageFile1: newSmallImageFile1,
+        },
+        { where: { id: productId }, returning: true }
+      );
+    }
+    if (newSmallImageFile2) {
+      dbResponse = await Product.update(
+        {
+          smallImageFile2: newSmallImageFile2,
+        },
+        { where: { id: productId }, returning: true }
+      );
+    }
+    if (newLargeImageFile) {
+      dbResponse = await Product.update(
+        {
+          largeImageFile: newLargeImageFile,
+        },
+        { where: { id: productId }, returning: true }
+      );
+    }
+
+
+
     //If the ID was found but none of the items in the body were valid
     if (dbResponse === null) {
       res
@@ -375,20 +456,20 @@ productRouter.delete(
     try {
       const idToDelete = req.params.id;
       const productOptionToDelete = await ProductOption.findOne({
-        where: { id: idToDelete }
+        where: { id: idToDelete },
       });
-      if (!productOptionToDelete) { 
-        throw createHttpError(404, 'No product option with that id was found');
+      if (!productOptionToDelete) {
+        throw createHttpError(404, "No product option with that id was found");
       }
       await ProductOption.destroy({
-        where: { id: idToDelete }
+        where: { id: idToDelete },
       });
-      res.status(200).send(`Deleted product option with id: ${idToDelete}`)
+      res.status(200).send(`Deleted product option with id: ${idToDelete}`);
     } catch (err) {
       next(err);
     }
   }
-)
+);
 
 //Delete a product and all of its options
 productRouter.delete(

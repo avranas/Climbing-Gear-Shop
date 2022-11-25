@@ -1,6 +1,6 @@
 import "./ProductCard.css";
 import { Link } from "react-router-dom";
-import numberToUSD from "../../utils/numberToUSD";
+import penniesToUSD from "../../utils/penniesToUSD";
 //Props are productName, brandName, description, price, and imageURL,
 const ProductCard = (props) => {
 
@@ -14,13 +14,13 @@ const ProductCard = (props) => {
           <div className="top-image">
             <img
               alt="product"
-              src={`http://localhost:3000/images/${props.smallImageFile1}`}
+              src={`${process.env.REACT_APP_SERVER_URL}/images/${props.smallImageFile1}`}
             />
           </div>
           <div className="bottom-image">
             <img
               alt="product"
-              src={`http://localhost:3000/images/${props.smallImageFile2}`}
+              src={`${process.env.REACT_APP_SERVER_URL}/images/${props.smallImageFile2}`}
             />
           </div>
         </div>
@@ -30,9 +30,9 @@ const ProductCard = (props) => {
           
           {
             props.highestPrice === props.lowestPrice ?
-            <p>{numberToUSD(props.lowestPrice)}</p>
+            <p>{penniesToUSD(props.lowestPrice)}</p>
             :
-            <p>{`${numberToUSD(props.lowestPrice)} - ${numberToUSD(props.highestPrice)}`}</p>
+            <p>{`${penniesToUSD(props.lowestPrice)} - ${penniesToUSD(props.highestPrice)}`}</p>
           }
         </div>
       </Link>

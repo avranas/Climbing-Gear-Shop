@@ -7,10 +7,17 @@ const Order = db.define('orders', {
   taxCharged: DataTypes.FLOAT,
   totalPrice: DataTypes.FLOAT,
   orderStatus: DataTypes.TEXT, //Placed -> Shipped -> Completed
-  userId: DataTypes.INTEGER
+  userId: DataTypes.INTEGER,
+  deliveryStreetAddress1: DataTypes.TEXT,
+  deliveryStreetAddress2: DataTypes.TEXT,
+  deliveryCity: DataTypes.TEXT,
+  deliveryState: DataTypes.TEXT,
+  deliveryZipCode: DataTypes.TEXT,
+  deliveryCountry: DataTypes.TEXT
 });
 
 Order.hasMany(OrderItem);
 OrderItem.belongsTo(Order);
 
 module.exports = Order;
+

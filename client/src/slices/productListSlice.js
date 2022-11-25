@@ -3,14 +3,18 @@ import axios from "axios";
 
 export const loadProductList = createAsyncThunk(
   "productList/loadProducts",
-  async (category) => {
+  async ({category, search}) => {
     try {
-      if (category === '' || category === "all" || category === null) {
-        const response = await axios.get('/product');
-        return response.data;
-      } else {
+      if (category) {
         //Fetch the product data with the category
         const response = await axios.get(`/category/${category}`);
+        return response.data;
+      } else if (search) {
+        const response = await axios.get(`/product/search/${search}`);
+        console.log(response.data)
+        return response.data;
+      } else {
+        const response = await axios.get('/product');
         return response.data;
       }
     } catch (err) {

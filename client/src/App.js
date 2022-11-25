@@ -6,7 +6,7 @@ import HomePage from './routes/HomePage/HomePage';
 import RegisterPage from './routes/FormPage/RegisterPage';
 import LoginPage from './routes/FormPage/LoginPage';
 import ProductListPage from './routes/ProductListPage/ProductListPage';
-import ProfilePage from './routes/ProfilePage';
+import ProfilePage from './routes/ProfilePage/ProfilePage';
 import Notification from './components/Notification/Notification';
 import { useSelector } from 'react-redux';
 import { selectNotifications } from './slices/notificationSlice';
@@ -15,13 +15,15 @@ import {
   Route,
   useSearchParams
 } from "react-router-dom";
-import Logout from './routes/Logout';
+import Logout from './routes/Logout/Logout';
 import ProductPage from './routes/ProductPage/ProductPage';
 import Cart from './routes/Cart/Cart';
+import Checkout from './routes/FormPage/Checkout/Checkout';
+import OrderPlaced from './routes/OrderPlaced/OrderPlaced';
 
 function App() {
 
-  const [searchParams] = useSearchParams({ search: "" });
+  const [searchParams] = useSearchParams();
   const notifications = useSelector(selectNotifications);
   
   return (
@@ -60,6 +62,10 @@ function App() {
           element={<DetailedHeader/>}
         />
         <Route
+          path="/checkout"
+          element={<SimpleHeader/>}
+        />
+        <Route
           path='/register'
           element={<SimpleHeader />}
         />
@@ -71,6 +77,10 @@ function App() {
           path='/logout'
           element={<SimpleHeader />}
         />
+        <Route
+          path='/order-placed'
+          element={<SimpleHeader />}
+        />
       </Routes>
 
       <Routes>
@@ -79,12 +89,12 @@ function App() {
           element={<HomePage />}
         />
         <Route
-          path="/register"
+          path="/register"  
           element={<RegisterPage />}
         />
         <Route
           path="/login"
-          element={<LoginPage />}
+          element={<LoginPage next={searchParams.get("next")} />}
         />
         <Route
           path="/logout"
@@ -96,15 +106,23 @@ function App() {
         />
         <Route
           path="/products"
-          element={<ProductListPage category={searchParams.get("category")}/>}
+          element={<ProductListPage search={searchParams.get("search")} category={searchParams.get("category")}/>}
         />
         <Route
           path="/product/:id"
           element={<ProductPage/>}
         />
         <Route
+          path="/checkout"
+          element={<Checkout/>}
+        />
+        <Route
           path="/cart"
           element={<Cart/>}
+        />
+        <Route
+          path='/order-placed'
+          element={<OrderPlaced />}
         />
       </Routes>
       {
@@ -121,4 +139,4 @@ function App() {
 
 export default App;
 
-//TODO: Time to checkout and place orders!
+//TODO: Checkout and place orders!

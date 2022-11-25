@@ -1,0 +1,12 @@
+
+.address-form {
+  margin-bottom: 3rem;
+}
+
+#street-address-1 {
+  margin-bottom: 0.5rem;
+}
+
+#street-address-2::placeholder{
+  font-style: italic;
+}
