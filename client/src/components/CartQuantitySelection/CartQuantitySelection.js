@@ -14,7 +14,7 @@ const CartQuantitySelection = (props) => {
     const amountInStock = props.cartItem.product.productOptions[0].amountInStock;
     //Cap at amountInStock or 99
     const newOptions = [];
-    for(let i = 1; i <= amountInStock && i <= 99; i++) {
+    for(let i = 1; i <= amountInStock && i <= 30; i++) {
       newOptions.push(i);
     }
     setOptions(newOptions);

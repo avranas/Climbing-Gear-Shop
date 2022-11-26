@@ -37,15 +37,11 @@ checkoutRouter.post('/create-checkout-session', checkAuthenticated, async (req, 
     }
     const customer = await stripe.customers.create({
       address: stripeBillingAddress,
-      shipping: {
-        address: stripeShippingAddress,
-        name: `${billingAddress.firstName} ${billingAddress.lastName}`,
-        phone: phoneNumber
-      },
       email: req.user.userEmail,
       name: `${billingAddress.firstName} ${billingAddress.lastName}`,
       phone: phoneNumber
     });
+    console.log(billingAddress)
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       customer: customer.id,
@@ -105,16 +101,5 @@ checkoutRouter.post('/create-checkout-session', checkAuthenticated, async (req, 
   }
 });
 
-//TODO: I need a precheckout method. Check to make sure everything looks good before charging the customer
-  //quantity < amountInStock
-  //
-
-//Grab info from shopping cart, charge customer, create new Order, empty shopping cart
-
-
 module.exports = checkoutRouter;
 
-
-//TODO NEXT: Tryna figure out if it's possible to send a billing address to Stripe
-//Try creating a customer object, putting in the billing address, then sending the
-//customer to Stripe. Will this work?

@@ -15,7 +15,7 @@ const getUserCartData = async (userId, next) => {
           required: true,
           include: [
             {
-              attributes: ["price", "amountInStock"],
+              attributes: ["price", "amountInStock", "id"],
               model: ProductOption, as: "productOptions"
             },
           ],

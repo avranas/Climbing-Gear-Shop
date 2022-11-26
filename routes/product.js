@@ -342,14 +342,49 @@ productRouter.put(
         res
           .status(404)
           .send(`Unable to find product with id#${productOptionId}`);
+          return;
       }
-      res.status(200).send(dbResponse[1][0]);
+      res.status(200).send(dbResponse[1][0]);61
     } catch (err) {
       next(err);
     }
   }
 );
 
+//Increment amountInStock by a specified amount
+// {
+//   amount: 5
+// }
+productRouter.put(
+  "/option/increment/:id",
+  checkAuthenticatedAsAdmin,
+  async (req, res, next) => {
+    const productOptionId = req.params.id;
+    const amount = Number(req.body.amount);
+    try {
+     if (!amount) {
+       throw createHttpError(400, "Request body needs an 'amount'");
+     } 
+     if (isNaN(amount)) {
+       throw createHttpError(400, "Amount must be a number");
+     }
+     if (amount < 1) {
+       throw createHttpError(400, "Amount must be greater than 0");
+     }
+     if (amount >= 1000) {
+       throw createHttpError(400, "Amount must be less than 1000");
+     }
+     await ProductOption.increment(
+       {
+         amountInStock: amount,
+       },
+       { where: { id: productOptionId } }
+     );
+       res.status(200).send(`Incremented product option with id: ${productOptionId} by ${amount}`)
+    } catch (err) {
+      next(err);
+    }
+  });
 /*
   Update product with ID using any combination of productName, description,
     categoryName, and brandName

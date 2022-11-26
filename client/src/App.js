@@ -138,5 +138,3 @@ function App() {
 }
 
 export default App;
-
-//TODO: Checkout and place orders!

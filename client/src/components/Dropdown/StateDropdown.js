@@ -108,7 +108,7 @@ const StateDropdown = forwardRef(({ checkStateErrorIfErrorExists }, _ref) => {
       </select>
       {stateError && (
         <div className="input-error-box">
-          <img alt="x" src={redX} />
+          <img alt="error" src={redX} />
           <p>{stateError}</p>
         </div>
       )}

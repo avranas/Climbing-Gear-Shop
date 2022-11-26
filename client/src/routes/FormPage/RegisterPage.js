@@ -3,15 +3,12 @@ import redX from "../../images/red-x.png";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./FormPage.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { createNotification } from "../../slices/notificationSlice";
-import { selectUser } from "../../slices/userSlice";
 
 const RegisterPage = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const user = useSelector(selectUser);
 
   const [userEmailInput, setUserEmailInput] = useState("");
   const [firstNameInput, setFirstNameInput] = useState("");
@@ -144,10 +141,14 @@ const RegisterPage = (props) => {
 
   //On load, redirect the user to their profile if they're already logged in
   useEffect(() => {
-    if (user.loggedIn) {
-      navigate("/profile");
+    const getAuthData = async () => {
+      const response = await axios.get('/authenticated');
+      if (response.data) {
+        navigate(-1);
+      }
     }
-  }, [navigate, user.loggedIn]);
+    getAuthData();
+  }, [navigate]);
 
   useEffect(() => {
     const clearEmailError = () => {
@@ -226,7 +227,7 @@ const RegisterPage = (props) => {
             />
             {emailError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{emailError}</p>
               </div>
             )}
@@ -243,7 +244,7 @@ const RegisterPage = (props) => {
             />
             {firstNameError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{firstNameError}</p>
               </div>
             )}
@@ -260,7 +261,7 @@ const RegisterPage = (props) => {
             />
             {lastNameError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{lastNameError}</p>
               </div>
             )}
@@ -277,7 +278,7 @@ const RegisterPage = (props) => {
             />
             {passwordAError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{passwordAError}</p>
               </div>
             )}
@@ -294,7 +295,7 @@ const RegisterPage = (props) => {
             />
             {passwordBError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{passwordBError}</p>
               </div>
             )}

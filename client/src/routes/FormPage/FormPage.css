@@ -51,6 +51,28 @@
   margin-right: 0.5rem; 
 }
 
+.input-warning-box {
+  margin-top: 0.25rem;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  color:rgb(219, 110, 0);
+  padding: 0.25rem;
+  border-radius: 3px;
+  border-width: 1px;
+}
+
+.input-warning-box p {
+  margin-bottom: 0;
+}
+
+.input-warning-box img {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem; 
+}
+
+
 .form-break {
   height: 1.5rem;
 }

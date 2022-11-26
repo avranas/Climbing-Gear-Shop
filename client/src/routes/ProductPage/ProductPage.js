@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loadProduct, selectProduct } from "../../slices/productSlice";
 import "./ProductPage.css";
 import redX from "../../images/red-x.png";
+import warning from "../../images/warning.png";
 import penniesToUSD from "../../utils/penniesToUSD";
 import axios from "axios";
 import ProductNavigationBar from "../../components/ProductNavigationBar/ProductNavigationBar";
@@ -22,9 +23,11 @@ const ProductPage = (props) => {
   const [displayPrice, setDisplayPrice] = useState("");
   const [currentAmountInStock, setCurrentAmountInStock] = useState(-1);
   const [outOfStockError, setOutOfStockError] = useState("");
+  const [lowOnStockWarning, setLowOnStockWarning] = useState("");
   const [options, setOptions] = useState([]);
   const product = useSelector(selectProduct);
   const [addedToCartWindowOpen, setAddedToCartWindowOpen] = useState(false);
+  const [quantityDisabled, setQuantityDisabled] = useState(true);
 
   const addToCart = async () => {
     //options[0] is 'Select'
@@ -34,6 +37,10 @@ const ProductPage = (props) => {
     } else {
       setMissingSelectionError("");
     }
+    if (currentAmountInStock === 0) {
+      return;
+    }
+
     try {
       const newCartItem = {
         quantity: quantitySelection,
@@ -113,6 +120,13 @@ const ProductPage = (props) => {
 
   const handleOptionSlection = (e) => {
     setOptionSelection(e.target.value);
+    if (e.target.value === options[0]) {
+      setQuantityDisabled(true)
+      setOutOfStockError("");
+      setLowOnStockWarning("");
+    } else {
+      setQuantityDisabled(false);
+    }
   }
 
   //Update product information when optionSelection changes
@@ -124,13 +138,26 @@ const ProductPage = (props) => {
     if (!foundOption) {
       return;
     }
+    const newAmountInStock = foundOption.amountInStock;
     setDisplayPrice(foundOption.price);
-    setCurrentAmountInStock(foundOption.amountInStock);
-    if (foundOption.amountInStock === 0) {
+    setCurrentAmountInStock(newAmountInStock);
+    if (newAmountInStock === 0) {
       setOutOfStockError("This selection is out of stock");
+      setQuantityDisabled(true);
+      setLowOnStockWarning("");
+    } else if (newAmountInStock === 1) {
+      setLowOnStockWarning(`There is only ${newAmountInStock} left in stock! Buy now!`)
+      setOutOfStockError("");
+    } else if (newAmountInStock <= 5) {
+      setLowOnStockWarning(`There are only ${newAmountInStock} of these in stock! Buy now!`)
+      setOutOfStockError("");
     } else {
       setOutOfStockError("");
+      setQuantityDisabled(false);
+      setLowOnStockWarning("");
     }
+    //Erase missing selection error if there is one
+    setMissingSelectionError("");
   }, [optionSelection, setOutOfStockError, product.productOptions]);
 
   const handleQuantitySelection = (e) => {
@@ -144,18 +171,37 @@ const ProductPage = (props) => {
 
   useEffect(() => {
     //Load options from productSlice, sort it, then display it on the page
-    let newOptions = ["Select"];
+    let newOptions = [];
     product.productOptions.map((i) => {
       return newOptions.push(i.option);
     });
-    newOptions.sort((a, b) => a - b);
+    //Sort options. They will want to be sorted differently based on its option type
+    //Always sort numerically if the options are numbers
+    if (!isNaN(newOptions[0])) {
+      newOptions.sort((a, b) => a - b);
+    } else {
+      switch (product.optionType) {
+        //Sort these reverse-alphabetically
+        case 'Size':
+          newOptions.sort((a, b) => b.localeCompare(a))
+          break;
+        //Sort these alphabetically
+        case 'Length':
+        default:
+          newOptions.sort((a, b) => a.localeCompare(b))
+          break;
+      }
+    }
+    newOptions.unshift("Select");
+    setQuantityDisabled(true);
     if(product.productOptions.length === 1) {
       setOptionSelection(newOptions[1]);
+      setQuantityDisabled(false);
     } else {
       setOptionSelection(newOptions[0]);
     }
     setOptions(newOptions);
-  }, [product.productOptions]);
+  }, [product.productOptions, product.optionType]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -234,19 +280,25 @@ const ProductPage = (props) => {
                   <QuantitySelection
                     amountInStock={currentAmountInStock}
                     handleSelection={handleQuantitySelection}
-                    defaultOption={"1"}
+                    disabled={quantityDisabled}
                   />
                 </div>
               </div>
+            {lowOnStockWarning && (
+              <div className="input-warning-box">
+                <img alt="warning" src={warning} />
+                <p>{lowOnStockWarning}</p>
+              </div>
+            )}
             {missingSelectionError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{missingSelectionError}</p>
               </div>
             )}
             {outOfStockError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{outOfStockError}</p>
               </div>
             )}

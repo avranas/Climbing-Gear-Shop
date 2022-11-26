@@ -121,7 +121,7 @@ const LoginPage = ({ next }) => {
             />
             {emailError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{emailError}</p>
               </div>
             )}
@@ -139,7 +139,7 @@ const LoginPage = ({ next }) => {
             />
             {passwordError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{passwordError}</p>
               </div>
             )}
@@ -154,7 +154,7 @@ const LoginPage = ({ next }) => {
           </button>
           {invalidLoginError && (
             <div className="input-error-box">
-              <img alt="x" src={redX} />
+              <img alt="error" src={redX} />
               <p>{invalidLoginError}</p>
             </div>
           )}

@@ -233,7 +233,7 @@ const AddressForm = forwardRef((props, _ref) => {
           />
           {firstNameError && (
             <div className="input-error-box">
-              <img alt="x" src={redX} />
+              <img alt="error" src={redX} />
               <p>{firstNameError}</p>
             </div>
           )}
@@ -253,7 +253,7 @@ const AddressForm = forwardRef((props, _ref) => {
           />
           {lastNameError && (
             <div className="input-error-box">
-              <img alt="x" src={redX} />
+              <img alt="error" src={redX} />
               <p>{lastNameError}</p>
             </div>
           )}
@@ -284,7 +284,7 @@ const AddressForm = forwardRef((props, _ref) => {
         />
         {streetAddressError && (
           <div className="input-error-box">
-            <img alt="x" src={redX} />
+            <img alt="error" src={redX} />
             <p>{streetAddressError}</p>
           </div>
         )}
@@ -305,7 +305,7 @@ const AddressForm = forwardRef((props, _ref) => {
           />
           {cityError && (
             <div className="input-error-box">
-              <img alt="x" src={redX} />
+              <img alt="error" src={redX} />
               <p>{cityError}</p>
             </div>
           )}
@@ -332,7 +332,7 @@ const AddressForm = forwardRef((props, _ref) => {
         />
         {zipCodeError && (
           <div className="input-error-box">
-            <img alt="x" src={redX} />
+            <img alt="error" src={redX} />
             <p>{zipCodeError}</p>
           </div>
         )}

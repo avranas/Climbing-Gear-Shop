@@ -21,7 +21,6 @@ const userSlice = createSlice({
       user.lastName = payload.lastName;
       user.homeAddress = payload.homeAddress;
       user.rewardsPoints = payload.rewardsPoints;
-      user.loggedIn = true;
     },
     eraseUserData(state, action){
       const user = state.user;
@@ -30,7 +29,6 @@ const userSlice = createSlice({
       user.lastName = null;
       user.homeAddress = null;
       user.rewardsPoints = null;
-      user.loggedIn = false;
     },
   },
 });
@@ -38,3 +36,13 @@ const userSlice = createSlice({
 export const selectUser = (state) => state.user.user;
 export const { loadUserData, eraseUserData } = userSlice.actions;
 export default userSlice.reducer;
+
+//TODO: Order success screen - make it better
+//TODO: Profile page
+  //View orders
+  //Update profile with name, address and shit -- address will automatically be entered in checkout
+
+//Add more items in stock path
+//TODO: I need a precheckout method. Check to make sure everything looks good before charging the customer
+  //quantity < amountInStock
+  //

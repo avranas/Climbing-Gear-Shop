@@ -156,25 +156,15 @@ const Checkout = (props) => {
       } else {
         shippingAddress = shippingAddressRef.current.getAddressState();
       }
-
       //No need to send the cart information. That will already be stored in the
       //server. If I implement a guest checkout feature later, this will need
       //to be changed.
-
       const requestBody = {
         phoneNumber: phoneNumber,
         shippingAddress: shippingAddress,
         billingAddress: billingAddress,
       };
-      console.log(requestBody);
-
-      //TODO: Allll right, all info from the customer has been collected,
-      //hopefully without errors. Now I need to actually process the payment
-      //And create a new order here.
-      //How does Stripe work?
-
       const response = await axios.post("/checkout/create-checkout-session", requestBody);
-      console.log("made it though the thing!");
       window.location.href = response.data.url;
       //Redirect to "Order placed! page on success"
     } catch (err) {
@@ -211,7 +201,7 @@ const Checkout = (props) => {
             />
             {phoneNumberError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{phoneNumberError}</p>
               </div>
             )}
@@ -247,7 +237,7 @@ const Checkout = (props) => {
           <div id="disclaimer-error">
             {disclaimerCheckedError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{disclaimerCheckedError}</p>
               </div>
             )}
@@ -255,7 +245,7 @@ const Checkout = (props) => {
           <div id="server-error">
             {serverError && (
               <div className="input-error-box">
-                <img alt="x" src={redX} />
+                <img alt="error" src={redX} />
                 <p>{serverError}</p>
               </div>
             )}
@@ -278,7 +268,3 @@ const Checkout = (props) => {
 };
 
 export default Checkout;
-
-
-//TODO: Make disclaimer error disappear when box is checked
-//  ^-- Do this next plsss 
