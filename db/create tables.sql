@@ -6,6 +6,7 @@ CREATE TABLE users(
   lastName text,
   homeAddress text,
   rewardsPoints int, --Get 1 point for every $1 you spend!
+  checkoutSessionId text,
   createdAt date,
   updatedAt date
 );
@@ -77,6 +78,7 @@ CREATE TABLE orders(
   deliveryState text,
   deliveryZipCode text,
   deliveryCountry text,
+  timeCreated int,  --Date.now()
   createdAt date,
   updatedAt date,
   FOREIGN KEY (userId) REFERENCES users(id)

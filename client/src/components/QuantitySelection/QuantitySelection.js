@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 
 //For use in the ProductPage
 
 //Props are a handleSelection function
 //A productOption
 //Amount in Stock
-const QuantitySelection = (props, _ref) => {
+const QuantitySelection = forwardRef((props, _ref) => {
 
   const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selection, setSelection] = useState("");
 
   useEffect(() => {
     //Cap at amountInStock or 99
@@ -17,12 +17,19 @@ const QuantitySelection = (props, _ref) => {
       newOptions.push(i);
     }
     setOptions(newOptions);
+    setSelection(newOptions[0]);
   }, [props.amountInStock, props.disabled])
 
   const handleChange = (e) => {
-    setSelectedOption(e.target.value);
-    props.handleSelection(e);
+    setSelection(e.target.value);
   }
+
+  useImperativeHandle(_ref, () => ({
+    getSelection: () => {
+      return selection;
+    },
+  }));
+
 
   return (
     <div>
@@ -30,7 +37,7 @@ const QuantitySelection = (props, _ref) => {
         onChange={handleChange}
         name="quantity"
         id="quantity"
-        value={selectedOption}
+        value={selection}
         disabled={props.disabled}
       > 
         {
@@ -44,7 +51,7 @@ const QuantitySelection = (props, _ref) => {
       </select>
     </div>
   );
-};
+});
 
 export default QuantitySelection;
 

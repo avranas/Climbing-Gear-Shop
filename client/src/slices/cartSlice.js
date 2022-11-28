@@ -116,7 +116,7 @@ const cartSlice = createSlice({
   initialState: {
     cart: {
       cartItems: [],
-      itemCount: 0,
+      itemCount: -1,
       subTotal: 0,
       isLoading: false,
       hasError: false

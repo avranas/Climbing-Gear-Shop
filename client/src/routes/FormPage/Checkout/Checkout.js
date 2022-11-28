@@ -50,19 +50,32 @@ const Checkout = (props) => {
   };
 
   useEffect(() => {
+    //If a user goes back in the Stripe window, their old session should be expired
+
     const checkAuthentication = async () => {
+      console.log(cart);
       const response = await axios("/authenticated");
-      if (response.data) {
-      } else {
-        //navigate('/login');
+      if (!response.data) {
+        navigate('/');
       }
       if (cart.itemCount === 0) {
-        //navigate(-1);
+        navigate('/cart');
       }
     };
     checkAuthentication();
     loadCartData(dispatch);
   }, [navigate, dispatch, cart.itemCount]);
+
+  useEffect(() => {
+    const expireStripeSession = async () => {
+      try {
+        const response = await axios.put("/user/expire-stripe-session");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    expireStripeSession();
+  }, [])
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -168,11 +181,7 @@ const Checkout = (props) => {
       window.location.href = response.data.url;
       //Redirect to "Order placed! page on success"
     } catch (err) {
-      if (err.response.status === 401) {
-        setServerError("You are not logged in");
-      } else {
-        setServerError("Server error. Please double check the address");
-      }
+      setServerError(err.response.data);
       console.log(err.message)
       console.log(err);
     }

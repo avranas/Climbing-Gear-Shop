@@ -26,12 +26,35 @@ stripeWebhook.post(
     }
     // Handle the event
     switch (event.type) {
-      // case 'payment_intent.succeeded':
-      // case 'charge.succeeded':
-      // case 'payment_intent.created':
+      case 'checkout.session.expired':
+        console.log('Session expired')
+        //Checkout session expired without payment. Increase amount in stock.
+        const userId = event.data.object.metadata.userId;
+        const cart = await getUserCartData(userId, next);
+        await Promise.all(
+          cart.map(async (i) => {
+            console.log(`restoring ${i.product} by ${i.quantity}`)
+            await ProductOption.increment(
+              {
+                amountInStock: i.quantity,
+              },
+              { where: { id: i.product.productOptions[0].id } }
+            );
+          })
+        );
+        break;
+      case 'charge.succeeded':
+        console.log('2')
+        break;
+      case 'payment_intent.succeeded':
+        console.log('1')
+        break;
+      case 'payment_intent.created':
+        console.log('3')
+        break;
       case "checkout.session.completed": {
+        console.log('4')
         const paymentIntent = event.data.object;
-        console.log(paymentIntent)
         const userId = paymentIntent.metadata.userId;
         const grandTotal = paymentIntent.amount_total;
         const subTotal = paymentIntent.amount_subtotal;
@@ -56,6 +79,7 @@ stripeWebhook.post(
             deliveryState: shippingAddress.state,
             deliveryZipCode: shippingAddress.postal_code,
             deliveryCountry: shippingAddress.country,
+            timeCreated: Date.now()
           },
           {
             returning: true,
@@ -90,18 +114,17 @@ stripeWebhook.post(
         );
 
         //Update each product's amount in stock
-        await Promise.all(
-          cart.map(async (i) => {
-            console.log('tryna do amount in stock')
-            console.log(i.product.productOptions)
-            await ProductOption.increment(
-              {
-                amountInStock: i.quantity * -1,
-              },
-              { where: { id: i.product.productOptions[0].id } }
-            );
-          })
-        );
+        // await Promise.all(
+        //   cart.map(async (i) => {
+        //     await ProductOption.increment(
+        //       {
+        //         amountInStock: i.quantity * -1,
+        //       },
+        //       { where: { id: i.product.productOptions[0].id } }
+        //     );
+        //   })
+        // );
+
         break;
       }
       default:

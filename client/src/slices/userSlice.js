@@ -37,12 +37,10 @@ export const selectUser = (state) => state.user.user;
 export const { loadUserData, eraseUserData } = userSlice.actions;
 export default userSlice.reducer;
 
-//TODO: Order success screen - make it better
+//TODO: Order success screen - make it better, get latest order using Order.timeCreated
+
 //TODO: Profile page
   //View orders
   //Update profile with name, address and shit -- address will automatically be entered in checkout
 
-//Add more items in stock path
-//TODO: I need a precheckout method. Check to make sure everything looks good before charging the customer
-  //quantity < amountInStock
-  //
+//TODO: Oauth

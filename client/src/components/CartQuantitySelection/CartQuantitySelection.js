@@ -14,11 +14,20 @@ const CartQuantitySelection = (props) => {
     const amountInStock = props.cartItem.product.productOptions[0].amountInStock;
     //Cap at amountInStock or 99
     const newOptions = [];
-    for(let i = 1; i <= amountInStock && i <= 30; i++) {
+    //If another user buys this item which makes this user's cart quantity > amountInStock,
+    //there won't be an option for defaultValue, so we must set the maximum amount of options
+    //to whichever value is greatest, defaultValue or amountInStock
+    let maxOptions = 0;
+    if (props.defaultValue > amountInStock) {
+      maxOptions = props.defaultValue;
+    } else {
+      maxOptions = amountInStock;
+    }
+    for(let i = 1; i <= maxOptions && i <= 30; i++) {
       newOptions.push(i);
     }
     setOptions(newOptions);
-  }, [props.cartItem])
+  }, [props.cartItem, props.defaultValue])
 
   const handleChange = (e) => {
     setSelection(e.target.value)

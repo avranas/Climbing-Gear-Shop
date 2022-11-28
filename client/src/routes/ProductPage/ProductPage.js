@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loadProduct, selectProduct } from "../../slices/productSlice";
 import "./ProductPage.css";
@@ -18,7 +18,6 @@ const ProductPage = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [optionSelection, setOptionSelection] = useState("");
-  const [quantitySelection, setQuantitySelection] = useState("1");
   const [missingSelectionError, setMissingSelectionError] = useState("");
   const [displayPrice, setDisplayPrice] = useState("");
   const [currentAmountInStock, setCurrentAmountInStock] = useState(-1);
@@ -28,6 +27,9 @@ const ProductPage = (props) => {
   const product = useSelector(selectProduct);
   const [addedToCartWindowOpen, setAddedToCartWindowOpen] = useState(false);
   const [quantityDisabled, setQuantityDisabled] = useState(true);
+  const quantitySelectRef = useRef();
+
+
 
   const addToCart = async () => {
     //options[0] is 'Select'
@@ -43,7 +45,7 @@ const ProductPage = (props) => {
 
     try {
       const newCartItem = {
-        quantity: quantitySelection,
+        quantity: quantitySelectRef.current.getSelection(),
         productId: product.id,
         optionSelection: optionSelection,
       };
@@ -160,10 +162,6 @@ const ProductPage = (props) => {
     setMissingSelectionError("");
   }, [optionSelection, setOutOfStockError, product.productOptions]);
 
-  const handleQuantitySelection = (e) => {
-    setQuantitySelection(e.target.value);
-  };
-
   useEffect(() => {
     //load product data on page load
     dispatch(loadProduct(id));
@@ -278,8 +276,8 @@ const ProductPage = (props) => {
                   </label>
                   <br />
                   <QuantitySelection
+                    ref={quantitySelectRef}
                     amountInStock={currentAmountInStock}
-                    handleSelection={handleQuantitySelection}
                     disabled={quantityDisabled}
                   />
                 </div>

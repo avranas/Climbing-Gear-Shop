@@ -5,6 +5,7 @@ const createHttpError = require('http-errors');
 const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
 const CartItem = require('../models/cartItems');
 const Order = require('../models/orders');
+const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 const getUserData = async (userEmail, next) => {
   try {
@@ -77,6 +78,38 @@ userRouter.put('/rewards-points/:userEmail', checkAuthenticatedAsAdmin, async (r
   } catch (err) {
     next(err);
   }
+});
+
+
+userRouter.put('/expire-stripe-session', checkAuthenticated, async (req, res, next) => {
+  try {
+    const response = await User.findOne({
+      attributes: ["checkoutSessionId"],
+      where: {id: req.user.id}
+    });
+    if (!response.checkoutSessionId) {
+      res.status(200).send("No session found");
+      return;
+    }
+    const session = await stripe.checkout.sessions.retrieve(
+      response.checkoutSessionId
+    );
+    if (session.status !== "expired") {
+      await stripe.checkout.sessions.expire(response.checkoutSessionId);
+      await User.update(
+        {
+          checkoutSessionId: null,
+        },
+        {
+          where: { id: req.user.id },
+        }
+      );
+    }
+    res.status(200).send("Session expired")
+  } catch (err) {
+    next(err);
+  }
+  
 });
 
 /*

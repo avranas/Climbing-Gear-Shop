@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCart,
@@ -11,11 +11,13 @@ import { Link, useNavigate } from "react-router-dom";
 import "./Cart.css";
 import CartQuantitySelection from "../../components/CartQuantitySelection/CartQuantitySelection";
 import axios from "axios";
+import redX from "../../images/red-x.png";
 
 const Cart = (props) => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const navigate = useNavigate();
+  const [quantityChangeError, setQuantityChangeError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +32,21 @@ const Cart = (props) => {
 
   const handleQuantitySelection = async (e, cartItem) => {
     const response = await axios("/authenticated");
-    const value = e.target.value;
+    let value = e.target.value;
+
+
+    //Check to make sure there are enough items in stock
+    const amountInStock = cartItem.product.productOptions[0].amountInStock;
+    if(value > amountInStock) {
+      value = amountInStock;
+      if (value === 0) {
+        setQuantityChangeError("This item is sold out.");
+      } else {
+        setQuantityChangeError("Not enough in stock. Setting to the max.");
+      }
+    }
+
+
     if (response.data) {
       const requestBody = {
         quantity: Number(value),
@@ -45,17 +61,22 @@ const Cart = (props) => {
     }
     loadCartData(dispatch);
   };
+
   const deleteItem = async (e) => {
-    const id = e.target.value;
-    const response = await axios("/authenticated");
-    if (response.data) {
-      //Delete from cart on server
-      await axios.delete(`/cart/${id}`);
-    } else {
-      //Delete from guest cart
-      deleteFromGuestCart(id);
+    try {
+      const id = e.target.value;
+      const response = await axios("/authenticated");
+      if (response.data) {
+        //Delete from cart on server
+        await axios.delete(`/cart/${id}`);
+      } else {
+        //Delete from guest cart
+        deleteFromGuestCart(id);
+      }
+      loadCartData(dispatch);
+    } catch (err) {
+      loadCartData(dispatch);
     }
-    loadCartData(dispatch);
   };
 
   const continueToCheckout = async () => {
@@ -112,6 +133,12 @@ const Cart = (props) => {
                   </button>
                 </div>
               </div>
+              {quantityChangeError && (
+                <div className="input-error-box">
+                  <img alt="error" src={redX} />
+                  <p>{quantityChangeError}</p>
+                </div>
+              )}
             </div>
           );
         })

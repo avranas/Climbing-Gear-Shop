@@ -7,7 +7,8 @@ const User = db.define('users', {
   firstName: DataTypes.TEXT,
   lastName: DataTypes.TEXT,
   homeAddress: DataTypes.TEXT,
-  rewardsPoints: DataTypes.INTEGER
+  rewardsPoints: DataTypes.INTEGER,
+  checkoutSessionId: DataTypes.TEXT
 });
 
 module.exports = User;

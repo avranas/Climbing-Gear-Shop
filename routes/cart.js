@@ -23,10 +23,10 @@ const performChecks = async (body, next) => {
       throw createHttpError(400, 'Body needs an "optionSelection"');
     }
     //Quantity can only be in a range from 1 to 99
-    if (body.quantity < 1 || body.quantity > 99) {
+    if (body.quantity < 0 || body.quantity > 99) {
       throw createHttpError(
         400,
-        "Quantity is out of range. It must be between 1 and 99"
+        "Quantity is out of range. It must be between 0 and 99"
       );
     }
     //Check if the product actually exists

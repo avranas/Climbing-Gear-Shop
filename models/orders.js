@@ -13,7 +13,8 @@ const Order = db.define('orders', {
   deliveryCity: DataTypes.TEXT,
   deliveryState: DataTypes.TEXT,
   deliveryZipCode: DataTypes.TEXT,
-  deliveryCountry: DataTypes.TEXT
+  deliveryCountry: DataTypes.TEXT,
+  timeCreated: DataTypes.INTEGER
 });
 
 Order.hasMany(OrderItem);
