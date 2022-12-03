@@ -30,8 +30,7 @@ app.use(
 );
 
 app.get("/auth/github", checkNotAuthenticated, (req, res, next) => {
-  passport.authenticate('github'),
-  console.log("??");
+  passport.authenticate('github', {failWithError: true}),
   res
     .status(200)
     .send(
@@ -42,9 +41,11 @@ app.get("/auth/github", checkNotAuthenticated, (req, res, next) => {
 app.get(
   "/auth/github/callback",
   passport.authenticate("github", {
-    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
     successRedirect: `${process.env.CLIENT_URL}/`,
-  })
+  }), (req, res, next) => {
+    res.status(400).send('?????')
+  }
 );
 
 //Allows us to request images with the "/images" route in the "/assets/images" folder

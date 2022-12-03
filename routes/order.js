@@ -12,13 +12,20 @@ const Product = require("../models/products");
 //orderId is optional
 const getOrders = async (userId, next, orderId) => {
   try {
-    let idCondition = null;
+    let whereOptions = null;
     if (orderId) {
-      idCondition = {id: orderId}
+      whereOptions = {
+        userId: userId,
+        id: orderId
+      }
+    } else {
+      whereOptions = {
+        userId: userId
+      }
     }
+    console.log(userId)
     const response = await Order.findAll({
-      where: { userId: userId },
-      where: idCondition,
+      where: whereOptions,
       order: [["timeCreated", "DESC"]],
       attributes: [
         "deliveryCity",

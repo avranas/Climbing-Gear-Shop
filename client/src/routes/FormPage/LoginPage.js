@@ -6,8 +6,9 @@ import "./FormPage.css";
 import { createNotification } from "../../slices/notificationSlice";
 import axios from "axios";
 import { loadCartData } from "../../slices/cartSlice";
+import github from '../../images/github.png';
 
-const LoginPage = ({ next }) => {
+const LoginPage = ({ next, error }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -82,6 +83,17 @@ const LoginPage = ({ next }) => {
     }
   };
 
+  //Load the page with an error message
+  useEffect(() => {
+    switch (error) {
+      case "1":
+        setInvalidLoginError(`A user with that email already exists`)
+        break;
+      default:
+        break;
+    }
+  }, [error])
+
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
@@ -106,14 +118,13 @@ const LoginPage = ({ next }) => {
     try {
       console.log('attemping to log in with github')
       const response = await axios.get('http://localhost:3000/auth/github');
-      window.location.href = response.data;
       console.log(response)
+      window.location.href = response.data;
       
     } catch (err) {
       console.log(err);
     }
   }
-
 
   return (
     <main className="container form-page form-header-wrap styled-box">
@@ -174,12 +185,13 @@ const LoginPage = ({ next }) => {
           </div>
         )}
       </div>
+      <h3>Or login using:</h3>
+      <button className="oauth-button" id="github" onClick={loginWithGitHub}>
+        <img alt="github" src={github}/>
+      </button>
       <p className="form-page-footer">
         Don't have an account? <Link to="/register">Register</Link>
       </p>
-      <button onClick={loginWithGitHub}>
-        Login with GitHub
-      </button>
     </main>
   );
 };

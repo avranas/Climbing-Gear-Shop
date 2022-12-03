@@ -220,13 +220,13 @@ const RegisterPage = (props) => {
             )}
           </div>
           <div className="input-item">
-            <label className="form-label" htmlFor="first-name">First name</label>
+            <label className="form-label" htmlFor="name">Name</label>
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
               type="text"
-              id="first-name"
-              name="first-name"
+              id="name"
+              name="name"
               onChange={handleNameChange}
             />
             {nameError && (

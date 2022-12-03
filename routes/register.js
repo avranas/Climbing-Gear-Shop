@@ -24,7 +24,7 @@ registerRouter.post('/', checkNotAuthenticated, async (req, res, next) => {
     });
     //dbResponse will be null if nothing is returned from the database
     if (dbResponse != null) {
-      throw createHttpError(400, 'A user with that name already exists');
+      throw createHttpError(400, 'A user with that email already exists');
     }
     const saltRounds = 10;
     bcrypt.genSalt(saltRounds, (err, salt) => {

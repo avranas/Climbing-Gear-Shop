@@ -28,6 +28,3 @@ const userSlice = createSlice({
 export const selectUser = (state) => state.user;
 export const { loadUserData, eraseUserData } = userSlice.actions;
 export default userSlice.reducer;
-
-
-//TODO NEXT: Oauth
