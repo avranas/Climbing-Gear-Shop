@@ -40,8 +40,8 @@ const HeaderUserButtons = (props) => {
       <div>
         <button onClick={handleLogout} type="button" className="btn btn-primary">Logout</button>
         <span className="header-button-spacer"></span>
-        <Link to="/profile">
-          <button type="button" className="btn btn-primary">Profile</button>
+        <Link to="/orders/0">
+          <button type="button" className="btn btn-primary">Orders</button>
         </Link>
       </div>
       }

@@ -23,12 +23,10 @@ checkoutRouter.post(
 
       //Double-check to confirm we have enough of every item in stock
       items.forEach((i) => {
-        console.log(i.quantity);
-        console.log(i.product.productOptions[0].amountInStock);
         if (i.quantity > i.product.productOptions[0].amountInStock) {
           throw createHttpError(
             400,
-            `There is not enough of item: ${i.product.productName} in stock to fulfill your order. Please reduce the quantity`
+            `There is not enough of item: ${i.product.productName} ${i.product.optionType}: ${i.product.productOptions[0].option} in stock to fulfill your order. Please reduce the quantity`
           );
         }
       });
@@ -36,7 +34,7 @@ checkoutRouter.post(
       //Decrement amountInStock for each item
       await Promise.all(
         items.map(async (i) => {
-          await ProductOption.increment(
+          ProductOption.increment(
             {
               amountInStock: i.quantity * -1,
             },
@@ -125,7 +123,9 @@ checkoutRouter.post(
       //Force session to expire after 5 minutes
       //When a session expires, each product's amountInStock is incremented
       setTimeout(async () => {
-        await stripe.checkout.sessions.expire(session.id);
+        if (session.status === "open") {
+          await stripe.checkout.sessions.expire(session.id);
+        }
       }, 1000 * 60 * 5);
       //Save session ID into the database, so it can be expired manually if the user goes back to
       //the checkout page
@@ -137,7 +137,6 @@ checkoutRouter.post(
           where: { id: req.user.id },
         }
       );
-      console.log(session.url);
       res.json({ url: session.url });
     } catch (err) {
       console.log(err);

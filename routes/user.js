@@ -5,6 +5,7 @@ const createHttpError = require('http-errors');
 const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
 const CartItem = require('../models/cartItems');
 const Order = require('../models/orders');
+const OrderItem = require('../models/orderItems');
 const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 
 const getUserData = async (userEmail, next) => {
@@ -94,7 +95,7 @@ userRouter.put('/expire-stripe-session', checkAuthenticated, async (req, res, ne
     const session = await stripe.checkout.sessions.retrieve(
       response.checkoutSessionId
     );
-    if (session.status !== "expired") {
+    if (session.status === "open") {
       await stripe.checkout.sessions.expire(response.checkoutSessionId);
       await User.update(
         {
@@ -115,8 +116,7 @@ userRouter.put('/expire-stripe-session', checkAuthenticated, async (req, res, ne
 /*
   An admin can compensate a user with more rewards points
   {
-    "newFirstName": "Alex",
-    "newLastName": "Vranas",
+    "newName": "Alex Vranas",
     "newHomeAddress": "24 Willie Mays Plaza, San Francisco, CA 94107"
   }
 */
@@ -125,23 +125,15 @@ userRouter.put('/', checkAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const user = req.user;
-    const newFirstName = body.newFirstName;
-    const newLastName = body.newLastName;
+    const newName = body.newName;
     const newHomeAddress = body.newHomeAddress;
     let dbResponse = null;
-    if (newFirstName) {
+    if (newName) {
       dbResponse = await User.update({
-          firstName: newFirstName
+          name: newName
         }, { where: { userEmail: user.userEmail },
         returning: true
       });
-    }
-    if (newLastName) {
-      dbResponse = await User.update({
-        lastName: newLastName
-      }, { where: { userEmail: user.userEmail },
-      returning: true
-    });
     }
     if (newHomeAddress) {
       dbResponse = await User.update({
@@ -155,8 +147,7 @@ userRouter.put('/', checkAuthenticated, async (req, res, next) => {
     }
     const dbObject = dbResponse[1][0];
     const returnThis = {
-      firstName: dbObject.firstName,
-      lastName: dbObject.lastName,
+      name: dbObject.name,
       homeAddress: dbObject.homeAddress,
     }
     res.status(200).send(returnThis);
@@ -171,7 +162,15 @@ const deleteUser = async (userId, next) => {
      await CartItem.destroy({
        where: { userId: userId }
      });
-    //Delete the user's orders
+
+     const orders = await Order.findAll({
+       where: {userId: userId}
+     })
+     await Promise.all(orders.map(async i => {
+       OrderItem.destroy({
+        where: {orderId: i.id}
+       });
+     }));
      await Order.destroy({
       where: { userId: userId }
     });
@@ -196,18 +195,19 @@ userRouter.delete('/', checkAuthenticated, async (req, res, next) => {
 //Delete another user account by id if logged in as admin
 //This deletes all of the user's cart items and orders, so
 //this should never be used on a customer who has a pending order
-userRouter.delete('/:userEmail', checkAuthenticatedAsAdmin, async (req, res, next) => {
+userRouter.delete('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
     //Check if a user actually exists
-    const userEmailToDelete = req.params.userEmail;
+    const userIdToDelete = req.params.id;
     const userToDelete = await User.findOne({
-      where: { userEmail: userEmailToDelete }
+      where: { id: userIdToDelete }
     });
     if (!userToDelete) { 
-      throw createHttpError(404, 'No user with that name was found');
+      throw createHttpError(404, 'No user with that id was found');
     }
+    console.log(userIdToDelete)
     await deleteUser(userToDelete.id, next);
-    res.status(200).send(`User with userEmail ${userEmailToDelete} has been deleted`);
+    res.status(200).send(`User with id ${userIdToDelete} has been deleted`);
   } catch (err) {
     next(err);
   }

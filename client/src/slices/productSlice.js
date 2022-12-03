@@ -42,7 +42,7 @@ export const loadProduct = createAsyncThunk(
 const productSlice = createSlice({
   name: "product",
   initialState: {
-    product: {
+    data: {
       brandName: '',
       categoryName: '',
       description: '',
@@ -52,27 +52,27 @@ const productSlice = createSlice({
       productName: '',
       lowestPrice: 0,
       highestPrice: 0,
-      productOptions: [],
-      isLoading: true,
-      hasError: false
-    }
+      productOptions: []
+    },
+    isLoading: true,
+    hasError: false
   },
   extraReducers: {
     [loadProduct.pending]: (state, action) => {
-      state.product.isLoading = true;
-      state.product.hasError = false;
+      state.isLoading = true;
+      state.hasError = false;
     },
     [loadProduct.fulfilled]: (state, action) => {
-      state.product = action.payload;
-      state.product.isLoading = false;
-      state.product.hasError = false;
+      state.data = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
     },
     [loadProduct.rejected]: (state, action) => {
-      state.product.isLoading = false;
-      state.product.hasError = true;
+      state.isLoading = false;
+      state.hasError = true;
     }
   },
 });
 
-export const selectProduct = (state) => state.product.product;
+export const selectProduct = (state) => state.product;
 export default productSlice.reducer;

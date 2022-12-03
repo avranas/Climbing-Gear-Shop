@@ -6,7 +6,7 @@ const ProductOption = db.define('product_options', {
   option: DataTypes.TEXT,
   amountInStock: DataTypes.INTEGER,
   productId: DataTypes.INTEGER,
-  price: DataTypes.FLOAT,
+  price: DataTypes.INTEGER,
 });
 
 Product.hasMany(ProductOption, {as: 'productOptions', foreignKey: 'productId'});

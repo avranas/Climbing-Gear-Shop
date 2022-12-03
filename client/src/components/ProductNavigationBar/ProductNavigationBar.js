@@ -6,22 +6,22 @@ const ProductNavigationBar = (props) => {
     <section id="product-navigation-bar" className="container styled-box">
       <ul className="row">
         <li className="col-2">
-          <Link to="/products">All Products</Link>
+          <Link to="/products/0">All Products</Link>
         </li>
         <li className="col-2">
-          <Link to="/products?category=shoes">Shoes</Link>
+          <Link to="/products/0?category=shoes">Shoes</Link>
         </li>
         <li className="col-2">
-          <Link to="/products?category=harnesses">Harnesses</Link>
+          <Link to="/products/0?category=harnesses">Harnesses</Link>
         </li>
         <li className="col-2">
-          <Link to="/products?category=ropes">Ropes</Link>
+          <Link to="/products/0?category=ropes">Ropes</Link>
         </li>
         <li className="col-2">
-          <Link to="/products?category=hardware">Hardware</Link>
+          <Link to="/products/0?category=hardware">Hardware</Link>
         </li>
         <li className="col-2">
-          <Link to="/products?category=chalk">Chalk</Link>
+          <Link to="/products/0?category=chalk">Chalk</Link>
         </li>
       </ul>
     </section>

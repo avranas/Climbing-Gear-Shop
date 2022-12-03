@@ -9,15 +9,12 @@ registerRouter.post('/', checkNotAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const newUserEmail = body.userEmail;
-    const newFirstName = body.firstName;
-    const newLastName = body.lastName;
+    const newName = body.name;
     const newPassword = body.password;
     if (!newUserEmail) {
       throw createHttpError(400, '"userEmail" is missing from the request body');
-    } else if (!newFirstName) {
-      throw createHttpError(400, '"firstName" is missing from the request body');
-    } else if (!newLastName) {
-      throw createHttpError(400, '"lastName" is missing from the request body');
+    } else if (!newName) {
+      throw createHttpError(400, '"name" is missing from the request body');
     } else if (!newPassword) {
       throw createHttpError(400, '"password" is missing from the request body');
     }
@@ -38,8 +35,7 @@ registerRouter.post('/', checkNotAuthenticated, async (req, res, next) => {
         await User.create({
           userEmail: newUserEmail,
           password: hash,
-          firstName: newFirstName,
-          lastName: newLastName,
+          name: newName,
           rewardsPoints: 0
         });
       });

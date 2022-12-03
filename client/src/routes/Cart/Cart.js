@@ -16,6 +16,7 @@ import redX from "../../images/red-x.png";
 const Cart = (props) => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
+  const cartData = cart.data;
   const navigate = useNavigate();
   const [quantityChangeError, setQuantityChangeError] = useState("");
 
@@ -95,20 +96,22 @@ const Cart = (props) => {
         <div>
           <p>Loading...</p>
         </div>
-      ) : cart.cartItems.length === 0 ? (
+      ) : cartData.cartItems.length === 0 ? (
         <div id="empty-cart">
           <p>Your shopping cart is empty</p>
         </div>
       ) : (
-        cart.cartItems.map((i, key) => {
+        cartData.cartItems.map((i, key) => {
           return (
             <div className="cart-item" key={key}>
-              <div className="cart-item-image">
-                <img
-                  src={`${process.env.REACT_APP_SERVER_URL}/images/${i.product.smallImageFile1}`}
-                  alt="cart item"
-                />
-              </div>
+              <Link to={`/product/${i.product.id}`}>
+                <div className="cart-item-image">
+                    <img
+                      src={`${process.env.REACT_APP_SERVER_URL}/images/${i.product.smallImageFile1}`}
+                      alt="cart item"
+                    />
+                </div>
+              </Link>
               <div className="cart-item-content">
                 <p>
                   {i.product.optionType}: {i.optionSelection}
@@ -144,18 +147,18 @@ const Cart = (props) => {
         })
       )}
       <div id="cart-footer">
-        {cart.cartItems.length === 0 ? (
-          <Link to="/products">
+        {cartData.cartItems.length === 0 ? (
+          <Link to="/products/0">
             <button className="important-button">Contine shopping</button>
           </Link>
         ) : (
           <div>
-            <p>{`Subtotal (${cart.itemCount} items): ${penniesToUSD(
-              cart.subTotal
+            <p>{`Subtotal (${cartData.itemCount} items): ${penniesToUSD(
+              cartData.subTotal
             )}`}</p>
             <div id="cart-buttons">
               <button onClick={continueToCheckout} className="important-button">Continue to checkout</button>
-              <Link to="/products">
+              <Link to="/products/0">
                 <button className="semi-important-button">Continue shopping</button>
               </Link>
             </div>

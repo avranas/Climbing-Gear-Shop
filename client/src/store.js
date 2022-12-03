@@ -5,6 +5,8 @@ import notificationSlice from './slices/notificationSlice';
 import productSlice from "./slices/productSlice";
 import cartSlice from "./slices/cartSlice";
 import newestCartItemSlice from "./slices/newestCartItemSlice";
+import orderSlice from "./slices/orderSlice";
+import ordersListSlice from "./slices/ordersListSlice";
 
 export default configureStore({
   reducer: {
@@ -13,6 +15,8 @@ export default configureStore({
     product: productSlice,
     notifications: notificationSlice,
     cart: cartSlice,
-    newestCartItem: newestCartItemSlice
+    newestCartItem: newestCartItemSlice,
+    order: orderSlice,
+    ordersList: ordersListSlice
   },
 });

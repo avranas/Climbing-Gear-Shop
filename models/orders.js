@@ -1,12 +1,12 @@
 const { DataTypes } = require('sequelize');
 const db = require('../db/db_setup');
-const OrderItem = require('../models/orderItems');
 
 const Order = db.define('orders', {
-  subTotal: DataTypes.FLOAT,
-  taxCharged: DataTypes.FLOAT,
-  totalPrice: DataTypes.FLOAT,
+  subTotal: DataTypes.INTEGER,
+  taxCharged: DataTypes.INTEGER,
+  totalPrice: DataTypes.INTEGER,
   orderStatus: DataTypes.TEXT, //Placed -> Shipped -> Completed
+  shippingFeeCharged: DataTypes.INTEGER,
   userId: DataTypes.INTEGER,
   deliveryStreetAddress1: DataTypes.TEXT,
   deliveryStreetAddress2: DataTypes.TEXT,
@@ -14,11 +14,8 @@ const Order = db.define('orders', {
   deliveryState: DataTypes.TEXT,
   deliveryZipCode: DataTypes.TEXT,
   deliveryCountry: DataTypes.TEXT,
-  timeCreated: DataTypes.INTEGER
+  timeCreated: DataTypes.BIGINT
 });
-
-Order.hasMany(OrderItem);
-OrderItem.belongsTo(Order);
 
 module.exports = Order;
 

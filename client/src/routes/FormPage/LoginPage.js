@@ -8,7 +8,6 @@ import axios from "axios";
 import { loadCartData } from "../../slices/cartSlice";
 
 const LoginPage = ({ next }) => {
-  
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -66,7 +65,7 @@ const LoginPage = ({ next }) => {
       }
       await Promise.all(
         guestCart.map(async (i) => {
-          await axios.post("/cart", i);
+          axios.post("/cart", i);
         })
       );
       loadCartData(dispatch);
@@ -88,7 +87,7 @@ const LoginPage = ({ next }) => {
       try {
         // const response = await axios('/authenticated');
         // if (response.data) {
-        //  navigate('/profile');
+        //  navigate('/orders');
         // }
       } catch (err) {
         console.log(err);
@@ -103,66 +102,84 @@ const LoginPage = ({ next }) => {
     }
   };
 
+  const loginWithGitHub = async (e) => {
+    try {
+      console.log('attemping to log in with github')
+      const response = await axios.get('http://localhost:3000/auth/github');
+      window.location.href = response.data;
+      console.log(response)
+      
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+
   return (
-    <main className="container form-page">
-      <div className="form-header-wrap styled-box">
-        <h2>Login</h2>
-        <div className="form">
-          <div className="input-item">
-            <label className="form-label" htmlFor="user-email">Email</label>
-            <input
-              type="email"
-              id="user-email"
-              name="user-email"
-              className="form-control"
-              value={userEmailInput}
-              onChange={handleUserEmailChange}
-              onKeyUp={handleKeyPress}
-            />
-            {emailError && (
-              <div className="input-error-box">
-                <img alt="error" src={redX} />
-                <p>{emailError}</p>
-              </div>
-            )}
-          </div>
-          <div className="input-item">
-            <label className="form-label" htmlFor="password">Password</label>
-            <input
-              className="form-control"
-              onKeyUp={handleKeyPress}
-              type="password"
-              id="password"
-              name="password"
-              value={passwordInput}
-              onChange={handlePasswordChange}
-            />
-            {passwordError && (
-              <div className="input-error-box">
-                <img alt="error" src={redX} />
-                <p>{passwordError}</p>
-              </div>
-            )}
-          </div>
-          <button
-            className="important-button"
-            type="submit"
-            value="Submit"
-            onClick={handleSubmit}
-            >
-            Submit
-          </button>
-          {invalidLoginError && (
+    <main className="container form-page form-header-wrap styled-box">
+      <h2>Login</h2>
+      <div className="form">
+        <div className="input-item">
+          <label className="form-label" htmlFor="user-email">
+            Email
+          </label>
+          <input
+            type="email"
+            id="user-email"
+            name="user-email"
+            className="form-control"
+            value={userEmailInput}
+            onChange={handleUserEmailChange}
+            onKeyUp={handleKeyPress}
+          />
+          {emailError && (
             <div className="input-error-box">
               <img alt="error" src={redX} />
-              <p>{invalidLoginError}</p>
+              <p>{emailError}</p>
             </div>
           )}
         </div>
-        <p className="form-page-footer">
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
+        <div className="input-item">
+          <label className="form-label" htmlFor="password">
+            Password
+          </label>
+          <input
+            className="form-control"
+            onKeyUp={handleKeyPress}
+            type="password"
+            id="password"
+            name="password"
+            value={passwordInput}
+            onChange={handlePasswordChange}
+          />
+          {passwordError && (
+            <div className="input-error-box">
+              <img alt="error" src={redX} />
+              <p>{passwordError}</p>
+            </div>
+          )}
+        </div>
+        <button
+          className="important-button"
+          type="submit"
+          value="Submit"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+        {invalidLoginError && (
+          <div className="input-error-box">
+            <img alt="error" src={redX} />
+            <p>{invalidLoginError}</p>
+          </div>
+        )}
       </div>
+      <p className="form-page-footer">
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
+      <button onClick={loginWithGitHub}>
+        Login with GitHub
+      </button>
     </main>
   );
 };

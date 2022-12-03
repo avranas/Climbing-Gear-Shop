@@ -8,7 +8,7 @@
   border-color: #BBBBBB;
   border-width: 2px;
   height: 3rem;
-  width: 30rem;
+  width: 100%;
   background-color: white;
 }
 
@@ -25,7 +25,7 @@
 #search-text {
   border: none;
   line-height: 5rem;
-  width: 30rem;
+  width: 100%;
   padding: 0.5rem;
 }
 
@@ -48,5 +48,6 @@
   width: 2rem;
   height: 2rem;
   margin: 0.4rem;
+  padding: 1rem;
   border: none;
 }

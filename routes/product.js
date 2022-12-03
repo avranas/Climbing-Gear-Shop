@@ -19,7 +19,6 @@ productRouter.get("/", async (req, res, next) => {
         },
       ],
     });
-    console.log(dbResp);
     res.status(200).send(dbResp);
   } catch (err) {
     next(err);
@@ -64,7 +63,6 @@ productRouter.get("/ids", async (req, res, next) => {
 productRouter.get("/search/:term", async (req, res, next) => {
   try {
     const term = req.params.term;
-    console.log(term);
     const response = await Product.findAll({
       where: {
         [Op.or]: [
@@ -93,7 +91,6 @@ productRouter.get("/search/:term", async (req, res, next) => {
         },
       ],
     });
-    console.log(response);
     res.status(200).send(response);
   } catch (err) {
     next(err);
@@ -185,17 +182,17 @@ productRouter.post(
       "options": [
           {
               "amountInStock": 5,
-              "price": 119.95,
+              "price": 11995,
               "option": "40M"
           },
           {
               "amountInStock": 5,
-              "price": 184.95,
+              "price": 18495,
               "option": "60M"
           },
           {
               "amountInStock": 5,
-              "price": 219.95,
+              "price": 21995,
               "option": "70M"
           }
       ]
@@ -206,15 +203,15 @@ productRouter.post(
     "description": "This 4.5 oz. bag of Metolius Super chalk is perfect for keeping your hands dry on the wall. Keep it in your car for trips to the crag or the gym, or use it to refill your reusable chalk bag.",
     "categoryName": "chalk",
     "brandName": "Metolius",
-    "smallImageFile1": "chalk1-1.jpg",
-    "smallImageFile2": "chalk1-2.jpg",
-    "largeImageFile": "chalk1-3.jpg",
+    "smallImageFile1": "chalk1-1.webp",
+    "smallImageFile2": "chalk1-2.webp",
+    "largeImageFile": "chalk1-3.jpeg",
     "optionType": "None",
     "options": [
       {
         "option": "Default",
         "amountInStock": 5,
-        "price": 2
+        "price": 499
       }
     ]
   }

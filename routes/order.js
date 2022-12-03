@@ -1,17 +1,87 @@
-const express = require('express');
+const express = require("express");
 const orderRouter = express.Router();
-const createHttpError = require('http-errors');
-const { checkAuthenticated, checkAuthenticatedAsAdmin } = require('./authentication-check');
-const Order = require('../models/orders');
-const OrderItem = require('../models/orderItems');
+const createHttpError = require("http-errors");
+const {
+  checkAuthenticated,
+  checkAuthenticatedAsAdmin,
+} = require("./authentication-check");
+const Order = require("../models/orders");
+const OrderItem = require("../models/orderItems");
+const Product = require("../models/products");
+
+//orderId is optional
+const getOrders = async (userId, next, orderId) => {
+  try {
+    let idCondition = null;
+    if (orderId) {
+      idCondition = {id: orderId}
+    }
+    const response = await Order.findAll({
+      where: { userId: userId },
+      where: idCondition,
+      order: [["timeCreated", "DESC"]],
+      attributes: [
+        "deliveryCity",
+        "deliveryCountry",
+        "deliveryState",
+        "deliveryStreetAddress1",
+        "deliveryStreetAddress2",
+        "deliveryZipCode",
+        "totalPrice",
+        "taxCharged",
+        "shippingFeeCharged",
+        "subTotal",
+        "timeCreated",
+        "orderStatus",
+        "id"
+      ],
+      include: [
+        {
+          model: OrderItem,
+          as: "orderItems",
+          required: true,
+          attributes: ["optionSelection", "price", "quantity"],
+          include: [
+            {
+              model: Product,
+              required: true,
+              attributes: [
+                "id",
+                "brandName",
+                "optionType",
+                "productName",
+                "smallImageFile1",
+              ],
+            },
+          ],
+        },
+      ],
+      subQuery: false,
+    });
+    return response;
+  } catch (err) {
+    next(err);
+  }
+}
 
 //Get all of a user's orders
-orderRouter.get('/', checkAuthenticated, async (req, res, next) => {
+orderRouter.get("/", checkAuthenticated, async (req, res, next) => {
   try {
-    const dbResp = await Order.findAll({
-      where: { userId: req.user.id }
-    });
-    res.status(200).send(dbResp);
+    const response = await getOrders(req.user.id, next);
+    res.status(200).send(response);
+  } catch (err) {
+    next(err);
+  }
+});
+
+//get most recent order
+orderRouter.get("/newest", checkAuthenticated, async (req, res, next) => {
+  try {
+    //There's a bug with sequilize where only one product is being returned
+    //Using findAll() and returning response.data[0] instead of findOne()
+    //bypasses this
+    const response = await getOrders(req.user.id, next);
+    res.status(200).send(response[0]);
   } catch (err) {
     next(err);
   }
@@ -19,28 +89,18 @@ orderRouter.get('/', checkAuthenticated, async (req, res, next) => {
 
 //Get an order and its order items by ID.
 //The order must belong to the logged in user
-orderRouter.get('/:id', checkAuthenticated, async (req, res, next) => {
+orderRouter.get("/:id", checkAuthenticated, async (req, res, next) => {
   try {
     const orderId = req.params.id;
-    const dbResponse = await Order.findOne({
-      where: {
-        id: orderId,
-        userId: req.user.id
-      },
-      include: [{
-        model: OrderItem,
-        required: true
-       }]
-    });
-    console.log(dbResponse)
-    if (!dbResponse) {
-      throw createHttpError(404, `Order with id#${orderId} not found`)
+    const response = await getOrders(req.user.id, next, orderId);
+    if (!response) {
+      throw createHttpError(404, `Order with id#${orderId} not found`);
     } else {
-      res.status(200).send(dbResponse);
+      res.status(200).send(response[0]);
     }
   } catch (err) {
     next(err);
-  }  
+  }
 });
 
 /*
@@ -50,11 +110,12 @@ Update status of order
     "Returning", "Returning-Shipped", "Returned" are all valid options
 }
 */
-orderRouter.put('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
+orderRouter.put("/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {
     const newStatus = req.body.newStatus;
-    if (newStatus !== "Shipped" &&
-      newStatus !== "Complete" && 
+    if (
+      newStatus !== "Shipped" &&
+      newStatus !== "Complete" &&
       newStatus !== "Cancelled" &&
       newStatus !== "On backorder" &&
       newStatus !== "Cancelled" &&
@@ -62,17 +123,21 @@ orderRouter.put('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
       newStatus !== "Returning-Shipped" &&
       newStatus !== "Returned"
     ) {
-      throw createHttpError(400, 'Invalid entry for newStatus');
+      throw createHttpError(400, "Invalid entry for newStatus");
     } else {
       const orderId = req.params.id;
-      const updatedOrder = await Order.update({
-        orderStatus: newStatus
-      }, {
-        where: { id: orderId },
-        returning: true
-      });
-      if (updatedOrder[1].length === 0) { //If no order was found
-        throw createHttpError(404, `Unable to find order with id#${orderId}`)
+      const updatedOrder = await Order.update(
+        {
+          orderStatus: newStatus,
+        },
+        {
+          where: { id: orderId },
+          returning: true,
+        }
+      );
+      if (updatedOrder[1].length === 0) {
+        //If no order was found
+        throw createHttpError(404, `Unable to find order with id#${orderId}`);
       }
       res.status(200).send(`Updated order status to ${newStatus}`);
     }
@@ -82,26 +147,29 @@ orderRouter.put('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
 });
 
 //Delete order and all of its OrderItems
-orderRouter.delete('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
-  try {
-    const idToDelete = req.params.id;
-    const orderToDelete = await Order.findOne({
-      where: { id: idToDelete }
-    });
-    if (!orderToDelete) { 
-      throw createHttpError(404, 'No order with that id was found');
+orderRouter.delete(
+  "/:id",
+  checkAuthenticatedAsAdmin,
+  async (req, res, next) => {
+    try {
+      const idToDelete = req.params.id;
+      const orderToDelete = await Order.findOne({
+        where: { id: idToDelete },
+      });
+      if (!orderToDelete) {
+        throw createHttpError(404, "No order with that id was found");
+      }
+      await OrderItem.destroy({
+        where: { orderId: idToDelete },
+      });
+      await Order.destroy({
+        where: { id: idToDelete },
+      });
+      res.status(200).send(`Deleted order#${idToDelete}`);
+    } catch (err) {
+      next(err);
     }
-    await OrderItem.destroy({
-      where: { orderId: idToDelete }
-    });
-    await Order.destroy({
-      where: { id: idToDelete }
-    });
-    res.status(200).send(`Deleted order#${idToDelete}`)
   }
-  catch (err) {
-    next(err);
-  }
-});
+);
 
 module.exports = orderRouter;

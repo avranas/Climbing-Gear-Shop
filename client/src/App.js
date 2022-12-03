@@ -6,7 +6,6 @@ import HomePage from './routes/HomePage/HomePage';
 import RegisterPage from './routes/FormPage/RegisterPage';
 import LoginPage from './routes/FormPage/LoginPage';
 import ProductListPage from './routes/ProductListPage/ProductListPage';
-import ProfilePage from './routes/ProfilePage/ProfilePage';
 import Notification from './components/Notification/Notification';
 import { useSelector } from 'react-redux';
 import { selectNotifications } from './slices/notificationSlice';
@@ -20,6 +19,8 @@ import ProductPage from './routes/ProductPage/ProductPage';
 import Cart from './routes/Cart/Cart';
 import Checkout from './routes/FormPage/Checkout/Checkout';
 import OrderPlaced from './routes/OrderPlaced/OrderPlaced';
+import OrdersList from './routes/OrderListPage/OrderListPage';
+import OrderDetailsPage from './routes/OrderDetailsPage/OrderDetailsPage';
 
 function App() {
 
@@ -42,11 +43,11 @@ function App() {
           element={<DetailedHeader />}
         />
         <Route
-          path='/profile'
+          path='/orders/:page'
           element={<DetailedHeader />}
         />
         <Route
-          path='/products'
+          path='/products/:page'
           element={<DetailedHeader />}
         />
         <Route
@@ -62,6 +63,14 @@ function App() {
           element={<DetailedHeader/>}
         />
         <Route
+          path='/order-placed'
+          element={<DetailedHeader />}
+        />
+        <Route
+          path='/order/:id'
+          element={<DetailedHeader />}
+        />
+        <Route
           path="/checkout"
           element={<SimpleHeader/>}
         />
@@ -75,10 +84,6 @@ function App() {
         />
         <Route
           path='/logout'
-          element={<SimpleHeader />}
-        />
-        <Route
-          path='/order-placed'
           element={<SimpleHeader />}
         />
       </Routes>
@@ -101,11 +106,11 @@ function App() {
           element={<Logout />}
         />
         <Route
-          path="/profile"
-          element={<ProfilePage />}
+          path="/orders/:page"
+          element={<OrdersList />}
         />
         <Route
-          path="/products"
+          path="/products/:page"
           element={<ProductListPage search={searchParams.get("search")} category={searchParams.get("category")}/>}
         />
         <Route
@@ -123,6 +128,10 @@ function App() {
         <Route
           path='/order-placed'
           element={<OrderPlaced />}
+        />
+        <Route
+          path='/order/:id'
+          element={<OrderDetailsPage />}
         />
       </Routes>
       {

@@ -1,0 +1,39 @@
+.direction-button-container {
+  width: 10rem;
+  height: 5rem;
+}
+#directional-buttons {
+  display: flex;
+}
+
+.direction-button {
+  border: solid;
+  font-size: 0.75rem;
+  border-color: #aaaaaa;
+  border-width: 1px;
+  padding: 0.5rem;
+  margin: 1rem;
+  background-color: rgb(255, 255, 255);
+  color: #111111;
+  text-decoration: none;
+  width: 8rem;
+}
+
+.direction-button-disabled {
+  opacity: 0.33;
+}
+
+#prev-active:hover {
+  background-color: #ebebeb;
+}
+
+#next-active:hover {
+  background-color: #ebebeb;
+}
+#prev-active:active {
+  background-color: #cccccc;
+}
+
+#next-active:active {
+  background-color: #cccccc;
+}

@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const newestCartItemSlice = createSlice({
   name: "newestCartItem",
   initialState: {
-    newestCartItem: {
+    data: {
       productId: 0,
       optionSelection: '',
       quantity: 0
@@ -11,11 +11,11 @@ const newestCartItemSlice = createSlice({
   },
   reducers: {
     setNewestCartItem(state, action) {
-      state.newestCartItem = action.payload;
+      state.data = action.payload;
     }
   }
 });
 
-export const selectNewestCartItem = (state) => state.newestCartItem.newestCartItem;
+export const selectNewestCartItem = (state) => state.newestCartItem.data;
 export const { setNewestCartItem } = newestCartItemSlice.actions;
 export default newestCartItemSlice.reducer;

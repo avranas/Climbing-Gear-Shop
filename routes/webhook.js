@@ -2,7 +2,6 @@ const stripe = require("stripe");
 const express = require("express");
 const getUserCartData = require("./getUserCartData");
 const User = require("../models/users");
-const { col } = require("sequelize");
 const ProductOption = require("../models/productOptions");
 const Order = require("../models/orders");
 const CartItem = require("../models/cartItems");
@@ -27,14 +26,12 @@ stripeWebhook.post(
     // Handle the event
     switch (event.type) {
       case 'checkout.session.expired':
-        console.log('Session expired')
         //Checkout session expired without payment. Increase amount in stock.
         const userId = event.data.object.metadata.userId;
         const cart = await getUserCartData(userId, next);
         await Promise.all(
           cart.map(async (i) => {
-            console.log(`restoring ${i.product} by ${i.quantity}`)
-            await ProductOption.increment(
+            ProductOption.increment(
               {
                 amountInStock: i.quantity,
               },
@@ -44,16 +41,12 @@ stripeWebhook.post(
         );
         break;
       case 'charge.succeeded':
-        console.log('2')
         break;
       case 'payment_intent.succeeded':
-        console.log('1')
         break;
       case 'payment_intent.created':
-        console.log('3')
         break;
       case "checkout.session.completed": {
-        console.log('4')
         const paymentIntent = event.data.object;
         const userId = paymentIntent.metadata.userId;
         const grandTotal = paymentIntent.amount_total;
@@ -64,7 +57,6 @@ stripeWebhook.post(
         );
         const newOrderItems = [];
         const cart = await getUserCartData(userId, next);
-
         //Create a new Order and get its ID
         const newOrder = await Order.create(
           {
@@ -79,13 +71,13 @@ stripeWebhook.post(
             deliveryState: shippingAddress.state,
             deliveryZipCode: shippingAddress.postal_code,
             deliveryCountry: shippingAddress.country,
+            shippingFeeCharged: paymentIntent.total_details.amount_shipping,
             timeCreated: Date.now()
           },
           {
             returning: true,
           }
         );
-
         //For each item in the cart, create a new OrderItem
         cart.forEach((i) => {
           const newOrderItem = {
@@ -112,19 +104,6 @@ stripeWebhook.post(
           },
           { where: { id: userId } }
         );
-
-        //Update each product's amount in stock
-        // await Promise.all(
-        //   cart.map(async (i) => {
-        //     await ProductOption.increment(
-        //       {
-        //         amountInStock: i.quantity * -1,
-        //       },
-        //       { where: { id: i.product.productOptions[0].id } }
-        //     );
-        //   })
-        // );
-
         break;
       }
       default:

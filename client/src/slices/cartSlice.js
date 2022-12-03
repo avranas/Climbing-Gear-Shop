@@ -114,49 +114,45 @@ const getCartFromLocalStorage = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cart: {
+    data: {
       cartItems: [],
       itemCount: -1,
       subTotal: 0,
-      isLoading: false,
-      hasError: false
     },
+    isLoading: false,
+    hasError: false
   },
   reducers: {
   },
   extraReducers: {
     [getCartFromServer.pending]: (state, action) => {
-      state.cart.isLoading = true;
-      state.cart.hasError = false;
+      state.isLoading = true;
+      state.hasError = false;
     },
     [getCartFromServer.fulfilled]: (state, action) => {
-      state.cart.cartItems = action.payload.cartItems;
-      state.cart.itemCount = action.payload.itemCount;
-      state.cart.subTotal = action.payload.subTotal;
-      state.cart.isLoading = false;
-      state.cart.hasError = false;
+      state.data = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
     },
     [getCartFromServer.rejected]: (state, action) => {
-      state.cart.isLoading = false;
-      state.cart.hasError = true;
+      state.isLoading = false;
+      state.hasError = true;
     },
     [getCartFromLocalStorage.pending]: (state, action) => {
-      state.cart.isLoading = true;
-      state.cart.hasError = false;
+      state.isLoading = true;
+      state.hasError = false;
     },
     [getCartFromLocalStorage.fulfilled]: (state, action) => {
-      state.cart.cartItems = action.payload.cartItems;
-      state.cart.itemCount = action.payload.itemCount;
-      state.cart.subTotal = action.payload.subTotal;
-      state.cart.isLoading = false;
-      state.cart.hasError = false;
+      state.data = action.payload;
+      state.isLoading = false;
+      state.hasError = false;
     },
     [getCartFromLocalStorage.rejected]: (state, action) => {
-      state.cart.isLoading = false;
-      state.cart.hasError = true;
+      state.isLoading = false;
+      state.hasError = true;
     },
   },
 });
 
-export const selectCart = (state) => state.cart.cart;
+export const selectCart = (state) => state.cart;
 export default cartSlice.reducer;

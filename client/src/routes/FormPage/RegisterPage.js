@@ -11,14 +11,12 @@ const RegisterPage = (props) => {
   const dispatch = useDispatch();
 
   const [userEmailInput, setUserEmailInput] = useState("");
-  const [firstNameInput, setFirstNameInput] = useState("");
-  const [lastNameInput, setLastNameInput] = useState("");
+  const [nameInput, setNameInput] = useState("");
   const [passwordInputA, setPasswordInputA] = useState("");
   const [passwordInputB, setPasswordInputB] = useState("");
 
   const [emailError, setEmailError] = useState(null);
-  const [firstNameError, setFirstNameError] = useState(null);
-  const [lastNameError, setLastNameError] = useState(null);
+  const [nameError, setNameError] = useState(null);
   const [passwordAError, setPasswordAError] = useState(null);
   const [passwordBError, setPasswordBError] = useState(null);
 
@@ -26,14 +24,9 @@ const RegisterPage = (props) => {
     setUserEmailInput(e.target.value);
   };
 
-  const handleFirstNameChange = (e) => {
-    setFirstNameInput(e.target.value);
-    setFirstNameError(null);
-  };
-
-  const handleLastNameChange = (e) => {
-    setLastNameInput(e.target.value);
-    setLastNameError(null);
+  const handleNameChange = (e) => {
+    setNameInput(e.target.value);
+    setNameError(null);
   };
 
   const handlePasswordAChange = (e) => {
@@ -96,12 +89,8 @@ const RegisterPage = (props) => {
         setPasswordBError("Both passwords must match");
         errorFound = true;
       }
-      if (!firstNameInput) {
-        setFirstNameError("This field is required");
-        errorFound = true;
-      }
-      if (!lastNameInput) {
-        setLastNameError("This field is required");
+      if (!nameInput) {
+        setNameError("This field is required");
         errorFound = true;
       }
       if (errorFound) {
@@ -109,8 +98,7 @@ const RegisterPage = (props) => {
       }
       const requestBody = {
         userEmail: userEmailInput,
-        firstName: firstNameInput,
-        lastName: lastNameInput,
+        name: nameInput,
         password: passwordInputA,
       };
 
@@ -128,7 +116,6 @@ const RegisterPage = (props) => {
 
         return;
       }
-      console.log("Oh no an error occured :(");
       console.log(err);
       return err;
     }
@@ -195,7 +182,7 @@ const RegisterPage = (props) => {
       try {
         // const response = await axios('/authenticated');
         // if (response.data) {
-        //  navigate('/profile');
+        //  navigate('/orders');
         // }
       } catch (err) {
         console.log(err);
@@ -240,29 +227,12 @@ const RegisterPage = (props) => {
               type="text"
               id="first-name"
               name="first-name"
-              onChange={handleFirstNameChange}
+              onChange={handleNameChange}
             />
-            {firstNameError && (
+            {nameError && (
               <div className="input-error-box">
                 <img alt="error" src={redX} />
-                <p>{firstNameError}</p>
-              </div>
-            )}
-          </div>
-          <div className="input-item">
-            <label className="form-label" htmlFor="last-name">Last name</label>
-            <input
-              className="form-control"
-              onKeyUp={handleKeyPress}
-              type="text"
-              id="last-name"
-              name="last-name"
-              onChange={handleLastNameChange}
-            />
-            {lastNameError && (
-              <div className="input-error-box">
-                <img alt="error" src={redX} />
-                <p>{lastNameError}</p>
+                <p>{nameError}</p>
               </div>
             )}
           </div>

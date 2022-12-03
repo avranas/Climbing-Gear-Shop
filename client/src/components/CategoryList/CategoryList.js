@@ -10,37 +10,37 @@ import './CategoryList.css';
 const CategoryList = (props) => {
 
   const linkStyle = {
-    color: 'black',
+    color: 'rgb(48, 53, 73)',
     textDecoration: 'none'
   };
 
   return (
     <div id="category-list" className="container d-flex justify-content-around flex-wrap">
-      <Link to="/products?category=shoes" style={linkStyle}>
+      <Link to="/products/0?category=shoes" style={linkStyle}>
         <div className="category-box styled-box styled-link-box">
           <img src={shoesPic} alt="shoes"/>
           <p>Shoes</p>
         </div>
       </Link>
-      <Link to="/products?category=harnesses" style={linkStyle}>
+      <Link to="/products/0?category=harnesses" style={linkStyle}>
         <div className="category-box styled-box styled-link-box">
           <img src={harnessPic} alt="harnesses" />
           <p>Harnesses</p>
         </div>
       </Link>
-      <Link to="/products?category=ropes" style={linkStyle}>
+      <Link to="/products/0?category=ropes" style={linkStyle}>
         <div className="category-box styled-box styled-link-box">
           <img src={ropePic} alt="ropes"/>
           <p>Ropes</p>
         </div>
       </Link>
-      <Link to="/products?category=hardware" style={linkStyle}>
+      <Link to="/products/0?category=hardware" style={linkStyle}>
         <div className="category-box styled-box styled-link-box">
           <img src={carabinerPic} alt="hardware"/>
           <p>Hardware</p>
         </div>
       </Link>
-      <Link to="/products?category=chalk" style={linkStyle}>
+      <Link to="/products/0?category=chalk" style={linkStyle}>
         <div className="category-box styled-box styled-link-box">
           <img src={chalkPic} alt="chalk"/>
           <p>Chalk</p>

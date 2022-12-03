@@ -25,10 +25,10 @@ const ProductPage = (props) => {
   const [lowOnStockWarning, setLowOnStockWarning] = useState("");
   const [options, setOptions] = useState([]);
   const product = useSelector(selectProduct);
+  const productData = product.data;
   const [addedToCartWindowOpen, setAddedToCartWindowOpen] = useState(false);
   const [quantityDisabled, setQuantityDisabled] = useState(true);
   const quantitySelectRef = useRef();
-
 
 
   const addToCart = async () => {
@@ -46,7 +46,7 @@ const ProductPage = (props) => {
     try {
       const newCartItem = {
         quantity: quantitySelectRef.current.getSelection(),
-        productId: product.id,
+        productId: productData.id,
         optionSelection: optionSelection,
       };
       //If the user is logged in, store cart data in the server,
@@ -133,7 +133,7 @@ const ProductPage = (props) => {
 
   //Update product information when optionSelection changes
   useEffect(() => {
-    const foundOption = product.productOptions.find(
+    const foundOption = productData.productOptions.find(
       (i) => i.option === optionSelection
     );
     //This will happen when the page is loading
@@ -160,7 +160,7 @@ const ProductPage = (props) => {
     }
     //Erase missing selection error if there is one
     setMissingSelectionError("");
-  }, [optionSelection, setOutOfStockError, product.productOptions]);
+  }, [optionSelection, setOutOfStockError, productData.productOptions]);
 
   useEffect(() => {
     //load product data on page load
@@ -170,7 +170,7 @@ const ProductPage = (props) => {
   useEffect(() => {
     //Load options from productSlice, sort it, then display it on the page
     let newOptions = [];
-    product.productOptions.map((i) => {
+    productData.productOptions.map((i) => {
       return newOptions.push(i.option);
     });
     //Sort options. They will want to be sorted differently based on its option type
@@ -178,7 +178,7 @@ const ProductPage = (props) => {
     if (!isNaN(newOptions[0])) {
       newOptions.sort((a, b) => a - b);
     } else {
-      switch (product.optionType) {
+      switch (productData.optionType) {
         //Sort these reverse-alphabetically
         case 'Size':
           newOptions.sort((a, b) => b.localeCompare(a))
@@ -192,14 +192,14 @@ const ProductPage = (props) => {
     }
     newOptions.unshift("Select");
     setQuantityDisabled(true);
-    if(product.productOptions.length === 1) {
+    if(productData.productOptions.length === 1) {
       setOptionSelection(newOptions[1]);
       setQuantityDisabled(false);
     } else {
       setOptionSelection(newOptions[0]);
     }
     setOptions(newOptions);
-  }, [product.productOptions, product.optionType]);
+  }, [productData.productOptions, productData.optionType]);
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -220,7 +220,10 @@ const ProductPage = (props) => {
           <AddedToCartWindow closeWindow={closeWindow} />
         </div>
       )}
-      {product.isLoading ? (
+      {
+        !product ? (
+        <h2>404 Error - Product ID not found</h2>)
+      : product.isLoading ? (
         <p>Loading...</p>
       ) : (
         <div id="product"
@@ -228,20 +231,20 @@ const ProductPage = (props) => {
           <div id="product-image" className="col-4">
             <img
               alt="product"
-              src={`${process.env.REACT_APP_SERVER_URL}/images/${product.largeImageFile}`}
+              src={`${process.env.REACT_APP_SERVER_URL}/images/${productData.largeImageFile}`}
             />
           </div>
           <div className="col-1"></div>
           <div id="product-info" className="col-6">
-            <h3>{product.productName}</h3>
-            <p>{product.brandName}</p>
-            <p>{product.description}</p>
+            <h3>{productData.productName}</h3>
+            <p>{productData.brandName}</p>
+            <p>{productData.description}</p>
             <div id="price">
-              {product.highestPrice === product.lowestPrice ? (
-                <p>{penniesToUSD(product.lowestPrice)}</p>
+              {productData.highestPrice === productData.lowestPrice ? (
+                <p>{penniesToUSD(productData.lowestPrice)}</p>
               ) : optionSelection === options[0] ? (
-                <p>{`${penniesToUSD(product.lowestPrice)} - ${penniesToUSD(
-                  product.highestPrice
+                <p>{`${penniesToUSD(productData.lowestPrice)} - ${penniesToUSD(
+                  productData.highestPrice
                 )}`}</p>
               ) : (
                 <p>{penniesToUSD(displayPrice)}</p>
@@ -249,10 +252,10 @@ const ProductPage = (props) => {
             </div>
               <div id="options">
               {
-                product.productOptions.length > 1 &&
+                productData.productOptions.length > 1 &&
                 <div className="option-box">
-                  <label className="option-label" htmlFor={product.optionType}>
-                    {product.optionType}
+                  <label className="option-label" htmlFor={productData.optionType}>
+                    {productData.optionType}
                   </label>
                   <br />
                   <select

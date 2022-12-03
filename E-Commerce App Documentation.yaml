@@ -89,8 +89,7 @@ paths:
                   value:
                     id: 7
                     userEmail: avranas42@gmail.com
-                    firstName: Alex
-                    lastName: Vranas
+                    name: Alex Vranas
                     address: 24 Willie Mays Plaza
                     San Francisco: null
                     CA 94107: null
@@ -117,7 +116,7 @@ paths:
               examples:
                 Success:
                   value: >-
-                    {"firstName":"Alex","lastName":"Vranas","homeAddress":"24 Willie
+                    {"name":"Alex Vranas","homeAddress":"24 Willie
                     Mays Plaza, San Francisco, CA 94107"}
           description: ""
         default:
@@ -158,8 +157,7 @@ paths:
                   value:
                     id: 7
                     userEmail: avranas42@gmail.com
-                    firstName: Alex
-                    lastName: Vranas
+                    name: Alex Vranas
                     address: 24 Willie Mays Plaza
                     San Francisco: null
                     CA 94107: null

@@ -3,44 +3,31 @@ import { createSlice } from "@reduxjs/toolkit";
 const userSlice = createSlice({
   name: "user",
   initialState: {
-    user: {
-      userEmail: null,
-      firstName: null,
-      lastName: null,
-      homeAddress: null,
-      rewardsPoints: null,
-      loggedIn: false
-    },
+    userEmail: "",
+    name: "",
+    homeAddress: "",
+    rewardsPoints: ""
   },
   reducers: {
     loadUserData(state, action){
       const payload = action.payload;
-      const user = state.user;
-      user.userEmail = payload.userEmail;
-      user.firstName = payload.firstName;
-      user.lastName = payload.lastName;
-      user.homeAddress = payload.homeAddress;
-      user.rewardsPoints = payload.rewardsPoints;
+      state.userEmail = payload.userEmail;
+      state.name = payload.name;
+      state.homeAddress = payload.homeAddress;
+      state.rewardsPoints = payload.rewardsPoints;
     },
     eraseUserData(state, action){
-      const user = state.user;
-      user.userEmail = null;
-      user.firstName = null;
-      user.lastName = null;
-      user.homeAddress = null;
-      user.rewardsPoints = null;
+      state.userEmail = "";
+      state.name = "";
+      state.homeAddress = "";
+      state.rewardsPoints = "";
     },
   },
 });
 
-export const selectUser = (state) => state.user.user;
+export const selectUser = (state) => state.user;
 export const { loadUserData, eraseUserData } = userSlice.actions;
 export default userSlice.reducer;
 
-//TODO: Order success screen - make it better, get latest order using Order.timeCreated
 
-//TODO: Profile page
-  //View orders
-  //Update profile with name, address and shit -- address will automatically be entered in checkout
-
-//TODO: Oauth
+//TODO NEXT: Oauth

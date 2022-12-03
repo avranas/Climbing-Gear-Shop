@@ -98,6 +98,6 @@
 
 .product-card a:hover, .product-card a:visited, .product-card a:link, .product-card a:active
 {
-    text-decoration: none;
-    color: #111111
+  text-decoration: none;
+  color: #111111
 }

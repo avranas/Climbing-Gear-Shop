@@ -11,7 +11,6 @@ export const loadProductList = createAsyncThunk(
         return response.data;
       } else if (search) {
         const response = await axios.get(`/product/search/${search}`);
-        console.log(response.data)
         return response.data;
       } else {
         const response = await axios.get('/product');
@@ -27,27 +26,25 @@ export const loadProductList = createAsyncThunk(
 const productListSlice = createSlice({
   name: "productList",
   initialState: {
-    productList: {
-      listOfProducts: [],
-      isLoading: true,
-      hasError: false,
-    },
+    data: [],
+    isLoading: true,
+    hasError: false,
   },
   reducers: {
     reducers: {
       clearProductList(state, action) {
-        state.productList.listOfProducts = [];
+        state.data = [];
       },
     },
   },
   extraReducers: {
     [loadProductList.pending]: (state, action) => {
-      state.productList.isLoading = true;
-      state.productList.hasError = false;
+      state.isLoading = true;
+      state.hasError = false;
     },
     [loadProductList.fulfilled]: (state, action) => {
-      state.productList.isLoading = false;
-      state.productList.hasError = false;
+      state.isLoading = false;
+      state.hasError = false;
       const payload = action.payload;
       //Go through the productOptions in the payload to find the range of prices
 
@@ -75,16 +72,16 @@ const productListSlice = createSlice({
         }
         newProducts.push(newProduct);
       });
-      state.productList.listOfProducts = newProducts;
+      state.data = newProducts;
     },
     [loadProductList.rejected]: (state, action) => {
-      state.productList.isLoading = false;
-      state.productList.hasError = true;
+      state.isLoading = false;
+      state.hasError = true;
     },
 
   },
 });
 
-export const selectProductList = (state) => state.productList.productList;
+export const selectProductList = (state) => state.productList;
 export const { clearProductList } = productListSlice.actions;
 export default productListSlice.reducer;

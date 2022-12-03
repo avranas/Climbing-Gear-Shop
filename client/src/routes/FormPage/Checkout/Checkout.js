@@ -11,6 +11,7 @@ import redX from "../../../images/red-x.png";
 const Checkout = (props) => {
   const navigate = useNavigate();
   const cart = useSelector(selectCart);
+  const cartData = cart.data;
   const dispatch = useDispatch();
 
   const billingAddressRef = useRef();
@@ -50,26 +51,24 @@ const Checkout = (props) => {
   };
 
   useEffect(() => {
-    //If a user goes back in the Stripe window, their old session should be expired
-
     const checkAuthentication = async () => {
-      console.log(cart);
       const response = await axios("/authenticated");
       if (!response.data) {
         navigate('/');
       }
-      if (cart.itemCount === 0) {
+      if (cartData.itemCount === 0) {
         navigate('/cart');
       }
     };
     checkAuthentication();
     loadCartData(dispatch);
-  }, [navigate, dispatch, cart.itemCount]);
+  }, [navigate, dispatch, cartData.itemCount]);
 
+  //If a user goes back in the Stripe window, their old session should expire
   useEffect(() => {
     const expireStripeSession = async () => {
       try {
-        const response = await axios.put("/user/expire-stripe-session");
+        await axios.put("/user/expire-stripe-session");
       } catch (err) {
         console.log(err);
       }
@@ -158,10 +157,8 @@ const Checkout = (props) => {
       }
       //If there is an error, exit the function here.
       if (errorFound) {
-        console.log("error found :(");
         return;
       }
-      console.log("yay no errors");
       const billingAddress = billingAddressRef.current.getAddressState();
       let shippingAddress = null;
       if (sameAsBillingChecked) {
@@ -270,7 +267,7 @@ const Checkout = (props) => {
             </button>
           </div>
         </div>
-        <OrderSummary subTotal={cart.subTotal} />
+        <OrderSummary subTotal={cartData.subTotal} />
       </div>
     </div>
   );

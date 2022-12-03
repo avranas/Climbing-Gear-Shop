@@ -3,7 +3,10 @@ header {
   width: 100%;
   padding: 1rem;
   box-shadow: 0rem 0rem 0.25rem 0.01rem #d4cbd6;
-  
+}
+
+.header-item {
+  padding: 0 0.5rem 0 0.5rem;
 }
 
 #detailed-header-content {
@@ -56,4 +59,8 @@ header {
   position: absolute;
   top: -1.05rem;
   left: 0.8rem;
+}
+
+#welcome-message {
+  line-height: 0.5rem;
 }

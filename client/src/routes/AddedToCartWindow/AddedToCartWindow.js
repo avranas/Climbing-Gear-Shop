@@ -6,7 +6,7 @@ import './AddedToCartWindow.css';
 const AddedToCart = (props) => {
   
   const newestCartItem = useSelector(selectNewestCartItem);
-  const product = useSelector(selectProduct);
+  const productData = useSelector(selectProduct).data;
 
   return (
     <main className="container">
@@ -20,13 +20,13 @@ const AddedToCart = (props) => {
           <div id="added-to-cart-image">
             <img
               alt="product"
-              src={`${process.env.REACT_APP_SERVER_URL}/images/${product.smallImageFile1}`}
+              src={`${process.env.REACT_APP_SERVER_URL}/images/${productData.smallImageFile1}`}
             />
           </div>
           <div id="added-to-cart-details">
-            <p>{product.brandName}</p>
-            <p>{product.productName}</p>
-            <p>{`${product.optionType}: ${newestCartItem.optionSelection}`}</p>
+            <p>{productData.brandName}</p>
+            <p>{productData.productName}</p>
+            <p>{`${productData.optionType}: ${newestCartItem.optionSelection}`}</p>
             <p>{`Quantity: ${newestCartItem.quantity}`}</p>
             <div id="added-to-cart-buttons">
               <button onClick={props.closeWindow} className="important-button">Continue shopping</button>

@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import penniesToUSD from "../../utils/penniesToUSD";
 //Props are productName, brandName, description, price, and imageURL,
 const ProductCard = (props) => {
-
-
-
+  
   //Renders a card for a single product
   return (
     <div className="product-card styled-box styled-link-box">

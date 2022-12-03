@@ -10,7 +10,7 @@ const HomePage = (props) => {
         <h1>Welcome to the Fake Climbing Gear Shop</h1>
       </div>
       <div id="shop-all-products-button-holder">
-        <Link to="/products">
+        <Link to="/products/0">
           <button className='important-button'>Shop all products</button>
         </Link>
       </div>

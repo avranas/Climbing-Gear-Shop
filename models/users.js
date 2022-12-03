@@ -4,11 +4,11 @@ const db = require('../db/db_setup');
 const User = db.define('users', {
   userEmail: DataTypes.TEXT,
   password: DataTypes.TEXT,
-  firstName: DataTypes.TEXT,
-  lastName: DataTypes.TEXT,
+  name: DataTypes.TEXT,
   homeAddress: DataTypes.TEXT,
   rewardsPoints: DataTypes.INTEGER,
-  checkoutSessionId: DataTypes.TEXT
+  checkoutSessionId: DataTypes.TEXT,
+  githubId: DataTypes.INTEGER
 });
 
 module.exports = User;
