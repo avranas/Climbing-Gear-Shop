@@ -7,6 +7,7 @@ CREATE TABLE users(
   rewardsPoints int, --Get 1 point for every $1 you spend!
   checkoutSessionId text NOT NULL,
   githubId int,
+  googleId text,
   createdAt date,
   updatedAt date
 );

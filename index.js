@@ -46,7 +46,7 @@ app.get(
   "/auth/github/callback",
   passport.authenticate("github", {
     failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
-    successRedirect: `${process.env.CLIENT_URL}/`,
+    successRedirect: `${process.env.CLIENT_URL}/successful-login`,
   })
 );
 
@@ -59,8 +59,8 @@ app.get(
 app.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    successRedirect: "/auth/google/success",
-    failureRedirect: "/auth/google/failure",
+    successRedirect: `${process.env.CLIENT_URL}/successful-login`,
+    failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
   })
 );
 

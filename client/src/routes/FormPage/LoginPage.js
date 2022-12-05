@@ -9,6 +9,8 @@ import { loadCartData } from "../../slices/cartSlice";
 import github from "../../images/github.png";
 import google from "../../images/google.png";
 
+//Next tells the login page where to navigate to after a successful login
+//Error is a code that tells the login page what error page to display to a user
 const LoginPage = ({ next, error }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,7 +53,6 @@ const LoginPage = ({ next, error }) => {
       const userData = await axios.get("/user");
       dispatch({ type: "user/loadUserData", payload: userData.data });
 
-      console.log(next);
       if (next) {
         navigate(`/${next}`);
       } else {
@@ -117,7 +118,6 @@ const LoginPage = ({ next, error }) => {
 
   const loginWithGitHub = async (e) => {
     try {
-      console.log("attemping to log in with github");
       window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/github`;
     } catch (err) {
       console.log(err);
@@ -126,7 +126,6 @@ const LoginPage = ({ next, error }) => {
 
   const loginWithGoogle = async (e) => {
     try {
-      console.log("attemping to log in with google");
       window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/google`;
     } catch (err) {
       console.log(err);

@@ -17,6 +17,7 @@ import Checkout from "./routes/FormPage/Checkout/Checkout";
 import OrderPlaced from "./routes/OrderPlaced/OrderPlaced";
 import OrdersList from "./routes/OrderListPage/OrderListPage";
 import OrderDetailsPage from "./routes/OrderDetailsPage/OrderDetailsPage";
+import SuccessfulLogin from "./routes/SuccessfulLogin";
 
 function App() {
   const [searchParams] = useSearchParams();
@@ -36,10 +37,16 @@ function App() {
           "/cart",
           "/order-placed",
           "/order/:id",
+          "successful-login"
         ].map((path) => (
           <Route key={path} exact path={path} element={<DetailedHeader />} />
         ))}
-        {["/checkout", "/register", "/login", "/logout"].map((path) => (
+        {[
+          "/checkout",
+          "/register",
+          "/login",
+          "/logout"
+      ].map((path) => (
           <Route key={path} exact path={path} element={<SimpleHeader />} />
         ))}
       </Routes>
@@ -71,6 +78,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/order-placed" element={<OrderPlaced />} />
         <Route path="/order/:id" element={<OrderDetailsPage />} />
+        <Route path="/successful-login" element={<SuccessfulLogin />} />
       </Routes>
       {notifications.map((i, key) => (
         <Notification message={i.message} id={i.id} key={key} />

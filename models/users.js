@@ -8,7 +8,8 @@ const User = db.define('users', {
   homeAddress: DataTypes.TEXT,
   rewardsPoints: DataTypes.INTEGER,
   checkoutSessionId: DataTypes.TEXT,
-  githubId: DataTypes.INTEGER
+  githubId: DataTypes.INTEGER,
+  googleId: DataTypes.TEXT
 });
 
 module.exports = User;

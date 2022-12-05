@@ -31,10 +31,6 @@ const DetailedHeader = (props) => {
     loadCartData(dispatch);
     getUserData();
   }, [dispatch]);
-
-  console.log('user.name: ')
-  console.log(user.name)
-
   let firstName = "";
   if (user.name) {
     firstName = user.name.split(" ")[0];

@@ -3,7 +3,6 @@ import './NavigationButtons.css';
 
 //Props are page, 
 const NavigationButtons = (props) => {
-  console.log(props)
   return (
     <div id="directional-buttons">
       <div className="direction-button-container">

@@ -41,6 +41,46 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
   );
     //const findOrCreate()
 
+  const handleOauthResponse = async (externalWebsite, id, email, name, done) => {
+    try {
+      let whereCondition = {};
+      switch(externalWebsite) {
+        case "github":
+          whereCondition = {githubId: id}
+          break;
+        case "google":
+          whereCondition = {googleId: id}
+          break;
+      }
+      //If a user with this github id exists, return this user
+      let userResponse = await User.findOne({
+        where: whereCondition
+      });
+      if (userResponse) {
+        return done(null, userResponse);
+      }
+      //If a user with this github id does not exist, I want to create a new user
+      //If a user with the same email already exists, return an error
+      userResponse = await User.findOne({
+        where: {userEmail : email}
+      })
+      if (userResponse) {
+        return done(null, false);
+      }
+      const response = await User.findOrCreate({
+        where: whereCondition,
+        defaults: {
+          name: name,
+          userEmail: email,
+          rewardsPoints: 0
+        }
+      });
+      return done(null, response[0]);
+    } catch (err) {
+      console.log(err);
+      return done(err, false);
+    }
+  }
 
   passport.use(
     new GitHubStrategy(
@@ -50,38 +90,39 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         callbackURL: process.env.GITHUB_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
-        try {
-          //If a user with this github id exists, return this user
-          let userResponse = await User.findOne({
-            where: { githubId: profile.id }
-          });
-          if (userResponse) {
-            return done(null, userResponse);
-          }
-          //If a user with this github id does not exist, I want to create a new user
-          //If a user with the same email already exists, return an error
-          const gitHubEmail = profile.emails[0].value;
-          userResponse = await User.findOne({
-            where: {userEmail : gitHubEmail}
-          })
-          if (userResponse) {
-            return done(null, false);
-          }
-          const response = await User.findOrCreate({
-            where: { githubId: profile.id },
-            defaults: {
-              name: profile.displayName,
-              userEmail: gitHubEmail,
-              rewardsPoints: 0
-            }
-          });
-          return done(null, response[0]);
+        await handleOauthResponse("github", profile.id, profile.emails[0].value, profile.displayName, done);
+      //   try {
+      //     //If a user with this github id exists, return this user
+      //     let userResponse = await User.findOne({
+      //       where: { githubId: profile.id }
+      //     });
+      //     if (userResponse) {
+      //       return done(null, userResponse);
+      //     }
+      //     //If a user with this github id does not exist, I want to create a new user
+      //     //If a user with the same email already exists, return an error
+      //     const externalEmail = profile.emails[0].value;
+      //     userResponse = await User.findOne({
+      //       where: {userEmail : externalEmail}
+      //     })
+      //     if (userResponse) {
+      //       return done(null, false);
+      //     }
+      //     const response = await User.findOrCreate({
+      //       where: { githubId: profile.id },
+      //       defaults: {
+      //         name: profile.displayName,
+      //         userEmail: externalEmail,
+      //         rewardsPoints: 0
+      //       }
+      //     });
+      //     return done(null, response[0]);
           
-        } catch (err) {
-          console.log(err);
-          return done(err, false);
-        }
-      }
+      //   } catch (err) {
+      //     console.log(err);
+      //     return done(err, false);
+      //   }
+       }
     )
   );
 
@@ -95,16 +136,9 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         callbackURL: process.env.GOOGLE_CALLBACK_URL,
         passReqToCallback: true,
       },
-      function (request, accessToken, refreshToken, profile, done) {
+      async (request, accessToken, refreshToken, profile, done) => {
+        await handleOauthResponse("google", profile.id, profile.email, profile.displayName, done);
         console.log("find user here");
-        console.log(profile)
-        const name = profile.displayName;
-
-        const email = profile.email;
-        console.log(name, email)
-        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        //   return done(err, user);
-        // });
       }
     )
   );
@@ -134,6 +168,3 @@ initializePassport(
 );
 
 module.exports = passport;
-
-//TODO: Finish Oauth with google. Fuck cors
-//TODO: Notification after login with oauth? Is this possible? :(
