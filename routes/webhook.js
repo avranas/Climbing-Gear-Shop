@@ -28,7 +28,7 @@ stripeWebhook.post(
       case 'checkout.session.expired':
         //Checkout session expired without payment. Increase amount in stock.
         const userId = event.data.object.metadata.userId;
-        const cart = await getUserCartData(userId, next);
+        const cart = await getUserCartData(userId);
         await Promise.all(
           cart.map(async (i) => {
             ProductOption.increment(
@@ -56,7 +56,7 @@ stripeWebhook.post(
           paymentIntent.metadata.shippingAddress
         );
         const newOrderItems = [];
-        const cart = await getUserCartData(userId, next);
+        const cart = await getUserCartData(userId);
         //Create a new Order and get its ID
         const newOrder = await Order.create(
           {

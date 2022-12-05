@@ -10,71 +10,67 @@ const OrderItem = require("../models/orderItems");
 const Product = require("../models/products");
 
 //orderId is optional
-const getOrders = async (userId, next, orderId) => {
-  try {
-    let whereOptions = null;
-    if (orderId) {
-      whereOptions = {
-        userId: userId,
-        id: orderId
-      }
-    } else {
-      whereOptions = {
-        userId: userId
-      }
+const getOrders = async (userId, orderId) => {
+  let whereOptions = null;
+  if (orderId) {
+    whereOptions = {
+      userId: userId,
+      id: orderId
     }
-    console.log(userId)
-    const response = await Order.findAll({
-      where: whereOptions,
-      order: [["timeCreated", "DESC"]],
-      attributes: [
-        "deliveryCity",
-        "deliveryCountry",
-        "deliveryState",
-        "deliveryStreetAddress1",
-        "deliveryStreetAddress2",
-        "deliveryZipCode",
-        "totalPrice",
-        "taxCharged",
-        "shippingFeeCharged",
-        "subTotal",
-        "timeCreated",
-        "orderStatus",
-        "id"
-      ],
-      include: [
-        {
-          model: OrderItem,
-          as: "orderItems",
-          required: true,
-          attributes: ["optionSelection", "price", "quantity"],
-          include: [
-            {
-              model: Product,
-              required: true,
-              attributes: [
-                "id",
-                "brandName",
-                "optionType",
-                "productName",
-                "smallImageFile1",
-              ],
-            },
-          ],
-        },
-      ],
-      subQuery: false,
-    });
-    return response;
-  } catch (err) {
-    next(err);
+  } else {
+    whereOptions = {
+      userId: userId
+    }
   }
+  console.log(userId)
+  const response = await Order.findAll({
+    where: whereOptions,
+    order: [["timeCreated", "DESC"]],
+    attributes: [
+      "deliveryCity",
+      "deliveryCountry",
+      "deliveryState",
+      "deliveryStreetAddress1",
+      "deliveryStreetAddress2",
+      "deliveryZipCode",
+      "totalPrice",
+      "taxCharged",
+      "shippingFeeCharged",
+      "subTotal",
+      "timeCreated",
+      "orderStatus",
+      "id"
+    ],
+    include: [
+      {
+        model: OrderItem,
+        as: "orderItems",
+        required: true,
+        attributes: ["optionSelection", "price", "quantity"],
+        include: [
+          {
+            model: Product,
+            required: true,
+            attributes: [
+              "id",
+              "brandName",
+              "optionType",
+              "productName",
+              "smallImageFile1",
+            ],
+          },
+        ],
+      },
+    ],
+    subQuery: false,
+  });
+  return response;
 }
 
 //Get all of a user's orders
 orderRouter.get("/", checkAuthenticated, async (req, res, next) => {
   try {
-    const response = await getOrders(req.user.id, next);
+    const response = await getOrders(req.user.id);
     res.status(200).send(response);
   } catch (err) {
     next(err);
@@ -87,7 +83,7 @@ orderRouter.get("/newest", checkAuthenticated, async (req, res, next) => {
     //There's a bug with sequilize where only one product is being returned
     //Using findAll() and returning response.data[0] instead of findOne()
     //bypasses this
-    const response = await getOrders(req.user.id, next);
+    const response = await getOrders(req.user.id);
     res.status(200).send(response[0]);
   } catch (err) {
     next(err);
@@ -99,7 +95,7 @@ orderRouter.get("/newest", checkAuthenticated, async (req, res, next) => {
 orderRouter.get("/:id", checkAuthenticated, async (req, res, next) => {
   try {
     const orderId = req.params.id;
-    const response = await getOrders(req.user.id, next, orderId);
+    const response = await getOrders(req.user.id, orderId);
     if (!response) {
       throw createHttpError(404, `Order with id#${orderId} not found`);
     } else {

@@ -156,36 +156,32 @@ userRouter.put('/', checkAuthenticated, async (req, res, next) => {
   }
 });
 
-const deleteUser = async (userId, next) => {
-  try {
-    //Delete the user's cart items
-     await CartItem.destroy({
-       where: { userId: userId }
-     });
-
-     const orders = await Order.findAll({
-       where: {userId: userId}
-     })
-     await Promise.all(orders.map(async i => {
-       OrderItem.destroy({
-        where: {orderId: i.id}
-       });
-     }));
-     await Order.destroy({
+const deleteUser = async (userId) => {
+  //Delete the user's cart items
+    await CartItem.destroy({
       where: { userId: userId }
     });
-    await User.destroy({
-      where: { id: userId }
-    });
-  } catch (err) {
-    next(err);
-  }
+
+    const orders = await Order.findAll({
+      where: {userId: userId}
+    })
+    await Promise.all(orders.map(async i => {
+      OrderItem.destroy({
+      where: {orderId: i.id}
+      });
+    }));
+    await Order.destroy({
+    where: { userId: userId }
+  });
+  await User.destroy({
+    where: { id: userId }
+  });
 }
 
 //Delete own user account if logged in
 userRouter.delete('/', checkAuthenticated, async (req, res, next) => {
   try {
-    await deleteUser(req.user.id, next);
+    await deleteUser(req.user.id);
     res.status(200).send('Your account has been deleted');
   } catch (err) {
     next(err);
@@ -206,7 +202,7 @@ userRouter.delete('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
       throw createHttpError(404, 'No user with that id was found');
     }
     console.log(userIdToDelete)
-    await deleteUser(userToDelete.id, next);
+    await deleteUser(userToDelete.id);
     res.status(200).send(`User with id ${userIdToDelete} has been deleted`);
   } catch (err) {
     next(err);

@@ -10,51 +10,46 @@ const ProductOption = require("../models/productOptions");
 const getUserCartData = require("./getUserCartData");
 
 
-const performChecks = async (body, next) => {
-  try {
-      //quantity, productId and optionSelection are required
-    if (body.productId === undefined) {
-      throw createHttpError(400, 'Body needs a "productId"');
-    }
-    if (body.quantity === undefined) {
-      throw createHttpError(400, 'Body needs a "quantity"');
-    }
-    if (body.optionSelection === undefined) {
-      throw createHttpError(400, 'Body needs an "optionSelection"');
-    }
-    //Quantity can only be in a range from 1 to 99
-    if (body.quantity < 0 || body.quantity > 99) {
-      throw createHttpError(
-        400,
-        "Quantity is out of range. It must be between 0 and 99"
-      );
-    }
-    //Check if the product actually exists
-    const product = await Product.findOne({
-      where: {
-        id: body.productId,
+const performChecks = async (body) => {
+  //quantity, productId and optionSelection are required
+  if (body.productId === undefined) {
+    throw createHttpError(400, 'Body needs a "productId"');
+  }
+  if (body.quantity === undefined) {
+    throw createHttpError(400, 'Body needs a "quantity"');
+  }
+  if (body.optionSelection === undefined) {
+    throw createHttpError(400, 'Body needs an "optionSelection"');
+  }
+  //Quantity can only be in a range from 1 to 99
+  if (body.quantity < 0 || body.quantity > 99) {
+    throw createHttpError(
+      400,
+      "Quantity is out of range. It must be between 0 and 99"
+    );
+  }
+  //Check if the product actually exists
+  const product = await Product.findOne({
+    where: {
+      id: body.productId,
+    },
+    include: [
+      {
+        where: {option: body.optionSelection},
+        attributes: ["amountInStock"],
+        model: ProductOption, as: "productOptions"
       },
-      include: [
-        {
-          where: {option: body.optionSelection},
-          attributes: ["amountInStock"],
-          model: ProductOption, as: "productOptions"
-        },
-      ],
-    });
-    if (!product) {
-      throw createHttpError(404, "A product with this ID does not exist");
-    }
-
-  } catch (err) {
-    next(err);
+    ],
+  });
+  if (!product) {
+    throw createHttpError(404, "A product with this ID does not exist");
   }
 }
 
 //Get current user's shopping cart
 cartRouter.get("/", checkAuthenticated, async (req, res, next) => {
   try {
-    const cartData = await getUserCartData(req.user.id, next);
+    const cartData = await getUserCartData(req.user.id);
     if (cartData.length === 0) {
       res.status(200).send([]);
     } else {
@@ -79,8 +74,8 @@ cartRouter.post('/', checkAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const userId = req.user.id;
-    performChecks(body, next);
-    const cartData = await getUserCartData(userId, next);
+    performChecks(body);
+    const cartData = await getUserCartData(userId);
     const foundProduct = cartData.find(
       (i) =>
         i.productId === Number(body.productId) &&
@@ -151,7 +146,7 @@ cartRouter.put("/", checkAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const userId = req.user.id;
-    performChecks(body, next);
+    performChecks(body);
 
     //If quantity === 0, remove from the cart
     if (body.quantity === 0) {
@@ -169,7 +164,7 @@ cartRouter.put("/", checkAuthenticated, async (req, res, next) => {
         );
       return;
     }
-    const cartData = await getUserCartData(userId, next);
+    const cartData = await getUserCartData(userId);
     const foundProduct = cartData.find(
       (i) =>
         i.productId === Number(body.productId) &&

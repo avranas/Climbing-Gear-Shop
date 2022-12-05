@@ -6,7 +6,8 @@ import "./FormPage.css";
 import { createNotification } from "../../slices/notificationSlice";
 import axios from "axios";
 import { loadCartData } from "../../slices/cartSlice";
-import github from '../../images/github.png';
+import github from "../../images/github.png";
+import google from "../../images/google.png";
 
 const LoginPage = ({ next, error }) => {
   const dispatch = useDispatch();
@@ -87,12 +88,12 @@ const LoginPage = ({ next, error }) => {
   useEffect(() => {
     switch (error) {
       case "1":
-        setInvalidLoginError(`A user with that email already exists`)
+        setInvalidLoginError(`A user with that email already exists`);
         break;
       default:
         break;
     }
-  }, [error])
+  }, [error]);
 
   useEffect(() => {
     const checkAuthentication = async () => {
@@ -116,15 +117,21 @@ const LoginPage = ({ next, error }) => {
 
   const loginWithGitHub = async (e) => {
     try {
-      console.log('attemping to log in with github')
-      const response = await axios.get('http://localhost:3000/auth/github');
-      console.log(response)
-      window.location.href = response.data;
-      
+      console.log("attemping to log in with github");
+      window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/github`;
     } catch (err) {
       console.log(err);
     }
-  }
+  };
+
+  const loginWithGoogle = async (e) => {
+    try {
+      console.log("attemping to log in with google");
+      window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/google`;
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <main className="container form-page form-header-wrap styled-box">
@@ -186,9 +193,16 @@ const LoginPage = ({ next, error }) => {
         )}
       </div>
       <h3>Or login using:</h3>
-      <button className="oauth-button" id="github" onClick={loginWithGitHub}>
-        <img alt="github" src={github}/>
-      </button>
+      <div id="oauth-buttons">
+        <button className="oauth-button" id="github" onClick={loginWithGitHub}>
+          <img alt="github" src={github} />
+        </button>
+        <button className="oauth-button" id="google" onClick={loginWithGoogle}>
+          <img alt="google" src={google}/>
+        </button>
+      </div>
+{/* 
+      <div id="signInDiv"></div> */}
       <p className="form-page-footer">
         Don't have an account? <Link to="/register">Register</Link>
       </p>

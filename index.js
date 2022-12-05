@@ -8,12 +8,19 @@ const cors = require("cors");
 const morgan = require("morgan");
 const { checkNotAuthenticated } = require("./routes/authentication-check");
 
-app.use(cors());
+app.use(
+  cors({
+    allowedHeaders: ["Content-Type"],
+    origin: "*",
+    preflightContinue: true,
+  })
+);
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: { httpOnly: true, secure: false, maxAge: 24 * 60 * 60 * 1000 },
   })
 );
 app.use(passport.initialize());
@@ -29,23 +36,32 @@ app.use(
   })
 );
 
-app.get("/auth/github", checkNotAuthenticated, (req, res, next) => {
-  passport.authenticate('github', {failWithError: true}),
-  res
-    .status(200)
-    .send(
-      `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}`
-    );
-});
+app.get(
+  "/auth/github",
+  checkNotAuthenticated,
+  passport.authenticate("github", { scope: ["user:email"] })
+);
 
 app.get(
   "/auth/github/callback",
   passport.authenticate("github", {
     failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
     successRedirect: `${process.env.CLIENT_URL}/`,
-  }), (req, res, next) => {
-    res.status(400).send('?????')
-  }
+  })
+);
+
+app.get(
+  "/auth/google",
+  checkNotAuthenticated,
+  passport.authenticate("google", { scope: ["email", "profile"] })
+);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/auth/google/success",
+    failureRedirect: "/auth/google/failure",
+  })
 );
 
 //Allows us to request images with the "/images" route in the "/assets/images" folder

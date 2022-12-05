@@ -5,7 +5,7 @@ const passport = require('../passport-config');
 
 loginRouter.post('/',
   checkNotAuthenticated,
-  passport.authenticate('local', {failWithError: true}),
+  passport.authenticate('local'),
   (req, res, next) => {
     res.status(200).send(`You are logged in as ${req.user.userEmail}`)
   }

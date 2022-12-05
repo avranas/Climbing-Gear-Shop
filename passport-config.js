@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const LocalStrategy = require("passport-local").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
+const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 const passport = require("passport");
 const User = require("./models/users");
 const bcrypt = require("bcrypt");
@@ -38,6 +39,9 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
       authenticateUser
     )
   );
+    //const findOrCreate()
+
+
   passport.use(
     new GitHubStrategy(
       {
@@ -80,6 +84,37 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
       }
     )
   );
+
+
+
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: process.env.GOOGLE_CALLBACK_URL,
+        passReqToCallback: true,
+      },
+      function (request, accessToken, refreshToken, profile, done) {
+        console.log("find user here");
+        console.log(profile)
+        const name = profile.displayName;
+
+        const email = profile.email;
+        console.log(name, email)
+        // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        //   return done(err, user);
+        // });
+      }
+    )
+  );
+
+
+
+
+
+
+
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id, done) =>
     done(null, await getUserById(id))
@@ -100,8 +135,5 @@ initializePassport(
 
 module.exports = passport;
 
-
-//TODO: Improve back end error handling by removing all try catch blocks from
-    //middleware functions. This might break things so be careful
-//TODO: Oauth with google?
+//TODO: Finish Oauth with google. Fuck cors
 //TODO: Notification after login with oauth? Is this possible? :(

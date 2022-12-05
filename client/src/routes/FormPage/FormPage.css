@@ -97,10 +97,11 @@
   background-color: white;
   border-width: 1.5px;
   border-radius: 2px;
+  margin: 0 1rem 0 1rem;
 }
 .oauth-button img {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
 }
 
 .oauth-button:hover {

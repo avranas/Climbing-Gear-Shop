@@ -3,12 +3,7 @@ const checkoutRouter = express.Router();
 const createHttpError = require("http-errors");
 const {
   checkAuthenticated,
-  checkAuthenticatedAsAdmin,
 } = require("./authentication-check");
-const Order = require("../models/orders");
-const CartItem = require("../models/cartItems");
-const Product = require("../models/products");
-const OrderItem = require("../models/orderItems");
 const ProductOption = require("../models/productOptions");
 const getUserCartData = require("./getUserCartData");
 const User = require("../models/users");
@@ -19,7 +14,7 @@ checkoutRouter.post(
   checkAuthenticated,
   async (req, res, next) => {
     try {
-      const items = await getUserCartData(req.user.id, next);
+      const items = await getUserCartData(req.user.id);
 
       //Double-check to confirm we have enough of every item in stock
       items.forEach((i) => {
