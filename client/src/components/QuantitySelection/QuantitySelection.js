@@ -33,7 +33,7 @@ const QuantitySelection = forwardRef((props, _ref) => {
 
   return (
     <div>
-      <select
+      <select className="form-select form-select-sm quantity-select"
         onChange={handleChange}
         name="quantity"
         id="quantity"

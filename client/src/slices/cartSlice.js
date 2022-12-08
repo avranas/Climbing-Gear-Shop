@@ -10,6 +10,21 @@ export const loadCartData = async (dispatch) => {
   }
 };
 
+//If there are items in the guest's cart, move the data to
+//the server and clear it in localStorage
+export const moveGuestCartItemsToUserCart = async () => {
+  const guestCart = JSON.parse(localStorage.getItem("guestCart"));
+  if (!guestCart) {
+    return;
+  }
+  await Promise.all(
+    guestCart.map(async (i) => {
+      axios.post("/cart", i);
+    })
+  );
+  localStorage.removeItem("guestCart");
+}
+
 export const changeQuantityInGuestCart = (cartItem, newQuantity) => {
   let guestCart = JSON.parse(localStorage.getItem("guestCart"));
   if (!guestCart) {

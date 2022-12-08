@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import "../QuantitySelection/QuantitySelection.css";
 //For use in the Cart page
 
 //Props are a handleSelection function
@@ -36,7 +36,7 @@ const CartQuantitySelection = (props) => {
   return (
     <div>
       <p className="option-label">Quantity</p>
-      <select
+      <select className="form-select form-select-sm quantity-select"
         onChange={handleChange}
         name="quantity"
         id="quantity"

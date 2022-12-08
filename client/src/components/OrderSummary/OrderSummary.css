@@ -11,6 +11,8 @@
   position: sticky;
   top: 0.5rem;
   margin: 2rem;
+  width: 40%;
+  height: 8rem;
 }
 
 #order-summary td {
@@ -19,4 +21,21 @@
 
 #order-summary thead{
   background-color: #EEEEEE;
+}
+
+@media only screen and (max-width: 992px) { 
+  
+  #order-summary {
+    width: auto;
+    margin: 0 auto;
+    margin-top: 2rem;
+  }
+  
+}
+@media only screen and (max-width: 770px) { 
+  
+  #order-summary {
+    font-size: 0.75rem;
+  }
+  
 }

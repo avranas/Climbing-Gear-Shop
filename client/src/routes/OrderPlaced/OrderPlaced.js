@@ -24,12 +24,12 @@ const OrderPlaced = (props) => {
   }, [dispatch, navigate]);
 
   return (
-    <div className="container col-8" id="order-placed">
+    <div className="container" id="order-placed">
       <div id="order-placed-header">
         <div id="green-checkmark"></div>
         <h2>Thank you, your order has been placed.</h2>
       </div>
-      <table id="receipt" className="col-10">
+      <table id="receipt">
         <colgroup>
           <col span="1" style={{ width: "60%" }} />
           <col span="1" style={{ width: "20%" }} />
@@ -96,7 +96,7 @@ const OrderPlaced = (props) => {
           </tr>
         </tbody>
       </table>
-      <div id="receipt-footer" className="col-8">
+      <div id="receipt-footer">
         {order.data.deliveryStreetAddress2 ? (
           <p>{`Shipping to ${order.data.deliveryStreetAddress1}, ${order.data.deliveryStreetAddress2}, ${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode} ${order.data.deliveryCountry}`}</p>
         ) : (

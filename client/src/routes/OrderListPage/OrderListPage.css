@@ -1,3 +1,12 @@
 #orders-list h2 {
   margin: 2rem;
 }
+
+@media only screen and (max-width: 770px) { 
+  #order-card {
+    width: auto;
+  }
+  #orders-list h2 {
+    text-align: center;
+  }
+}

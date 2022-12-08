@@ -6,12 +6,13 @@
   text-align: center;
 }
 #checkout-body {
+  display: flex;
   justify-content: space-around;
-  align-items: flex-start;
 }
 
 #checkout-form {
-margin: 2rem;
+width: 45%;
+padding: 3rem;
 }
 
 #checkout-page h3{
@@ -72,3 +73,36 @@ margin: 2rem;
 #server-error {
   margin-left: 1rem;
 }
+
+
+
+@media only screen and (max-width: 992px) { 
+  #checkout-body {
+    display: block;
+  }
+  #checkout-form {
+    width: 80%;
+    margin: 0 auto;
+    padding: 4rem;
+    }
+
+}
+
+@media only screen and (max-width: 770px) { 
+  #checkout-form {
+    padding: 2rem;
+    }
+
+}
+
+
+
+@media only screen and (max-width: 512px) { 
+
+  #checkout-form {
+    padding: 1rem;
+    width: auto;
+    }
+
+}
+

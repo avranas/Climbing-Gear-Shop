@@ -6,3 +6,22 @@
   padding-bottom: 2rem;
 }
 
+#product-list-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: left;
+}
+
+@media only screen and (max-width: 770px) {
+
+  #product-list-content {
+    justify-content: center;
+  }
+  #product-list-head h2 {
+    text-align: center;
+  }
+  #product-list-head p {
+    text-align: center;
+  }
+  
+}

@@ -27,7 +27,7 @@ const OrdersList = (props) => {
     dispatch(loadOrders());
   }, [dispatch]);
 
-  const ordersPerPage = 5;
+  const ordersPerPage = 3;
   let firstOrder = 0;
   let lastOrder = ordersPerPage;
   let prevDisabled = false;
@@ -46,7 +46,7 @@ const OrdersList = (props) => {
   let prevLink = `/orders/${Number(page) - 1}`;
 
   return (
-    <main id="orders-list" className="container col-7">
+    <main id="orders-list">
       {ordersList.isLoading ? (
         <p>Loading...</p>
       ) : ordersList.data.length !== 0 ? (

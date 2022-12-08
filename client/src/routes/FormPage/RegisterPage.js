@@ -270,6 +270,7 @@ const RegisterPage = (props) => {
               </div>
             )}
           </div>
+          <div className="form-break"></div>
           <button
             className="important-button"
             type="submit"

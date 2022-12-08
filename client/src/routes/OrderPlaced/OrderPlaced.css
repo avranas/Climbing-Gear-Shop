@@ -1,5 +1,5 @@
 #receipt table{
-  width: 100%;
+  width: auto;
   padding: 2rem;
   line-height: 1rem;
   box-shadow: 0.2rem 0.2rem 0 rgb(12 11 8 / 20%);
@@ -55,4 +55,27 @@
   margin: 0 auto;
   margin-top: 1.5rem;
   text-align: center;
+}
+
+@media only screen and (max-width: 770px) { 
+
+  #receipt th{
+    font-size: 1rem;
+  }
+  #order-placed {
+    font-size: 0.8rem;
+  }
+  
+}
+@media only screen and (max-width: 512px) { 
+  #order-placed {
+    padding: 0.25rem;
+  }
+  #receipt th{
+    font-size: 0.8rem;
+  }
+  #order-placed {
+    font-size: 0.6rem;
+  }
+  
 }

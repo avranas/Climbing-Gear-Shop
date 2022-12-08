@@ -29,10 +29,14 @@ const AddedToCart = (props) => {
             <p>{`${productData.optionType}: ${newestCartItem.optionSelection}`}</p>
             <p>{`Quantity: ${newestCartItem.quantity}`}</p>
             <div id="added-to-cart-buttons">
+              <div id="button-container">
               <button onClick={props.closeWindow} className="important-button">Continue shopping</button>
+              </div>
+              <div id="button-container">
               <Link to ="/cart">
                 <button className='semi-important-button'>Go to cart</button>
               </Link>
+              </div>
             </div>
           </div>
         </div>

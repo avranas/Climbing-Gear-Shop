@@ -1,12 +1,13 @@
 #order-card {
-  margin: 1rem;
+  margin: 0 auto;
+  width: 80%;
+
 }
 
 #order-card a:hover, #order-card a:visited, #order-card a:link, #order-card a:active
 {
     text-decoration: none;
     color: #111111;
-    padding: 0rem;
 }
 
 #order-header {
@@ -28,10 +29,6 @@
   padding: 0 1rem 0.5rem 1rem
 }
 
-#order-content ul{
-  margin-bottom: 14rem;
-}
-
 #order-content {
   text-align: left;
   padding: 0rem;
@@ -39,10 +36,20 @@
   margin: 0.5rem
 }
 
+#order-content {
+  padding: 0.25rem 0.25rem 1rem 0.5rem;
+}
 
 #order-content li {
-  line-height: 1.25rem;
+  line-height: 1.5rem;
   list-style-type: none;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-family:Verdana, Geneva, Tahoma, sans-serif
+}
+
+
+@media only screen and (max-width: 770px) { 
+  #order-card {
+    width: auto;
+  }
 }

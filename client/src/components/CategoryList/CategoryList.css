@@ -24,5 +24,22 @@
 }
 .category-box:hover {
   text-decoration: underline;
+}
+
+@media only screen and (max-width: 770px) {
   
+.category-box img {
+  width: 12rem;
+  height: 12rem;
+  padding: 1.5rem;
+}
+}
+
+@media only screen and (max-width: 512px) {
+  
+.category-box img {
+  width: 10rem;
+  height: 10rem;
+  padding: 1rem;
+}
 }

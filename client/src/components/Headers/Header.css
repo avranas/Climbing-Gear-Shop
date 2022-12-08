@@ -1,6 +1,6 @@
-header {
+.header {
   background-color: white;
-  width: 100%;
+  width: auto;
   padding: 1rem;
   box-shadow: 0rem 0rem 0.25rem 0.01rem #d4cbd6;
 }
@@ -27,6 +27,7 @@ header {
   background-image: url("../../images/logo.png");
   background-size: cover;
 }
+
 
 #cart-icon {
   height: 2rem;
@@ -62,5 +63,94 @@ header {
 }
 
 #welcome-message {
-  line-height: 0.5rem;
+  line-height: 1rem;
 }
+
+#welcome-message p {
+  margin-bottom: 0rem;
+  margin-top: 0;
+  margin-top: auto;
+  bottom: 0;
+  bottom: auto;
+
+}
+
+#header-user-buttons {
+  display: flex;
+  justify-content: center;
+}
+#header-user-buttons {
+  margin: 0;
+}
+
+#welcome-message p{
+  text-align: center;
+  font-size: 1rem;
+}
+
+@media only screen and (max-width: 770px) {
+  #header-user-buttons {
+    text-align: center;
+  }
+  #cart-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+  .cart-items-count {
+    font-size: 0.75rem;
+  }
+  
+  #double-digit {
+    position: absolute;
+    top: -0.9rem;
+    left: 0.34rem;
+  }
+  
+  #single-digit {
+    position: absolute;
+    top: -1.02rem;
+    left: 0.585rem;
+  }
+  #welcome-message p{
+    font-size: 0.85rem;
+  }
+  .header {
+    padding: 1rem 0 1rem 0;
+  }
+}
+
+@media only screen and (max-width: 512px) {
+  #detailed-header-logo {
+    height: 2.5rem;
+    width: 2.5rem;
+    background-image: url("../../images/smol-logo.png");
+    background-size: cover;
+  }
+  .header {
+    padding: 1rem 0rem 1rem 0rem;
+  }
+  #cart-icon {
+    height: 1.25rem;
+    width: 1.25rem;
+  }
+  .cart-items-count {
+    font-size: 0.75rem;
+  }
+  
+  #double-digit {
+    position: absolute;
+    top: -0.87rem;
+    left: 0.27rem;
+  }
+  
+  #single-digit {
+    position: absolute;
+    top: -0.9rem;
+    left: 0.5rem;
+  }
+  #welcome-message p{
+    font-size: 0.5rem;
+    line-height: 0.75rem;
+  }
+}
+

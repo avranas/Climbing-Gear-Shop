@@ -227,15 +227,15 @@ const ProductPage = (props) => {
         <p>Loading...</p>
       ) : (
         <div id="product"
-        className="styled-box row">
-          <div id="product-image" className="col-4">
+        className="styled-box">
+          <div id="product-image">
             <img
               alt="product"
               src={`${process.env.REACT_APP_SERVER_URL}/images/${productData.largeImageFile}`}
             />
           </div>
-          <div className="col-1"></div>
-          <div id="product-info" className="col-6">
+          <div id="product-page-spacer"></div>
+          <div id="product-info">
             <h3>{productData.productName}</h3>
             <p>{productData.brandName}</p>
             <p>{productData.description}</p>
@@ -258,10 +258,10 @@ const ProductPage = (props) => {
                     {productData.optionType}
                   </label>
                   <br />
-                  <select
+                  <select className="form-select form-select-sm"
                     onChange={handleOptionSlection}
                     name="option"
-                    id="option"
+                    id="option-select"
                   >
                     {options.map((i, key) => {
                       return (
@@ -303,9 +303,11 @@ const ProductPage = (props) => {
                 <p>{outOfStockError}</p>
               </div>
             )}
-            <button onClick={addToCart} className="important-button">
-              Add to cart
-            </button>
+            <div id="product-footer">
+              <button onClick={addToCart} className="important-button">
+                Add to cart
+              </button>
+            </div>
             <br />
           </div>
         </div>

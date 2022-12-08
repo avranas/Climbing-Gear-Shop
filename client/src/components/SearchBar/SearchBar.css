@@ -2,13 +2,11 @@
 #search-bar {
   position: relative;
   display: flex;
-  height: 1.75rem;
   border-radius: 4px;
   border: solid;
   border-color: #BBBBBB;
   border-width: 2px;
   height: 3rem;
-  width: 100%;
   background-color: white;
 }
 
@@ -24,7 +22,6 @@
 
 #search-text {
   border: none;
-  line-height: 5rem;
   width: 100%;
   padding: 0.5rem;
 }
@@ -50,4 +47,49 @@
   margin: 0.4rem;
   padding: 1rem;
   border: none;
+}
+
+@media only screen and (max-width: 790px) {
+  
+  #search-bar {
+    height: 2rem;
+    font-size: 0.75rem;
+    min-width: 5rem;
+  }
+  #clear-button { 
+    width: 0.25rem;
+    height: 0.25rem;
+    padding: 0.25rem;
+    top: 0.7rem;
+    right: 1.75rem;
+  }
+
+
+  #search-button {
+    width: 0.5rem;
+    height: 0.5rem;
+    padding: 0.5rem;
+  }
+}
+
+@media only screen and (max-width: 512px) {
+  #search-bar {
+    height: 1.75rem;
+    font-size: 0.5rem;
+    min-width: 4.4rem;
+  }
+  #clear-button { 
+    width: 0.2rem;
+    height: 0.2rem;
+    padding: 0.2rem;
+    top: 0.7rem;
+    right: 1.3rem;
+  }
+
+
+  #search-button {
+    width: 0.4rem;
+    height: 0.4rem;
+    padding: 0.4rem;
+  }
 }

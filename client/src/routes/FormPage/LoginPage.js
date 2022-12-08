@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import "./FormPage.css";
 import { createNotification } from "../../slices/notificationSlice";
 import axios from "axios";
-import { loadCartData } from "../../slices/cartSlice";
+import { loadCartData, moveGuestCartItemsToUserCart } from "../../slices/cartSlice";
 import github from "../../images/github.png";
 import google from "../../images/google.png";
 
@@ -60,19 +60,11 @@ const LoginPage = ({ next, error }) => {
       }
 
       createNotification(dispatch, "You are now logged in!");
-      //If there are items in the guest's cart, move the data to
-      //the server and clear it in localStorage
-      const guestCart = JSON.parse(localStorage.getItem("guestCart"));
-      if (!guestCart) {
-        return;
-      }
-      await Promise.all(
-        guestCart.map(async (i) => {
-          axios.post("/cart", i);
-        })
-      );
+
+      await moveGuestCartItemsToUserCart();
+
+
       loadCartData(dispatch);
-      localStorage.removeItem("guestCart");
     } catch (err) {
       console.log(err);
       if (err.response.data === "You need to be logged out do that.") {
@@ -89,7 +81,7 @@ const LoginPage = ({ next, error }) => {
   useEffect(() => {
     switch (error) {
       case "1":
-        setInvalidLoginError(`A user with that email already exists`);
+        setInvalidLoginError(`The email with the associated account is already registered.`);
         break;
       default:
         break;
@@ -176,6 +168,7 @@ const LoginPage = ({ next, error }) => {
             </div>
           )}
         </div>
+        <div className="form-break"></div>
         <button
           className="important-button"
           type="submit"
@@ -200,8 +193,6 @@ const LoginPage = ({ next, error }) => {
           <img alt="google" src={google}/>
         </button>
       </div>
-{/* 
-      <div id="signInDiv"></div> */}
       <p className="form-page-footer">
         Don't have an account? <Link to="/register">Register</Link>
       </p>

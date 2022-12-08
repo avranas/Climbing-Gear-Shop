@@ -5,7 +5,9 @@
   flex-direction: column;
   align-items: center;
 }
-
+.form {
+  text-align: center;
+}
 .form-page h2 {
   text-align: center;
   margin: 2rem;
@@ -43,6 +45,7 @@
 
 .input-error-box p {
   margin-bottom: 0;
+  max-width: 16rem;
 }
 
 .input-error-box img {
@@ -60,6 +63,7 @@
   padding: 0.25rem;
   border-radius: 3px;
   border-width: 1px;
+  margin: 0.5rem;
 }
 
 .input-warning-box p {
@@ -80,6 +84,7 @@
 .form-page-footer {
   margin-top: 2rem;
   margin-bottom: 2rem;
+  text-align: center;
 }
 
 .input-item {
@@ -117,4 +122,87 @@
   font-weight: 600;
   font-size: 1.25rem;
   margin: 2rem;
+}
+
+@media only screen and (max-width: 770px) { 
+
+  .form-header-wrap {
+    width: 22rem;
+  }
+
+  .form-page input {
+    height: 1.99rem;
+    font-size: 0.9rem;
+    width: 12rem;
+  }
+  
+.input-item {
+  margin-bottom: 0.5rem;
+}
+
+
+
+
+
+.input-error-box {
+  font-size: 0.8rem;
+}
+
+.input-error-box p {
+  max-width: 10rem;
+}
+
+.input-error-box img {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+.input-warning-box {
+  font-size: 0.8rem;
+}
+
+.input-warning-box img {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+
+
+
+
+}
+
+@media only screen and (max-width: 512px) { 
+
+  .form-header-wrap {
+    width: 16rem;
+  }
+
+  .form-page input {
+    height: 1.99rem;
+    font-size: 0.75rem;
+    width: 9rem;
+  }
+
+  .input-error-box {
+    font-size: 0.7rem;
+  }
+  
+  .input-error-box p {
+    max-width: 6rem;
+  }
+  
+  .input-error-box img {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  
+  .input-warning-box p{
+    font-size: 0.7rem;
+  }
+  
+  .input-warning-box img {
+    width: 0.8rem;
+    height: 0.8rem;
+  }
 }

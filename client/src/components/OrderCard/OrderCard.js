@@ -3,11 +3,11 @@ import getFullUTCDay from "../../utils/getFullDay";
 import penniesToUSD from "../../utils/penniesToUSD";
 import "./OrderCard.css";
 
-const productListLimit = 2;
+const productListLimit = 3;
 
 const OrderCard = (props) => {
   return (
-    <div id="order-card" className="styled-box styled-link-box row">
+    <div id="order-card" className="styled-box styled-link-box">
     <Link to={`/order/${props.order.id}`}>
         <table id="order-header">
           <colgroup>

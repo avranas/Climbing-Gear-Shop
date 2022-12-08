@@ -38,23 +38,23 @@ const DetailedHeader = (props) => {
 
   return (
     <header className="header">
-      <div className="container" id="detailed-header-content">
+      <div id="detailed-header-content">
         <Link to="/">
-          <div className="logo col-2 header-item" />
+          <div id="detailed-header-logo" className="logo header-item" />
         </Link>
-        <div className="col-4 header-item">
+        <div className="header-item">
           <SearchBar />
         </div>
           {loggedIn && user.name ?  (
-            <div className="col-1 header-item" id="welcome-message">
+            <div className="header-item" id="welcome-message">
               <p>Welcome,</p>
               <p>{firstName}</p>
             </div>
-          ): null}
-        <div className="col-2 header-item">
+          ): <div className="header-item" id="welcome-message"> </div>}
+        <div id="header-user-buttons-container" className="header-item">
           <HeaderUserButtons />
         </div>
-        <div className="col-1 header-item">
+        <div className="header-item">
           <Link to="/cart">
             <div id="cart-icon">
               {cartData.itemCount > 99 ? (

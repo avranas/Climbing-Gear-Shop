@@ -89,6 +89,10 @@ const Cart = (props) => {
     }
   }
 
+  const backToProducts = async () => {
+    navigate('/products/0')
+  }
+
   return (
     <section id="cart" className="container styled-box">
       <h2>Shopping Cart</h2>
@@ -104,14 +108,14 @@ const Cart = (props) => {
         cartData.cartItems.map((i, key) => {
           return (
             <div className="cart-item" key={key}>
-              <Link to={`/product/${i.product.id}`}>
                 <div className="cart-item-image">
+                  <Link to={`/product/${i.product.id}`}>
                     <img
                       src={`${process.env.REACT_APP_SERVER_URL}/images/${i.product.smallImageFile1}`}
                       alt="cart item"
                     />
+                  </Link>
                 </div>
-              </Link>
               <div className="cart-item-content">
                 <p>
                   {i.product.optionType}: {i.optionSelection}
@@ -128,7 +132,7 @@ const Cart = (props) => {
                     defaultValue={i.quantity}
                   />
                   <button
-                    id="remove-from-cart"
+                    className="small-button"
                     onClick={deleteItem}
                     value={i.id}
                   >
@@ -158,9 +162,7 @@ const Cart = (props) => {
             )}`}</p>
             <div id="cart-buttons">
               <button onClick={continueToCheckout} className="important-button">Continue to checkout</button>
-              <Link to="/products/0">
-                <button className="semi-important-button">Continue shopping</button>
-              </Link>
+              <button onClick={backToProducts}className="semi-important-button">Continue shopping</button>
             </div>
           </div>
         )}

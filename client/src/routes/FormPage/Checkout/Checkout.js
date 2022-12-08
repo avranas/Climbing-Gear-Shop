@@ -186,11 +186,11 @@ const Checkout = (props) => {
 
   return (
     <div id="checkout-page" className="container styled-box">
-      <div id="checkout-head" className="row">
+      <div id="checkout-head">
         <h2>Checkout</h2>
       </div>
-      <div id="checkout-body" className="row">
-        <div id="checkout-form" className="styled-box col-5">
+      <div id="checkout-body">
+        <div id="checkout-form" className="styled-box">
           <h3>Contact Information</h3>
           <div className="input-item-incomplete-half">
             <label className="form-label" htmlFor="phone-number">
@@ -268,6 +268,7 @@ const Checkout = (props) => {
           </div>
         </div>
         <OrderSummary subTotal={cartData.subTotal} />
+        <br/>
       </div>
     </div>
   );

@@ -39,3 +39,29 @@
 #about-us p {
   font-size: 1.5rem;
 }
+
+
+@media only screen and (max-width: 770px) {
+
+  #home-page h2 {
+    text-align: center;
+  }
+  #splash {
+    height: 30rem;
+  } 
+
+#about-us p {
+  font-size: 1.25rem;
+}
+}
+
+@media only screen and (max-width: 512px) {
+
+  #splash {
+    height: 20rem;
+  } 
+
+#about-us p {
+  font-size: 1rem;
+}
+}

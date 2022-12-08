@@ -9,7 +9,7 @@ const OrderSummary = (props) => {
   const taxes = estimatedTaxRate * props.subTotal;
 
   return (
-    <table id="order-summary" className="styled-box col-4">
+    <table id="order-summary" className="styled-box">
       <colgroup>
         <col span="1" style={{width: "70%"}}/>
         <col span="1" style={{width: "15%"}}/>

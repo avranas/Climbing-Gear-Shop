@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { moveGuestCartItemsToUserCart } from "../slices/cartSlice";
 import { createNotification } from "../slices/notificationSlice";
 
 //After a successful OAuth login, the user gets redirected to a 
@@ -11,16 +12,17 @@ const SuccessfulLogin = (props) => {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [notificationSent, selectNotificationSent] = useState(false);
+  const [actionsComplete, setSctionsComplete] = useState(false);
 
 
   useEffect(() => {
-    if(!notificationSent) {
+    if(!actionsComplete) {
       createNotification(dispatch, "You are now logged in");
-      selectNotificationSent(true);
+      setSctionsComplete(true);
+      moveGuestCartItemsToUserCart();
     }
     navigate("/")
-  }, [navigate, dispatch, notificationSent])
+  }, [navigate, dispatch, actionsComplete])
   
   return (
     <div></div>

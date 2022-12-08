@@ -90,13 +90,14 @@ const AddressForm = forwardRef((props, _ref) => {
   };
 
   const checkStateError = () => {
-    stateRef.current.clearError();
     if (
       stateRef.current.getState() === "--" &&
-      countryRef.current.getCountry() === "United States"
+      countryRef.current.getCountry() === "US"
     ) {
       stateRef.current.setError("This field is required.");
       return true;
+    } else {
+      stateRef.current.clearError();
     }
     return false;
   };

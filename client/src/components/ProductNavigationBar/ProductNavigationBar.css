@@ -1,33 +1,57 @@
-#product-navigation-bar {
+#product-navigation-list {
   padding: 1rem;
   text-align: center;
   margin-top: 1rem;
   margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
 }
 
-#product-navigation-bar ul{
+#product-navigation-list ul{
   margin: 0;
 }
 
-#product-navigation-bar li{
+#product-navigation-list li{
   list-style: none;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   font-weight: 100;
 }
  
-#product-navigation-bar a:visited,
-#product-navigation-bar a:link {
+#product-navigation-list a:visited,
+#product-navigation-list a:link {
   text-decoration: none;
   color: #111111;
 }
 
-#product-navigation-bar a:hover {
+#product-navigation-list a:hover {
   text-decoration: underline;
 
 }
 
-#product-navigation-bar a:active {
+#product-navigation-list a:active {
   border-style: solid;
   border-color: blue;
   border-width: 0.15rem;
+}
+
+@media only screen and (max-width: 770px) {
+  #product-navigation-list li {
+    font-size: 0.8rem;
+  }
+}
+
+@media only screen and (max-width: 512px) {
+  #product-navigation-list li {
+    font-size: 0.6rem;
+  }
+  #product-navigation-list {
+    padding: 0.5rem;
+  }
+
+}
+
+@media only screen and (max-width: 350px) {
+  #product-navigation-list {
+    display: none;
+  }
 }

@@ -21,7 +21,7 @@ const ProductListPage = ({ category, search }) => {
     dispatch(loadProductList({ category, search }));
   }, [dispatch, category, search]);
 
-  const productsPerPage = 2;
+  const productsPerPage = 5;
   let firstProduct = 0;
   let lastProduct = productsPerPage;
   let prevDisabled = false;
@@ -64,7 +64,7 @@ const ProductListPage = ({ category, search }) => {
           <p>{`(${products.data.length} products)`}</p>
         )}
       </div>
-      <div className="d-flex flex-wrap">
+      <div id="product-list-content">
         {products.isLoading ? (
           <p>Loading...</p>
         ) : products.data.length !== 0 ? (

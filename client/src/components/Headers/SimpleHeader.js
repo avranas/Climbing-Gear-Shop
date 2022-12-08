@@ -3,12 +3,10 @@ import { Link } from 'react-router-dom';
 const SimpleHeader = (props) => {
 
   return (
-    <header className='header'>
-      <div id='simple-header-content' className='container' >
+    <header className='header' id='simple-header-content'>
         <Link to="/">
           <div className="logo" />
         </Link>
-      </div>
     </header>
   );
 };

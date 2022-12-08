@@ -1,6 +1,4 @@
 .direction-button-container {
-  width: 10rem;
-  height: 5rem;
 }
 #directional-buttons {
   display: flex;
@@ -16,7 +14,7 @@
   background-color: rgb(255, 255, 255);
   color: #111111;
   text-decoration: none;
-  width: 8rem;
+  width: 10rem;
 }
 
 .direction-button-disabled {
@@ -36,4 +34,20 @@
 
 #next-active:active {
   background-color: #cccccc;
+}
+
+
+
+@media only screen and (max-width: 770px) {
+  #directional-buttons {
+    justify-content: center;
+  }
+  .direction-button {
+    width: 8rem;
+  }
+}
+@media only screen and (max-width: 512px) {
+.direction-button {
+  width: 6rem;
+}
 }

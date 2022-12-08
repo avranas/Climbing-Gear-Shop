@@ -25,7 +25,7 @@ const OrderDetailsPage = (props) => {
   }, [dispatch, navigate, id]);
 
   return (
-    <div className="container col-8" id="order-details-page">
+    <div className="container" id="order-details-page">
       <h2>Order Details</h2>
       {order.isLoading ? (
         <div>
@@ -34,7 +34,7 @@ const OrderDetailsPage = (props) => {
       ) : (
         <div id="order-details" className="styled-box">
           <div id="order-details-head" className="container">
-            <table id="order-address" className="col-4">
+            <table id="order-address">
               <tr><strong>Shipping Address</strong></tr>
                 <tr>{order.data.deliveryStreetAddress1}</tr>
                 {order.data.deliveryStreetAddress2 && (
@@ -43,13 +43,13 @@ const OrderDetailsPage = (props) => {
                 <tr>{`${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode}`}</tr>
                 <tr>{order.data.deliveryCountry}</tr>
             </table>
-            <table id="order-additional-info" className="col-4">
+            <table id="order-additional-info">
                 <tr><strong>Date placed</strong></tr>
                 <tr>{getFullUTCDay(new Date(Number(order.data.timeCreated)))}</tr>
                 <tr><strong>Order status</strong></tr>
                 <tr>{`${order.data.orderStatus}`}</tr>
             </table>
-            <table id="order-totals" className="col-4">
+            <table id="order-totals">
               <tbody>
                 <tr>
                   <td>
@@ -100,17 +100,17 @@ const OrderDetailsPage = (props) => {
                       />
                     </div>
                   </Link>
-                  <div className="order-item-content">
-                    <p>
+                  <ul className="order-item-content">
+                    <li>
                       {i.product.optionType}: {i.optionSelection}
-                    </p>
-                    <p>{i.product.brandName}</p>
-                    <p>{i.product.productName}</p>
+                    </li>
+                    <li>{i.product.brandName}</li>
+                    <li>{i.product.productName}</li>
                     <strong>
-                      <p>{penniesToUSD(i.price)}</p>
+                      <li>{penniesToUSD(i.price)}</li>
                     </strong>
-                    <div className="order-item-options">{`Quantity: ${i.quantity}`}</div>
-                  </div>
+                    <li className="order-item-options">{`Quantity: ${i.quantity}`}</li>
+                  </ul>
                 </div>
               );
             })}

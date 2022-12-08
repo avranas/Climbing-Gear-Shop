@@ -29,19 +29,18 @@ const HeaderUserButtons = (props) => {
         userIsLoggedIn === null || userIsLoggedIn === false ?
       <div>
         <Link to="/login">
-          <button id="left-button" type="button" className="btn btn-primary">Login</button>
+          <button id="left-button" className="small-button">Login</button>
         </Link>
-        <span className="header-button-spacer"></span>
         <Link to="/register">
-          <button type="button" className="btn btn-primary">Register</button>
+          <button type="button" className="small-button">Register</button>
         </Link>
       </div>
       :
       <div>
-        <button onClick={handleLogout} type="button" className="btn btn-primary">Logout</button>
-        <span className="header-button-spacer"></span>
+        <button onClick={handleLogout} className="small-button">Logout</button>
+        
         <Link to="/orders/0">
-          <button type="button" className="btn btn-primary">Orders</button>
+          <button type="button" className="small-button">Orders</button>
         </Link>
       </div>
       }

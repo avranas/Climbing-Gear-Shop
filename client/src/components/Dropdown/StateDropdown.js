@@ -35,6 +35,9 @@ const StateDropdown = forwardRef(({ checkStateErrorIfErrorExists }, _ref) => {
     },
   }));
 
+  console.log('state error')
+  console.log(stateError)
+
   //When this state changes, I need to check if it fixes any errors
   useEffect(() => {
     checkStateErrorIfErrorExists();
