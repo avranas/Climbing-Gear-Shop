@@ -6,7 +6,7 @@ const ProductCard = (props) => {
   
   //Renders a card for a single product
   return (
-    <div className="product-card styled-box styled-link-box">
+    <li className="product-card styled-box styled-link-box">
       <Link to={`/product/${props.id}`}>
         <div className="product-image">
           <div className="top-image">
@@ -34,7 +34,7 @@ const ProductCard = (props) => {
           }
         </div>
       </Link>
-    </div>
+    </li>
   );
 };
 export default ProductCard;

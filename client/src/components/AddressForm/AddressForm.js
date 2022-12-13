@@ -210,7 +210,7 @@ const AddressForm = forwardRef((props, _ref) => {
     props.hidden ?
     null
     :
-    <div className="address-form">
+    <section className="address-form">
       <div className="input-item">
         <CountryDropdown
           handleChange={handleCountryChange}
@@ -338,7 +338,7 @@ const AddressForm = forwardRef((props, _ref) => {
           </div>
         )}
       </div>
-    </div>
+    </section>
   );
 });
 

@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CartQuantitySelection matches snapshot 1`] = `
+<div>
+  <p
+    className="option-label"
+  >
+    Quantity
+  </p>
+  <select
+    className="form-select form-select-sm quantity-select"
+    id="quantity"
+    name="quantity"
+    onChange={[Function]}
+  />
+</div>
+`;

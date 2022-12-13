@@ -7,7 +7,7 @@ const productListLimit = 3;
 
 const OrderCard = (props) => {
   return (
-    <div id="order-card" className="styled-box styled-link-box">
+    <li id="order-card" className="styled-box styled-link-box">
     <Link to={`/order/${props.order.id}`}>
         <table id="order-header">
           <colgroup>
@@ -53,7 +53,7 @@ const OrderCard = (props) => {
           })}
         </ul>
       </Link>
-    </div>
+    </li>
   );
 };
 

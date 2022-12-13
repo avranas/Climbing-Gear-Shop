@@ -1,7 +1,7 @@
 #order-card {
   margin: 0 auto;
   width: 80%;
-
+  list-style: none;
 }
 
 #order-card a:hover, #order-card a:visited, #order-card a:link, #order-card a:active

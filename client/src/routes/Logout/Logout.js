@@ -1,12 +1,11 @@
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { createNotification } from '../../slices/notificationSlice';
 import { useDispatch } from 'react-redux';
+import axios from "axios";
 
 const Logout = (props) => {
   
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -14,18 +13,16 @@ const Logout = (props) => {
       try {
         await axios.get('/logout');
         dispatch({type: 'user/eraseUserData'});
-        navigate('/login');
         createNotification(dispatch, "You are now logged out!");
       } catch (err) {
         console.log(err);
       }
     }
     logout();
-  }, [dispatch, navigate]);
+  }, [dispatch]);
 
   return (
-    <main className="container logout">
-    </main>
+    <Navigate to="/login" />
   );
 };
 

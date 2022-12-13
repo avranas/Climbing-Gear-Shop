@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProductNavigationBar matches snapshot 1`] = `
+<nav
+  className="container styled-box"
+  id="product-navigation-bar"
+>
+  <ul
+    id="product-navigation-list"
+  >
+    <li>
+      <a
+        href="/products/0"
+        onClick={[Function]}
+      >
+        All Products
+      </a>
+    </li>
+    <li>
+      <a
+        href="/products/0?category=shoes"
+        onClick={[Function]}
+      >
+        Shoes
+      </a>
+    </li>
+    <li>
+      <a
+        href="/products/0?category=harnesses"
+        onClick={[Function]}
+      >
+        Harnesses
+      </a>
+    </li>
+    <li>
+      <a
+        href="/products/0?category=ropes"
+        onClick={[Function]}
+      >
+        Ropes
+      </a>
+    </li>
+    <li>
+      <a
+        href="/products/0?category=hardware"
+        onClick={[Function]}
+      >
+        Hardware
+      </a>
+    </li>
+    <li>
+      <a
+        href="/products/0?category=chalk"
+        onClick={[Function]}
+      >
+        Chalk
+      </a>
+    </li>
+  </ul>
+</nav>
+`;

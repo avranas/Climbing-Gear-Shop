@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import LoadWheel from "../../components/LoadWheel/LoadWheel";
 import { loadOrder, selectOrder } from "../../slices/orderSlice";
 import getFullUTCDay from "../../utils/getFullDay";
 import penniesToUSD from "../../utils/penniesToUSD";
@@ -14,40 +14,37 @@ const OrderDetailsPage = (props) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      const response = await axios("/authenticated");
-      if (!response.data) {
-        navigate("/");
-      }
-    };
-    checkAuthentication();
     dispatch(loadOrder(id));
   }, [dispatch, navigate, id]);
 
   return (
-    <div className="container" id="order-details-page">
+    <main className="container" id="order-details-page">
       <h2>Order Details</h2>
       {order.isLoading ? (
         <div>
-          <p>Loading...</p>
+          <LoadWheel />          
         </div>
       ) : (
-        <div id="order-details" className="styled-box">
+        <section id="order-details" className="styled-box">
           <div id="order-details-head" className="container">
             <table id="order-address">
-              <tr><strong>Shipping Address</strong></tr>
-                <tr>{order.data.deliveryStreetAddress1}</tr>
+              <tbody>
+              <tr><td><strong>Shipping Address</strong></td></tr>
+                <tr><td>{order.data.deliveryStreetAddress1}</td></tr>
                 {order.data.deliveryStreetAddress2 && (
-                  <tr>{order.data.deliveryStreetAddress2}</tr>
+                  <tr><td>{order.data.deliveryStreetAddress2}</td></tr>
                 )}
-                <tr>{`${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode}`}</tr>
-                <tr>{order.data.deliveryCountry}</tr>
+                <tr><td>{`${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode}`}</td></tr>
+                <tr><td>{order.data.deliveryCountry}</td></tr>
+              </tbody>
             </table>
             <table id="order-additional-info">
-                <tr><strong>Date placed</strong></tr>
-                <tr>{getFullUTCDay(new Date(Number(order.data.timeCreated)))}</tr>
-                <tr><strong>Order status</strong></tr>
-                <tr>{`${order.data.orderStatus}`}</tr>
+              <tbody>
+                <tr><td><strong>Date placed</strong></td></tr>
+                <tr><td>{getFullUTCDay(new Date(Number(order.data.timeCreated)))}</td></tr>
+                <tr><td><strong>Order status</strong></td></tr>
+                <tr><td>{`${order.data.orderStatus}`}</td></tr>
+                </tbody>
             </table>
             <table id="order-totals">
               <tbody>
@@ -115,9 +112,9 @@ const OrderDetailsPage = (props) => {
               );
             })}
           </div>
-        </div>
+        </section>
       )}
-    </div>
+    </main>
   );
 };
 

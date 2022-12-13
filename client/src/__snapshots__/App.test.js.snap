@@ -1,0 +1,278 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders learn react link 1`] = `
+<div
+  className="App"
+>
+  <header
+    className="header"
+  >
+    <div
+      id="detailed-header-content"
+    >
+      <a
+        href="/"
+        onClick={[Function]}
+      >
+        <div
+          className="logo header-item"
+          id="detailed-header-logo"
+        />
+      </a>
+      <div
+        className="header-item"
+      >
+        <div
+          data-testid="searchbar"
+          id="search-bar"
+        >
+          <input
+            id="search-text"
+            name="search"
+            onChange={[Function]}
+            onKeyUp={[Function]}
+            type="text"
+            value=""
+          />
+          <button
+            data-testid="searchbar-button"
+            id="search-button"
+            onClick={[Function]}
+          />
+        </div>
+      </div>
+      <div
+        className="header-item"
+        id="welcome-message"
+      >
+         
+      </div>
+      <div
+        className="header-item"
+        id="header-user-buttons-container"
+      >
+        <div
+          id="header-user-buttons"
+        >
+          <div>
+            <a
+              href="/login"
+              onClick={[Function]}
+            >
+              <button
+                className="small-button"
+                id="left-button"
+              >
+                Login
+              </button>
+            </a>
+            <a
+              href="/register"
+              onClick={[Function]}
+            >
+              <button
+                className="small-button"
+                type="button"
+              >
+                Register
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div
+        className="header-item"
+      >
+        <a
+          href="/cart"
+          onClick={[Function]}
+        >
+          <div
+            id="cart-icon"
+          />
+        </a>
+      </div>
+    </div>
+  </header>
+  <main
+    id="home-page"
+  >
+    <section
+      id="splash"
+    >
+      <h1>
+        Welcome to Fake Climbing Gear Shop
+      </h1>
+    </section>
+    <section
+      id="shop-all-products-button-holder"
+    >
+      <a
+        href="/products/0"
+        onClick={[Function]}
+      >
+        <button
+          className="important-button"
+        >
+          Shop all products
+        </button>
+      </a>
+    </section>
+    <h2
+      className="container"
+    >
+      Shop By Category
+    </h2>
+    <section
+      className="container d-flex justify-content-around flex-wrap"
+      id="category-list"
+    >
+      <a
+        href="/products/0?category=shoes"
+        onClick={[Function]}
+        style={
+          Object {
+            "color": "rgb(48, 53, 73)",
+            "textDecoration": "none",
+          }
+        }
+      >
+        <div
+          className="category-box styled-box styled-link-box"
+        >
+          <img
+            alt="shoes"
+            src="shoes.png"
+          />
+          <p>
+            Shoes
+          </p>
+        </div>
+      </a>
+      <a
+        href="/products/0?category=harnesses"
+        onClick={[Function]}
+        style={
+          Object {
+            "color": "rgb(48, 53, 73)",
+            "textDecoration": "none",
+          }
+        }
+      >
+        <div
+          className="category-box styled-box styled-link-box"
+        >
+          <img
+            alt="harnesses"
+            src="harness.png"
+          />
+          <p>
+            Harnesses
+          </p>
+        </div>
+      </a>
+      <a
+        href="/products/0?category=ropes"
+        onClick={[Function]}
+        style={
+          Object {
+            "color": "rgb(48, 53, 73)",
+            "textDecoration": "none",
+          }
+        }
+      >
+        <div
+          className="category-box styled-box styled-link-box"
+        >
+          <img
+            alt="ropes"
+            src="rope.png"
+          />
+          <p>
+            Ropes
+          </p>
+        </div>
+      </a>
+      <a
+        href="/products/0?category=hardware"
+        onClick={[Function]}
+        style={
+          Object {
+            "color": "rgb(48, 53, 73)",
+            "textDecoration": "none",
+          }
+        }
+      >
+        <div
+          className="category-box styled-box styled-link-box"
+        >
+          <img
+            alt="hardware"
+            src="carabiner.png"
+          />
+          <p>
+            Hardware
+          </p>
+        </div>
+      </a>
+      <a
+        href="/products/0?category=chalk"
+        onClick={[Function]}
+        style={
+          Object {
+            "color": "rgb(48, 53, 73)",
+            "textDecoration": "none",
+          }
+        }
+      >
+        <div
+          className="category-box styled-box styled-link-box"
+        >
+          <img
+            alt="chalk"
+            src="chalk.png"
+          />
+          <p>
+            Chalk
+          </p>
+        </div>
+      </a>
+    </section>
+    <h2
+      className="container"
+    >
+      About Us
+    </h2>
+    <section
+      className="container"
+      id="about-us"
+    >
+      <p>
+        Fake Climbing Gear Shop is an e-commerce app made by 
+        <a
+          href="https://github.com/avranas"
+        >
+          Alex Vranas
+        </a>
+         to practice building full stack web apps. No climbing gear is actually being sold here, but you can expect this site to do everything that you expect an e-commerce site is capable of.
+      </p>
+      <p>
+        For payments, this site uses Stripe, which is currently set to test mode. If you would like to see how payments are processed, enter the credit card number: "4242 4242 4242 4242" with fake data for everything else.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <div
+      id="footer-spacer"
+    />
+    <p>
+      Made with ❤️ by 
+      <a
+        href="https://github.com/avranas"
+      >
+        Alex Vranas
+      </a>
+    </p>
+  </footer>
+</div>
+`;

@@ -102,6 +102,18 @@ const LoginPage = ({ next, error }) => {
     checkAuthentication();
   }, [navigate]);
 
+  //Navigate to the home page if you're already logged in
+  useEffect(() => {
+    const checkNotAuthenticated = async () => {
+      const response = await axios("/authenticated");
+      if (response.data) {
+        navigate("/");
+      }
+    }
+    checkNotAuthenticated();
+
+  }, [navigate])
+
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit();

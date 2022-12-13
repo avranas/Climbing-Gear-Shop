@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CategoryList matches snapshot 1`] = `
+<section
+  className="container d-flex justify-content-around flex-wrap"
+  id="category-list"
+>
+  <a
+    href="/products/0?category=shoes"
+    onClick={[Function]}
+    style={
+      Object {
+        "color": "rgb(48, 53, 73)",
+        "textDecoration": "none",
+      }
+    }
+  >
+    <div
+      className="category-box styled-box styled-link-box"
+    >
+      <img
+        alt="shoes"
+        src="shoes.png"
+      />
+      <p>
+        Shoes
+      </p>
+    </div>
+  </a>
+  <a
+    href="/products/0?category=harnesses"
+    onClick={[Function]}
+    style={
+      Object {
+        "color": "rgb(48, 53, 73)",
+        "textDecoration": "none",
+      }
+    }
+  >
+    <div
+      className="category-box styled-box styled-link-box"
+    >
+      <img
+        alt="harnesses"
+        src="harness.png"
+      />
+      <p>
+        Harnesses
+      </p>
+    </div>
+  </a>
+  <a
+    href="/products/0?category=ropes"
+    onClick={[Function]}
+    style={
+      Object {
+        "color": "rgb(48, 53, 73)",
+        "textDecoration": "none",
+      }
+    }
+  >
+    <div
+      className="category-box styled-box styled-link-box"
+    >
+      <img
+        alt="ropes"
+        src="rope.png"
+      />
+      <p>
+        Ropes
+      </p>
+    </div>
+  </a>
+  <a
+    href="/products/0?category=hardware"
+    onClick={[Function]}
+    style={
+      Object {
+        "color": "rgb(48, 53, 73)",
+        "textDecoration": "none",
+      }
+    }
+  >
+    <div
+      className="category-box styled-box styled-link-box"
+    >
+      <img
+        alt="hardware"
+        src="carabiner.png"
+      />
+      <p>
+        Hardware
+      </p>
+    </div>
+  </a>
+  <a
+    href="/products/0?category=chalk"
+    onClick={[Function]}
+    style={
+      Object {
+        "color": "rgb(48, 53, 73)",
+        "textDecoration": "none",
+      }
+    }
+  >
+    <div
+      className="category-box styled-box styled-link-box"
+    >
+      <img
+        alt="chalk"
+        src="chalk.png"
+      />
+      <p>
+        Chalk
+      </p>
+    </div>
+  </a>
+</section>
+`;

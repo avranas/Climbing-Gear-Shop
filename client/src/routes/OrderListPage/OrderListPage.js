@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import LoadWheel from "../../components/LoadWheel/LoadWheel";
 import NavigationButtons from "../../components/NavigationButtons/NavigationButtons";
 import OrderCard from "../../components/OrderCard/OrderCard";
 import { selectOrdersList, loadOrders } from "../../slices/ordersListSlice";
@@ -10,18 +10,7 @@ import "./OrderListPage.css";
 const OrdersList = (props) => {
   const ordersList = useSelector(selectOrdersList);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { page } = useParams();
-
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      const response = await axios("/authenticated");
-      if (!response.data) {
-        navigate("/");
-      }
-    };
-    checkAuthentication();
-  }, [navigate]);
 
   useEffect(() => {
     dispatch(loadOrders());
@@ -46,15 +35,17 @@ const OrdersList = (props) => {
   let prevLink = `/orders/${Number(page) - 1}`;
 
   return (
-    <main id="orders-list">
+    <main id="orders-list" className="container">
       {ordersList.isLoading ? (
-        <p>Loading...</p>
+          <LoadWheel />
       ) : ordersList.data.length !== 0 ? (
         <div>
           <h2>Order History</h2>
+          <ul>
           {ordersList.data.slice(firstOrder, lastOrder).map((i, key) => {
             return <OrderCard key={key} order={i} />;
           })}
+          </ul>
         </div>
       ) : (
         <h2>No orders found</h2>

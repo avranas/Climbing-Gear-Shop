@@ -8,10 +8,11 @@ import warning from "../../images/warning.png";
 import penniesToUSD from "../../utils/penniesToUSD";
 import axios from "axios";
 import ProductNavigationBar from "../../components/ProductNavigationBar/ProductNavigationBar";
-import AddedToCartWindow from "../AddedToCartWindow/AddedToCartWindow";
+import AddedToCartWindow from "../../components/AddedToCartWindow/AddedToCartWindow";
 import { loadCartData } from "../../slices/cartSlice";
 import QuantitySelection from "../../components/QuantitySelection/QuantitySelection";
 import { v4 as uuidv4 } from "uuid";
+import LoadWheel from "../../components/LoadWheel/LoadWheel";
 
 //Props are productName, brandName, description, price, and imageURL,
 const ProductPage = (props) => {
@@ -109,8 +110,9 @@ const ProductPage = (props) => {
         type: "newestCartItem/setNewestCartItem",
         payload: newCartItem,
       });
-      loadCartData(dispatch);
       setAddedToCartWindowOpen(true);
+      loadCartData(dispatch);
+      window.scrollTo(0, 0);
     } catch (err) {
       console.log(err);
     }
@@ -213,7 +215,7 @@ const ProductPage = (props) => {
 
   //Renders a page for one product
   return (
-    <div id="product-page" className="container">
+    <main id="product-page" className="container" data-testid="product-page">
       <ProductNavigationBar />
       {addedToCartWindowOpen && (
         <div>
@@ -224,18 +226,18 @@ const ProductPage = (props) => {
         !product ? (
         <h2>404 Error - Product ID not found</h2>)
       : product.isLoading ? (
-        <p>Loading...</p>
+        <LoadWheel />
       ) : (
         <div id="product"
         className="styled-box">
-          <div id="product-image">
+          <section id="product-image">
             <img
               alt="product"
               src={`${process.env.REACT_APP_SERVER_URL}/images/${productData.largeImageFile}`}
             />
-          </div>
+          </section>
           <div id="product-page-spacer"></div>
-          <div id="product-info">
+          <section id="product-info">
             <h3>{productData.productName}</h3>
             <p>{productData.brandName}</p>
             <p>{productData.description}</p>
@@ -304,15 +306,15 @@ const ProductPage = (props) => {
               </div>
             )}
             <div id="product-footer">
-              <button onClick={addToCart} className="important-button">
+              <button data-testid="add-to-cart-button" onClick={addToCart} className="important-button">
                 Add to cart
               </button>
             </div>
             <br />
-          </div>
+          </section>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

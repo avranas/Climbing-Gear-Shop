@@ -91,37 +91,6 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
       },
       async (accessToken, refreshToken, profile, done) => {
         await handleOauthResponse("github", profile.id, profile.emails[0].value, profile.displayName, done);
-      //   try {
-      //     //If a user with this github id exists, return this user
-      //     let userResponse = await User.findOne({
-      //       where: { githubId: profile.id }
-      //     });
-      //     if (userResponse) {
-      //       return done(null, userResponse);
-      //     }
-      //     //If a user with this github id does not exist, I want to create a new user
-      //     //If a user with the same email already exists, return an error
-      //     const externalEmail = profile.emails[0].value;
-      //     userResponse = await User.findOne({
-      //       where: {userEmail : externalEmail}
-      //     })
-      //     if (userResponse) {
-      //       return done(null, false);
-      //     }
-      //     const response = await User.findOrCreate({
-      //       where: { githubId: profile.id },
-      //       defaults: {
-      //         name: profile.displayName,
-      //         userEmail: externalEmail,
-      //         rewardsPoints: 0
-      //       }
-      //     });
-      //     return done(null, response[0]);
-          
-      //   } catch (err) {
-      //     console.log(err);
-      //     return done(err, false);
-      //   }
        }
     )
   );

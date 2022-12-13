@@ -201,7 +201,6 @@ userRouter.delete('/:id', checkAuthenticatedAsAdmin, async (req, res, next) => {
     if (!userToDelete) { 
       throw createHttpError(404, 'No user with that id was found');
     }
-    console.log(userIdToDelete)
     await deleteUser(userToDelete.id);
     res.status(200).send(`User with id ${userIdToDelete} has been deleted`);
   } catch (err) {

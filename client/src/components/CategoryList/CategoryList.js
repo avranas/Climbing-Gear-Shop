@@ -15,7 +15,7 @@ const CategoryList = (props) => {
   };
 
   return (
-    <div id="category-list" className="container d-flex justify-content-around flex-wrap">
+    <section id="category-list" className="container d-flex justify-content-around flex-wrap">
       <Link to="/products/0?category=shoes" style={linkStyle}>
         <div className="category-box styled-box styled-link-box">
           <img src={shoesPic} alt="shoes"/>
@@ -46,7 +46,7 @@ const CategoryList = (props) => {
           <p>Chalk</p>
         </div>
       </Link>
-    </div>
+    </section>
   );
 };
 

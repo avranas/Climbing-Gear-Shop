@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 .App {
   position: absolute;
   width: 100%;
@@ -7,14 +9,26 @@
   color: rgb(48, 53, 73);
 }
 
-footer {
-  width: 100%;
-  text-align: right;
+h2 {
+  font-family: 'Roboto', sans-serif;
 }
 
-footer p {
-  justify-content: center;
-  padding-right: 1rem;
+#footer-spacer {
+  margin-top: 15rem;
+}
+
+footer {
+  text-align: center;
+}
+
+footer p{
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
 }
 
 .important-button {

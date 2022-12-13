@@ -19,22 +19,23 @@ const ordersListSlice = createSlice({
   initialState: {
     data: [],
     isLoading: true,
-    hasError: false
+    hasError: false,
   },
-  extraReducers: {
-    [loadOrders.pending]: (state, action) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [loadOrders.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [loadOrders.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.hasError = true;
-    }
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadOrders.pending, (state, action) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(loadOrders.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = false;
+        state.hasError = false;
+      })
+      .addCase(loadOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.hasError = true;
+      });
   },
 });
 

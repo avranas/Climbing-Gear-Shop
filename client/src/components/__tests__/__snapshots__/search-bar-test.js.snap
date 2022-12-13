@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Searchbar matches snapshot 1`] = `
+<div
+  data-testid="searchbar"
+  id="search-bar"
+>
+  <input
+    id="search-text"
+    name="search"
+    onChange={[Function]}
+    onKeyUp={[Function]}
+    type="text"
+    value=""
+  />
+  <button
+    data-testid="searchbar-button"
+    id="search-button"
+    onClick={[Function]}
+  />
+</div>
+`;

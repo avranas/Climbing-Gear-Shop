@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Notification matches snapshot 1`] = `
+<div
+  className="notification-container"
+>
+  <div
+    className="notification-content"
+    onClick={[Function]}
+  >
+    <div
+      className="notification-icon"
+    />
+    <p />
+  </div>
+</div>
+`;

@@ -51,16 +51,6 @@ const Checkout = (props) => {
   };
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      const response = await axios("/authenticated");
-      if (!response.data) {
-        navigate('/');
-      }
-      if (cartData.itemCount === 0) {
-        navigate('/cart');
-      }
-    };
-    checkAuthentication();
     loadCartData(dispatch);
   }, [navigate, dispatch, cartData.itemCount]);
 

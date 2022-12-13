@@ -1,30 +1,25 @@
-import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import LoadWheel from "../../components/LoadWheel/LoadWheel";
 import { loadNewestOrder, selectOrder } from "../../slices/orderSlice";
 import penniesToUSD from "../../utils/penniesToUSD";
-import "./OrderPlaced.css";
+import "./OrderPlacedPage.css";
 
-const OrderPlaced = (props) => {
+const OrderPlacedPage = (props) => {
   const order = useSelector(selectOrder);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      const response = await axios("/authenticated");
-      if (!response.data) {
-        navigate("/");
-      }
-    };
-    checkAuthentication();
-
     dispatch(loadNewestOrder());
   }, [dispatch, navigate]);
 
   return (
-    <div className="container" id="order-placed">
+    order.isLoading ? (
+    <LoadWheel />
+  ) : 
+    <main className="container" id="order-placed">
       <div id="order-placed-header">
         <div id="green-checkmark"></div>
         <h2>Thank you, your order has been placed.</h2>
@@ -103,8 +98,8 @@ const OrderPlaced = (props) => {
           <p>{`Shipping to ${order.data.deliveryStreetAddress1}, ${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode} ${order.data.deliveryCountry}`}</p>
         )}
       </div>
-    </div>
+    </main>
   );
 };
 
-export default OrderPlaced;
+export default OrderPlacedPage;

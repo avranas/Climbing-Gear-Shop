@@ -10,7 +10,7 @@ export const loadProduct = createAsyncThunk(
       const productOptions = response.data.productOptions;
       let lowestPrice = Infinity;
       let highestPrice = 0;
-      productOptions.forEach(e => {
+      productOptions.forEach((e) => {
         if (e.price < lowestPrice) {
           lowestPrice = e.price;
         }
@@ -29,8 +29,8 @@ export const loadProduct = createAsyncThunk(
         productName: product.productName,
         productOptions: productOptions,
         highestPrice: highestPrice,
-        lowestPrice: lowestPrice
-      }
+        lowestPrice: lowestPrice,
+      };
       return payload;
     } catch (err) {
       console.log(err);
@@ -43,34 +43,35 @@ const productSlice = createSlice({
   name: "product",
   initialState: {
     data: {
-      brandName: '',
-      categoryName: '',
-      description: '',
-      optionType: '',
-      smallImageFile1: '',
-      largeImageFile: '',
-      productName: '',
+      brandName: "",
+      categoryName: "",
+      description: "",
+      optionType: "",
+      smallImageFile1: "",
+      largeImageFile: "",
+      productName: "",
       lowestPrice: 0,
       highestPrice: 0,
-      productOptions: []
+      productOptions: [],
     },
     isLoading: true,
-    hasError: false
+    hasError: false,
   },
-  extraReducers: {
-    [loadProduct.pending]: (state, action) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [loadProduct.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [loadProduct.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.hasError = true;
-    }
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadProduct.pending, (state, action) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(loadProduct.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = false;
+        state.hasError = false;
+      })
+      .addCase(loadProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.hasError = true;
+      });
   },
 });
 

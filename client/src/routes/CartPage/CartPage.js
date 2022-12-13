@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCart,
@@ -8,28 +8,21 @@ import {
 } from "../../slices/cartSlice";
 import penniesToUSD from "../../utils/penniesToUSD";
 import { Link, useNavigate } from "react-router-dom";
-import "./Cart.css";
+import "./CartPage.css";
 import CartQuantitySelection from "../../components/CartQuantitySelection/CartQuantitySelection";
 import axios from "axios";
 import redX from "../../images/red-x.png";
+import LoadWheel from "../../components/LoadWheel/LoadWheel";
 
-const Cart = (props) => {
+
+//Loading cart data with a useEffect is not necessary, because the DetailedHeader will
+//already take care of that for you. In fact, adding it creates problems
+const CartPage = (props) => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const cartData = cart.data;
   const navigate = useNavigate();
   const [quantityChangeError, setQuantityChangeError] = useState("");
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await loadCartData(dispatch);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, [dispatch]);
 
   const handleQuantitySelection = async (e, cartItem) => {
     const response = await axios("/authenticated");
@@ -94,15 +87,15 @@ const Cart = (props) => {
   }
 
   return (
-    <section id="cart" className="container styled-box">
+    <main id="cart" className="container styled-box">
       <h2>Shopping Cart</h2>
       {cart.isLoading ? (
         <div>
-          <p>Loading...</p>
+          <LoadWheel />
         </div>
       ) : cartData.cartItems.length === 0 ? (
         <div id="empty-cart">
-          <p>Your shopping cart is empty</p>
+          <p>Your shopping cart is empty.</p>
         </div>
       ) : (
         cartData.cartItems.map((i, key) => {
@@ -156,7 +149,7 @@ const Cart = (props) => {
             <button className="important-button">Contine shopping</button>
           </Link>
         ) : (
-          <div>
+          <div id="cart-footer">
             <p>{`Subtotal (${cartData.itemCount} items): ${penniesToUSD(
               cartData.subTotal
             )}`}</p>
@@ -167,8 +160,8 @@ const Cart = (props) => {
           </div>
         )}
       </div>
-    </section>
+    </main>
   );
 };
 
-export default Cart;
+export default CartPage;

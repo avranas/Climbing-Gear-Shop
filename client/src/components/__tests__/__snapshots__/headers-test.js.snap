@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DetailedHeader matches snapshot 1`] = `
+<header
+  className="header"
+>
+  <div
+    id="detailed-header-content"
+  >
+    <a
+      href="/"
+      onClick={[Function]}
+    >
+      <div
+        className="logo header-item"
+        id="detailed-header-logo"
+      />
+    </a>
+    <div
+      className="header-item"
+    >
+      <div
+        data-testid="searchbar"
+        id="search-bar"
+      >
+        <input
+          id="search-text"
+          name="search"
+          onChange={[Function]}
+          onKeyUp={[Function]}
+          type="text"
+          value=""
+        />
+        <button
+          data-testid="searchbar-button"
+          id="search-button"
+          onClick={[Function]}
+        />
+      </div>
+    </div>
+    <div
+      className="header-item"
+      id="welcome-message"
+    >
+       
+    </div>
+    <div
+      className="header-item"
+      id="header-user-buttons-container"
+    >
+      <div
+        id="header-user-buttons"
+      >
+        <div>
+          <a
+            href="/login"
+            onClick={[Function]}
+          >
+            <button
+              className="small-button"
+              id="left-button"
+            >
+              Login
+            </button>
+          </a>
+          <a
+            href="/register"
+            onClick={[Function]}
+          >
+            <button
+              className="small-button"
+              type="button"
+            >
+              Register
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div
+      className="header-item"
+    >
+      <a
+        href="/cart"
+        onClick={[Function]}
+      >
+        <div
+          id="cart-icon"
+        />
+      </a>
+    </div>
+  </div>
+</header>
+`;
+
+exports[`SimpleHeader matches snapshot 1`] = `
+<header
+  className="header"
+  id="simple-header-content"
+>
+  <a
+    href="/"
+    onClick={[Function]}
+  >
+    <div
+      className="logo"
+    />
+  </a>
+</header>
+`;

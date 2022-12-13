@@ -44,5 +44,8 @@
     "sequelize": "^6.23.1",
     "stripe": "^11.1.0",
     "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "test": "^3.2.1"
   }
 }

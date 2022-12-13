@@ -6,7 +6,7 @@
   padding-bottom: 2rem;
 }
 
-#product-list-content {
+#product-list-content ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: left;

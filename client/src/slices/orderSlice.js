@@ -44,39 +44,40 @@ const orderSlice = createSlice({
       orderItems: [],
     },
     isLoading: true,
-    hasError: false
+    hasError: false,
   },
-  extraReducers: {
-    [loadOrder.pending]: (state, action) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [loadOrder.fulfilled]: (state, action) => {
-      if (action.payload) {
-        state.data = action.payload;
-      }
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [loadOrder.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.hasError = true;
-    },
-    [loadNewestOrder.pending]: (state, action) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [loadNewestOrder.fulfilled]: (state, action) => {
-      if (action.payload) {
-        state.data = action.payload;
-      }
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [loadNewestOrder.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.hasError = true;
-    }
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadOrder.pending, (state, action) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(loadOrder.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.data = action.payload;
+        }
+        state.isLoading = false;
+        state.hasError = false;
+      })
+      .addCase(loadOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.hasError = true;
+      })
+      .addCase(loadNewestOrder.pending, (state, action) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(loadNewestOrder.fulfilled, (state, action) => {
+        if (action.payload) {
+          state.data = action.payload;
+        }
+        state.isLoading = false;
+        state.hasError = false;
+      })
+      .addCase(loadNewestOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.hasError = true;
+      });
   },
 });
 

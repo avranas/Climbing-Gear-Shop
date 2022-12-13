@@ -10,6 +10,7 @@ import {
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import "./ProductListPage.css";
 import NavigationButtons from "../../components/NavigationButtons/NavigationButtons";
+import LoadWheel from "../../components/LoadWheel/LoadWheel";
 
 const ProductListPage = ({ category, search }) => {
   const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const ProductListPage = ({ category, search }) => {
     dispatch(loadProductList({ category, search }));
   }, [dispatch, category, search]);
 
-  const productsPerPage = 5;
+  const productsPerPage = 12;
   let firstProduct = 0;
   let lastProduct = productsPerPage;
   let prevDisabled = false;
@@ -48,7 +49,7 @@ const ProductListPage = ({ category, search }) => {
     nextLink += addThis;
     prevLink += addThis;
   }
-  
+
   return (
     <main id="product-list-page" className="container">
       <ProductNavigationBar />
@@ -66,30 +67,39 @@ const ProductListPage = ({ category, search }) => {
       </div>
       <div id="product-list-content">
         {products.isLoading ? (
-          <p>Loading...</p>
+          <LoadWheel />
         ) : products.data.length !== 0 ? (
-          products.data.slice(firstProduct, lastProduct).map((i, key) => {
-            return (
-              <ProductCard
-                id={i.id}
-                key={key}
-                productName={i.productName}
-                brandName={i.brandName}
-                description={i.description}
-                highestPrice={i.highestPrice}
-                lowestPrice={i.lowestPrice}
-                smallImageFile1={i.smallImageFile1}
-                smallImageFile2={i.smallImageFile2}
-              />
-            );
-          })
+          <ul>
+            {" "}
+            {products.data.slice(firstProduct, lastProduct).map((i, key) => {
+              return (
+                <ProductCard
+                  id={i.id}
+                  key={key}
+                  productName={i.productName}
+                  brandName={i.brandName}
+                  description={i.description}
+                  highestPrice={i.highestPrice}
+                  lowestPrice={i.lowestPrice}
+                  smallImageFile1={i.smallImageFile1}
+                  smallImageFile2={i.smallImageFile2}
+                />
+              );
+            })}
+          </ul>
         ) : (
           <p>No products found</p>
         )}
       </div>
-      <NavigationButtons prevDisabled={prevDisabled} nextDisabled={nextDisabled} prevLink={prevLink} nextLink={nextLink} />
+      <NavigationButtons
+        prevDisabled={prevDisabled}
+        nextDisabled={nextDisabled}
+        prevLink={prevLink}
+        nextLink={nextLink}
+      />
     </main>
   );
 };
 
 export default ProductListPage;
+

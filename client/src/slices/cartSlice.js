@@ -23,27 +23,26 @@ export const moveGuestCartItemsToUserCart = async () => {
     })
   );
   localStorage.removeItem("guestCart");
-}
+};
 
 export const changeQuantityInGuestCart = (cartItem, newQuantity) => {
   let guestCart = JSON.parse(localStorage.getItem("guestCart"));
   if (!guestCart) {
     return;
   }
-  const foundItem = guestCart.find(i => i.id === cartItem.id);
+  const foundItem = guestCart.find((i) => i.id === cartItem.id);
   foundItem.quantity = newQuantity;
   localStorage.setItem("guestCart", JSON.stringify(guestCart));
-}
+};
 
 export const deleteFromGuestCart = (id) => {
   let guestCart = JSON.parse(localStorage.getItem("guestCart"));
   if (!guestCart) {
     return;
   }
-  guestCart = guestCart.filter(i => i.id !== id);
+  guestCart = guestCart.filter((i) => i.id !== id);
   localStorage.setItem("guestCart", JSON.stringify(guestCart));
-}
-
+};
 
 const getCartFromServer = createAsyncThunk(
   "cart/getCartFromServer",
@@ -54,11 +53,11 @@ const getCartFromServer = createAsyncThunk(
       const payload = {
         cartItems: [],
         itemCount: 0,
-        subTotal: 0
-      }
-      response.data.forEach(i => {
+        subTotal: 0,
+      };
+      response.data.forEach((i) => {
         payload.itemCount += i.quantity;
-        payload.subTotal += (i.quantity * i.product.productOptions[0].price)
+        payload.subTotal += i.quantity * i.product.productOptions[0].price;
       });
       payload.cartItems = response.data;
       return payload;
@@ -80,8 +79,8 @@ const getCartFromLocalStorage = createAsyncThunk(
       let payload = {
         subTotal: 0,
         itemCount: 0,
-        cartItems: []
-      }
+        cartItems: [],
+      };
       if (!guestCart) {
         return payload;
       }
@@ -104,17 +103,19 @@ const getCartFromLocalStorage = createAsyncThunk(
             productOptions: [
               {
                 price: foundOption.price,
-                amountInStock: foundOption.amountInStock
+                amountInStock: foundOption.amountInStock,
               },
             ],
           };
           payload.itemCount += Number(item.quantity);
-          payload.subTotal += Number(newProduct.productOptions[0].price * item.quantity);
+          payload.subTotal += Number(
+            newProduct.productOptions[0].price * item.quantity
+          );
           return {
             id: item.id,
             quantity: item.quantity,
             optionSelection: item.optionSelection,
-            product: newProduct
+            product: newProduct,
           };
         })
       );
@@ -134,38 +135,38 @@ const cartSlice = createSlice({
       itemCount: -1,
       subTotal: 0,
     },
-    isLoading: false,
-    hasError: false
+    isLoading: true,
+    hasError: false,
   },
-  reducers: {
-  },
-  extraReducers: {
-    [getCartFromServer.pending]: (state, action) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [getCartFromServer.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [getCartFromServer.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.hasError = true;
-    },
-    [getCartFromLocalStorage.pending]: (state, action) => {
-      state.isLoading = true;
-      state.hasError = false;
-    },
-    [getCartFromLocalStorage.fulfilled]: (state, action) => {
-      state.data = action.payload;
-      state.isLoading = false;
-      state.hasError = false;
-    },
-    [getCartFromLocalStorage.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.hasError = true;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(getCartFromServer.pending, (state, action) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(getCartFromServer.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = false;
+        state.hasError = false;
+      })
+      .addCase(getCartFromServer.rejected, (state, action) => {
+        state.isLoading = false;
+        state.hasError = true;
+      })
+      .addCase(getCartFromLocalStorage.pending, (state, action) => {
+        state.isLoading = true;
+        state.hasError = false;
+      })
+      .addCase(getCartFromLocalStorage.fulfilled, (state, action) => {
+        state.data = action.payload;
+        state.isLoading = false;
+        state.hasError = false;
+      })
+      .addCase(getCartFromLocalStorage.rejected, (state, action) => {
+        state.isLoading = false;
+        state.hasError = true;
+      })
   },
 });
 
