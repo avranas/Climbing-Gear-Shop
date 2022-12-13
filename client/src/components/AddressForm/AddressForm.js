@@ -27,9 +27,11 @@ const AddressForm = forwardRef((props, _ref) => {
   const countryRef = useRef();
   const stateRef = useRef();
 
-  //These functions check for errors in the form, and create error messages when errors are found.
-  //If an error is found, they return true. If not, they return false
-
+  /*
+    These functions check for errors in the form, and create error messages
+    when errors are found. If an error is found, they return true. If not,
+    they return false
+  */
   const checkFirstNameError = useCallback(() => {
     setFirstNameError("");
     if (firstName === "") {
@@ -78,11 +80,14 @@ const AddressForm = forwardRef((props, _ref) => {
     return false;
   }, [zipCode]);
 
-  //This function gets passes into StateDropdown and CountryDropdown.
-  //Whenever their state changes, useEffect gets called, which calls this function
-  //When this function is called, errors get cleared if they no longer apply
-  //We don't checkStateError() to be called without an error flagged, because
-  //It will flag an error with the default state (which is no selection)
+  /*
+    This function gets passes into StateDropdown and CountryDropdown.
+    Whenever their state changes, useEffect gets called, which calls this
+    function. When this function is called, errors get cleared if they no
+    longer apply. We don't checkStateError() to be called without an error
+    flagged, because It will flag an error with the default state (which is
+    no selection)
+  */
   const checkStateErrorIfErrorExists = () => {
     if (stateRef.current.hasError()) {
       return checkStateError();
@@ -129,14 +134,14 @@ const AddressForm = forwardRef((props, _ref) => {
       if (checkCityError()) {
         errorFound = true;
       }
-      if (checkZipCodeError()){
+      if (checkZipCodeError()) {
         errorFound = true;
       }
       if (checkStateError()) {
         errorFound = true;
       }
       return errorFound;
-    }
+    },
   }));
 
   const handleKeyPress = (e) => {
@@ -206,10 +211,7 @@ const AddressForm = forwardRef((props, _ref) => {
     checkZipCodeError,
   ]);
 
-  return (
-    props.hidden ?
-    null
-    :
+  return props.hidden ? null : (
     <section className="address-form">
       <div className="input-item">
         <CountryDropdown

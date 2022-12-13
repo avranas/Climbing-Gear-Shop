@@ -9,16 +9,19 @@ const ProtectedRoutes = () => {
     const checkAuthentication = async () => {
       const response = await axios("/authenticated");
       if (response.data) {
-        setIsAuth(true)
+        setIsAuth(true);
       } else {
-        setIsAuth(false)
+        setIsAuth(false);
       }
     };
     checkAuthentication();
-  })
-  
-  return (isAuth === null ? null : isAuth === true ?
-  <Outlet /> : isAuth === false ? <Navigate to="/login" /> : null)
-}
+  });
+
+  return isAuth === null ? null : isAuth === true ? (
+    <Outlet />
+  ) : isAuth === false ? (
+    <Navigate to="/login" />
+  ) : null;
+};
 
 export default ProtectedRoutes;

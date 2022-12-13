@@ -1,17 +1,14 @@
 import { Link } from "react-router-dom";
-import './NavigationButtons.css';
+import "./NavigationButtons.css";
 
-//Props are page, 
+//Props are page,
 const NavigationButtons = (props) => {
   return (
     <div id="directional-buttons">
       <div className="direction-button-container">
         {!props.prevDisabled ? (
           <Link to={props.prevLink}>
-            <button
-              id="prev-active"
-              className="direction-button styled-box"
-            >
+            <button id="prev-active" className="direction-button styled-box">
               Previous
             </button>
           </Link>
@@ -28,10 +25,7 @@ const NavigationButtons = (props) => {
       <div className="direction-button-container">
         {!props.nextDisabled ? (
           <Link to={props.nextLink}>
-            <button
-              className="direction-button styled-box"
-              id="next-active"
-            >
+            <button className="direction-button styled-box" id="next-active">
               Next
             </button>
           </Link>

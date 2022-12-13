@@ -18,11 +18,14 @@ const HomePage = (props) => {
       <CategoryList />
       <h2 className='container'>About Us</h2>
       <section className='container' id="about-us">
-        <p>Fake Climbing Gear Shop is an e-commerce app made by <a href="https://github.com/avranas">
-          Alex Vranas</a> to practice building full stack web apps. No climbing gear is actually being sold here,
-          but you can expect this site to do everything that you expect an e-commerce site is capable of.</p>
-        <p>For payments, this site uses Stripe, which is currently set to test mode. If you would like to see
-          how payments are processed, enter the credit card number: "4242 4242 4242 4242" with fake data for 
+        <p>Fake Climbing Gear Shop is an e-commerce app made by
+          <a href="https://github.com/avranas"> Alex Vranas</a> to practice
+          building full stack web apps. No climbing gear is actually being sold
+          here, but you can expect this site to do everything that you expect
+          an e-commerce site is capable of.</p>
+        <p>For payments, this site uses Stripe, which is currently set to test
+          mode. If you would like to see how payments are processed, enter the
+          credit card number: "4242 4242 4242 4242" with fake data for 
           everything else.</p>
        </section>
     </main>

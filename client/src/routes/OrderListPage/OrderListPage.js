@@ -37,14 +37,14 @@ const OrdersList = (props) => {
   return (
     <main id="orders-list" className="container">
       {ordersList.isLoading ? (
-          <LoadWheel />
+        <LoadWheel />
       ) : ordersList.data.length !== 0 ? (
         <div>
           <h2>Order History</h2>
           <ul>
-          {ordersList.data.slice(firstOrder, lastOrder).map((i, key) => {
-            return <OrderCard key={key} order={i} />;
-          })}
+            {ordersList.data.slice(firstOrder, lastOrder).map((i, key) => {
+              return <OrderCard key={key} order={i} />;
+            })}
           </ul>
         </div>
       ) : (

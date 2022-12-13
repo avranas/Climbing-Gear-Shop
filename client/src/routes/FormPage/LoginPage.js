@@ -5,7 +5,10 @@ import { useDispatch } from "react-redux";
 import "./FormPage.css";
 import { createNotification } from "../../slices/notificationSlice";
 import axios from "axios";
-import { loadCartData, moveGuestCartItemsToUserCart } from "../../slices/cartSlice";
+import {
+  loadCartData,
+  moveGuestCartItemsToUserCart,
+} from "../../slices/cartSlice";
 import github from "../../images/github.png";
 import google from "../../images/google.png";
 
@@ -14,7 +17,7 @@ import google from "../../images/google.png";
 const LoginPage = ({ next, error }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [userEmailInput, setUserEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
   const [emailError, setEmailError] = useState("");
@@ -63,7 +66,6 @@ const LoginPage = ({ next, error }) => {
 
       await moveGuestCartItemsToUserCart();
 
-
       loadCartData(dispatch);
     } catch (err) {
       console.log(err);
@@ -81,7 +83,9 @@ const LoginPage = ({ next, error }) => {
   useEffect(() => {
     switch (error) {
       case "1":
-        setInvalidLoginError(`The email with the associated account is already registered.`);
+        setInvalidLoginError(
+          `The email with the associated account is already registered.`
+        );
         break;
       default:
         break;
@@ -109,10 +113,9 @@ const LoginPage = ({ next, error }) => {
       if (response.data) {
         navigate("/");
       }
-    }
+    };
     checkNotAuthenticated();
-
-  }, [navigate])
+  }, [navigate]);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -122,7 +125,7 @@ const LoginPage = ({ next, error }) => {
 
   const loginWithGitHub = async (e) => {
     try {
-      window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/github`;
+      window.location.href = `${serverUrl}/auth/github`;
     } catch (err) {
       console.log(err);
     }
@@ -130,7 +133,7 @@ const LoginPage = ({ next, error }) => {
 
   const loginWithGoogle = async (e) => {
     try {
-      window.location.href = `${process.env.REACT_APP_SERVER_URL}/auth/google`;
+      window.location.href = `${serverUrl}/auth/google`;
     } catch (err) {
       console.log(err);
     }
@@ -202,7 +205,7 @@ const LoginPage = ({ next, error }) => {
           <img alt="github" src={github} />
         </button>
         <button className="oauth-button" id="google" onClick={loginWithGoogle}>
-          <img alt="google" src={google}/>
+          <img alt="google" src={google} />
         </button>
       </div>
       <p className="form-page-footer">

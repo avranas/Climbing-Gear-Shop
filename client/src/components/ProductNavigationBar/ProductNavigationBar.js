@@ -23,7 +23,7 @@ const ProductNavigationBar = (props) => {
         <li>
           <Link to="/products/0?category=chalk">Chalk</Link>
         </li>
-        </ul>
+      </ul>
     </nav>
   );
 };

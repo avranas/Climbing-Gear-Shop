@@ -14,24 +14,26 @@ import axios from "axios";
 import redX from "../../images/red-x.png";
 import LoadWheel from "../../components/LoadWheel/LoadWheel";
 
-
-//Loading cart data with a useEffect is not necessary, because the DetailedHeader will
-//already take care of that for you. In fact, adding it creates problems
+/*
+  Loading cart data with a useEffect is not necessary, because the
+  DetailedHeader will already take care of that for you. In fact, adding it
+  creates problems
+*/
 const CartPage = (props) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const cart = useSelector(selectCart);
   const cartData = cart.data;
-  const navigate = useNavigate();
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const [quantityChangeError, setQuantityChangeError] = useState("");
 
   const handleQuantitySelection = async (e, cartItem) => {
     const response = await axios("/authenticated");
     let value = e.target.value;
 
-
     //Check to make sure there are enough items in stock
     const amountInStock = cartItem.product.productOptions[0].amountInStock;
-    if(value > amountInStock) {
+    if (value > amountInStock) {
       value = amountInStock;
       if (value === 0) {
         setQuantityChangeError("This item is sold out.");
@@ -39,7 +41,6 @@ const CartPage = (props) => {
         setQuantityChangeError("Not enough in stock. Setting to the max.");
       }
     }
-
 
     if (response.data) {
       const requestBody = {
@@ -74,17 +75,17 @@ const CartPage = (props) => {
   };
 
   const continueToCheckout = async () => {
-    const response = await axios('/authenticated');
+    const response = await axios("/authenticated");
     if (response.data) {
-      navigate('/checkout');
+      navigate("/checkout");
     } else {
-      navigate('/login?next=checkout');
+      navigate("/login?next=checkout");
     }
-  }
+  };
 
   const backToProducts = async () => {
-    navigate('/products/0')
-  }
+    navigate("/products/0");
+  };
 
   return (
     <main id="cart" className="container styled-box">
@@ -101,14 +102,14 @@ const CartPage = (props) => {
         cartData.cartItems.map((i, key) => {
           return (
             <div className="cart-item" key={key}>
-                <div className="cart-item-image">
-                  <Link to={`/product/${i.product.id}`}>
-                    <img
-                      src={`${process.env.REACT_APP_SERVER_URL}/images/${i.product.smallImageFile1}`}
-                      alt="cart item"
-                    />
-                  </Link>
-                </div>
+              <div className="cart-item-image">
+                <Link to={`/product/${i.product.id}`}>
+                  <img
+                    src={`${serverUrl}/images/${i.product.smallImageFile1}`}
+                    alt="cart item"
+                  />
+                </Link>
+              </div>
               <div className="cart-item-content">
                 <p>
                   {i.product.optionType}: {i.optionSelection}
@@ -154,8 +155,15 @@ const CartPage = (props) => {
               cartData.subTotal
             )}`}</p>
             <div id="cart-buttons">
-              <button onClick={continueToCheckout} className="important-button">Continue to checkout</button>
-              <button onClick={backToProducts}className="semi-important-button">Continue shopping</button>
+              <button onClick={continueToCheckout} className="important-button">
+                Continue to checkout
+              </button>
+              <button
+                onClick={backToProducts}
+                className="semi-important-button"
+              >
+                Continue shopping
+              </button>
             </div>
           </div>
         )}

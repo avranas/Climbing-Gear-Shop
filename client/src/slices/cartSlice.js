@@ -166,7 +166,7 @@ const cartSlice = createSlice({
       .addCase(getCartFromLocalStorage.rejected, (state, action) => {
         state.isLoading = false;
         state.hasError = true;
-      })
+      });
   },
 });
 

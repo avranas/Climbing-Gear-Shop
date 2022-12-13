@@ -24,18 +24,15 @@
 }
 
 @media only screen and (max-width: 992px) { 
-  
   #order-summary {
     width: auto;
     margin: 0 auto;
     margin-top: 2rem;
   }
-  
 }
+
 @media only screen and (max-width: 770px) { 
-  
   #order-summary {
     font-size: 0.75rem;
   }
-  
 }

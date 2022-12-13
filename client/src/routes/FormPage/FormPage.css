@@ -5,9 +5,11 @@
   flex-direction: column;
   align-items: center;
 }
+
 .form {
   text-align: center;
 }
+
 .form-page h2 {
   text-align: center;
   margin: 2rem;
@@ -37,7 +39,7 @@
   font-size: 0.9rem;
   display: flex;
   align-items: center;
-  color:rgb(230, 0, 0);
+  color: rgb(230, 0, 0);
   padding: 0.25rem;
   border-radius: 3px;
   border-width: 1px;
@@ -51,7 +53,7 @@
 .input-error-box img {
   width: 1rem;
   height: 1rem;
-  margin-right: 0.5rem; 
+  margin-right: 0.5rem;
 }
 
 .input-warning-box {
@@ -59,7 +61,7 @@
   font-size: 0.9rem;
   display: flex;
   align-items: center;
-  color:rgb(219, 110, 0);
+  color: rgb(219, 110, 0);
   padding: 0.25rem;
   border-radius: 3px;
   border-width: 1px;
@@ -73,9 +75,8 @@
 .input-warning-box img {
   width: 1.5rem;
   height: 1.5rem;
-  margin-right: 0.5rem; 
+  margin-right: 0.5rem;
 }
-
 
 .form-break {
   height: 1.5rem;
@@ -104,6 +105,7 @@
   border-radius: 2px;
   margin: 0 1rem 0 1rem;
 }
+
 .oauth-button img {
   width: 1.75rem;
   height: 1.75rem;
@@ -113,6 +115,7 @@
   transition: 300ms;
   background-color: rgb(231, 231, 231);
 }
+
 .oauth-button:active {
   transition: 100ms;
   background-color: rgb(82, 82, 82);
@@ -124,8 +127,7 @@
   margin: 2rem;
 }
 
-@media only screen and (max-width: 770px) { 
-
+@media only screen and (max-width: 770px) {
   .form-header-wrap {
     width: 22rem;
   }
@@ -135,45 +137,35 @@
     font-size: 0.9rem;
     width: 12rem;
   }
-  
-.input-item {
-  margin-bottom: 0.5rem;
+
+  .input-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .input-error-box {
+    font-size: 0.8rem;
+  }
+
+  .input-error-box p {
+    max-width: 10rem;
+  }
+
+  .input-error-box img {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  .input-warning-box {
+    font-size: 0.8rem;
+  }
+
+  .input-warning-box img {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
 }
 
-
-
-
-
-.input-error-box {
-  font-size: 0.8rem;
-}
-
-.input-error-box p {
-  max-width: 10rem;
-}
-
-.input-error-box img {
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
-.input-warning-box {
-  font-size: 0.8rem;
-}
-
-.input-warning-box img {
-  width: 0.9rem;
-  height: 0.9rem;
-}
-
-
-
-
-
-}
-
-@media only screen and (max-width: 512px) { 
-
+@media only screen and (max-width: 512px) {
   .form-header-wrap {
     width: 16rem;
   }
@@ -187,20 +179,20 @@
   .input-error-box {
     font-size: 0.7rem;
   }
-  
+
   .input-error-box p {
     max-width: 6rem;
   }
-  
+
   .input-error-box img {
     width: 0.8rem;
     height: 0.8rem;
   }
-  
-  .input-warning-box p{
+
+  .input-warning-box p {
     font-size: 0.7rem;
   }
-  
+
   .input-warning-box img {
     width: 0.8rem;
     height: 0.8rem;

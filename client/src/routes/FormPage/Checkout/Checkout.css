@@ -1,23 +1,23 @@
-#checkout-page { 
+#checkout-page {
   margin-top: 2rem;
 }
 
-#checkout-head h2{
+#checkout-head h2 {
   text-align: center;
 }
+
 #checkout-body {
   display: flex;
   justify-content: space-around;
 }
 
 #checkout-form {
-width: 45%;
-padding: 3rem;
+  width: 45%;
+  padding: 3rem;
 }
 
-#checkout-page h3{
+#checkout-page h3 {
   font-size: 1.5rem;
-
 }
 
 #checkout-page h2 {
@@ -30,7 +30,7 @@ padding: 3rem;
   justify-content: space-between;
 }
 
-.space-right { 
+.space-right {
   margin-right: 1rem;
 }
 
@@ -74,35 +74,27 @@ padding: 3rem;
   margin-left: 1rem;
 }
 
-
-
-@media only screen and (max-width: 992px) { 
+@media only screen and (max-width: 992px) {
   #checkout-body {
     display: block;
   }
+  
   #checkout-form {
     width: 80%;
     margin: 0 auto;
     padding: 4rem;
-    }
-
+  }
 }
 
-@media only screen and (max-width: 770px) { 
+@media only screen and (max-width: 770px) {
   #checkout-form {
     padding: 2rem;
-    }
-
+  }
 }
 
-
-
-@media only screen and (max-width: 512px) { 
-
+@media only screen and (max-width: 512px) {
   #checkout-form {
     padding: 1rem;
     width: auto;
-    }
-
+  }
 }
-

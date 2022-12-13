@@ -47,8 +47,8 @@ const productListSlice = createSlice({
         state.isLoading = false;
         state.hasError = false;
         const payload = action.payload;
-        //Go through the productOptions in the payload to find the range of prices
-
+        //Go through the productOptions in the payload to find the range of
+        //prices
         const newProducts = [];
         payload.forEach((product) => {
           let lowestPrice = Infinity;

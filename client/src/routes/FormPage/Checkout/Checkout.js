@@ -10,13 +10,11 @@ import redX from "../../../images/red-x.png";
 
 const Checkout = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const cartData = cart.data;
-  const dispatch = useDispatch();
-
   const billingAddressRef = useRef();
   const shippingAddressRef = useRef();
-
   const [sameAsBillingChecked, setSameAsBillingChecked] = useState(true);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [phoneNumberError, setPhoneNumberError] = useState("");
@@ -62,9 +60,9 @@ const Checkout = (props) => {
       } catch (err) {
         console.log(err);
       }
-    }
+    };
     expireStripeSession();
-  }, [])
+  }, []);
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -109,13 +107,12 @@ const Checkout = (props) => {
 
   const checkDisclaimerCheckedError = useCallback(() => {
     setDisclaimerCheckedError("");
-    if(disclaimerChecked === false) {
+    if (disclaimerChecked === false) {
       setDisclaimerCheckedError("This box must be checked.");
       return true;
     }
     return false;
   }, [disclaimerChecked]);
-
 
   //Clear error messages as soon as they are fixed
   useEffect(() => {
@@ -125,7 +122,12 @@ const Checkout = (props) => {
     if (disclaimerCheckedError) {
       checkDisclaimerCheckedError();
     }
-  }, [phoneNumberError, checkPhoneNumberError, disclaimerCheckedError, checkDisclaimerCheckedError]);
+  }, [
+    phoneNumberError,
+    checkPhoneNumberError,
+    disclaimerCheckedError,
+    checkDisclaimerCheckedError,
+  ]);
 
   const handleSubmit = async (e) => {
     try {
@@ -164,12 +166,15 @@ const Checkout = (props) => {
         shippingAddress: shippingAddress,
         billingAddress: billingAddress,
       };
-      const response = await axios.post("/checkout/create-checkout-session", requestBody);
+      const response = await axios.post(
+        "/checkout/create-checkout-session",
+        requestBody
+      );
       window.location.href = response.data.url;
       //Redirect to "Order placed! page on success"
     } catch (err) {
       setServerError(err.response.data);
-      console.log(err.message)
+      console.log(err.message);
       console.log(err);
     }
   };
@@ -212,10 +217,7 @@ const Checkout = (props) => {
               checked={sameAsBillingChecked}
               onChange={toggleSameAsBillingChecked}
             />
-            <label
-              htmlFor="same-as-billing">
-              Same as billing address
-            </label>
+            <label htmlFor="same-as-billing">Same as billing address</label>
           </div>
           <AddressForm ref={shippingAddressRef} hidden={sameAsBillingChecked} />
           <div id="disclaimer-input">
@@ -225,9 +227,9 @@ const Checkout = (props) => {
               checked={disclaimerChecked}
               onChange={toggleDisclaimerChecked}
             />
-            <label
-              htmlFor="disclaimer">
-              I understand that this is not a real store, and that I will not be recieving any of these items
+            <label htmlFor="disclaimer">
+              I understand that this is not a real store, and that I will not be
+              recieving any of these items
             </label>
           </div>
           <div id="disclaimer-error">
@@ -258,7 +260,7 @@ const Checkout = (props) => {
           </div>
         </div>
         <OrderSummary subTotal={cartData.subTotal} />
-        <br/>
+        <br />
       </div>
     </div>
   );

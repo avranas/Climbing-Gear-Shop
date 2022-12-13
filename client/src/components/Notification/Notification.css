@@ -9,7 +9,6 @@
   pointer-events: none;
 }
 
-
 @keyframes slideDownAndUp {
   10% {
     transform: translateY(150%);

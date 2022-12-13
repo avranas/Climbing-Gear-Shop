@@ -10,6 +10,7 @@ import "./OrderDetailsPage.css";
 const OrderDetailsPage = (props) => {
   const { id } = useParams();
   const order = useSelector(selectOrder);
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,29 +23,55 @@ const OrderDetailsPage = (props) => {
       <h2>Order Details</h2>
       {order.isLoading ? (
         <div>
-          <LoadWheel />          
+          <LoadWheel />
         </div>
       ) : (
         <section id="order-details" className="styled-box">
           <div id="order-details-head" className="container">
             <table id="order-address">
               <tbody>
-              <tr><td><strong>Shipping Address</strong></td></tr>
-                <tr><td>{order.data.deliveryStreetAddress1}</td></tr>
+                <tr>
+                  <td>
+                    <strong>Shipping Address</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{order.data.deliveryStreetAddress1}</td>
+                </tr>
                 {order.data.deliveryStreetAddress2 && (
-                  <tr><td>{order.data.deliveryStreetAddress2}</td></tr>
+                  <tr>
+                    <td>{order.data.deliveryStreetAddress2}</td>
+                  </tr>
                 )}
-                <tr><td>{`${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode}`}</td></tr>
-                <tr><td>{order.data.deliveryCountry}</td></tr>
+                <tr>
+                  <td>{`${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode}`}</td>
+                </tr>
+                <tr>
+                  <td>{order.data.deliveryCountry}</td>
+                </tr>
               </tbody>
             </table>
             <table id="order-additional-info">
               <tbody>
-                <tr><td><strong>Date placed</strong></td></tr>
-                <tr><td>{getFullUTCDay(new Date(Number(order.data.timeCreated)))}</td></tr>
-                <tr><td><strong>Order status</strong></td></tr>
-                <tr><td>{`${order.data.orderStatus}`}</td></tr>
-                </tbody>
+                <tr>
+                  <td>
+                    <strong>Date placed</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    {getFullUTCDay(new Date(Number(order.data.timeCreated)))}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <strong>Order status</strong>
+                  </td>
+                </tr>
+                <tr>
+                  <td>{`${order.data.orderStatus}`}</td>
+                </tr>
+              </tbody>
             </table>
             <table id="order-totals">
               <tbody>
@@ -92,7 +119,7 @@ const OrderDetailsPage = (props) => {
                   <Link to={`/product/${i.product.id}`}>
                     <div className="order-item-image">
                       <img
-                        src={`${process.env.REACT_APP_SERVER_URL}/images/${i.product.smallImageFile1}`}
+                        src={`${serverUrl}/images/${i.product.smallImageFile1}`}
                         alt="order item"
                       />
                     </div>
@@ -106,7 +133,9 @@ const OrderDetailsPage = (props) => {
                     <strong>
                       <li>{penniesToUSD(i.price)}</li>
                     </strong>
-                    <li className="order-item-options">{`Quantity: ${i.quantity}`}</li>
+                    <li className="order-item-options">
+                      {`Quantity: ${i.quantity}`}
+                    </li>
                   </ul>
                 </div>
               );

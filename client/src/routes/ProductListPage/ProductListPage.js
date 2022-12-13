@@ -102,4 +102,3 @@ const ProductListPage = ({ category, search }) => {
 };
 
 export default ProductListPage;
-

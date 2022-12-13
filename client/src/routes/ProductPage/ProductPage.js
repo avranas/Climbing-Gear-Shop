@@ -18,19 +18,19 @@ import LoadWheel from "../../components/LoadWheel/LoadWheel";
 const ProductPage = (props) => {
   const { id } = useParams();
   const dispatch = useDispatch();
+  const product = useSelector(selectProduct);
+  const productData = product.data;
+  const [options, setOptions] = useState([]);
   const [optionSelection, setOptionSelection] = useState("");
   const [missingSelectionError, setMissingSelectionError] = useState("");
   const [displayPrice, setDisplayPrice] = useState("");
   const [currentAmountInStock, setCurrentAmountInStock] = useState(-1);
   const [outOfStockError, setOutOfStockError] = useState("");
   const [lowOnStockWarning, setLowOnStockWarning] = useState("");
-  const [options, setOptions] = useState([]);
-  const product = useSelector(selectProduct);
-  const productData = product.data;
   const [addedToCartWindowOpen, setAddedToCartWindowOpen] = useState(false);
   const [quantityDisabled, setQuantityDisabled] = useState(true);
   const quantitySelectRef = useRef();
-
+  const serverUrl = process.env.REACT_APP_SERVER_URL;
 
   const addToCart = async () => {
     //options[0] is 'Select'
@@ -88,7 +88,8 @@ const ProductPage = (props) => {
               i.quantity = (
                 Number(newCartItem.quantity) + Number(i.quantity)
               ).toString();
-              //If too many items are added, set quantity to amountInStock then display an error message
+              //If too many items are added, set quantity to amountInStock then
+              //display an error message
               if (i.quantity > currentAmountInStock) {
                 i.quantity = currentAmountInStock;
                 outOfStockErrorFound = true;
@@ -125,13 +126,13 @@ const ProductPage = (props) => {
   const handleOptionSlection = (e) => {
     setOptionSelection(e.target.value);
     if (e.target.value === options[0]) {
-      setQuantityDisabled(true)
+      setQuantityDisabled(true);
       setOutOfStockError("");
       setLowOnStockWarning("");
     } else {
       setQuantityDisabled(false);
     }
-  }
+  };
 
   //Update product information when optionSelection changes
   useEffect(() => {
@@ -150,10 +151,14 @@ const ProductPage = (props) => {
       setQuantityDisabled(true);
       setLowOnStockWarning("");
     } else if (newAmountInStock === 1) {
-      setLowOnStockWarning(`There is only ${newAmountInStock} left in stock! Buy now!`)
+      setLowOnStockWarning(
+        `There is only ${newAmountInStock} left in stock! Buy now!`
+      );
       setOutOfStockError("");
     } else if (newAmountInStock <= 5) {
-      setLowOnStockWarning(`There are only ${newAmountInStock} of these in stock! Buy now!`)
+      setLowOnStockWarning(
+        `There are only ${newAmountInStock} of these in stock! Buy now!`
+      );
       setOutOfStockError("");
     } else {
       setOutOfStockError("");
@@ -175,26 +180,26 @@ const ProductPage = (props) => {
     productData.productOptions.map((i) => {
       return newOptions.push(i.option);
     });
-    //Sort options. They will want to be sorted differently based on its option type
-    //Always sort numerically if the options are numbers
+    //Sort options. They will want to be sorted differently based on its option
+    //type - always sort numerically if the options are numbers
     if (!isNaN(newOptions[0])) {
       newOptions.sort((a, b) => a - b);
     } else {
       switch (productData.optionType) {
         //Sort these reverse-alphabetically
-        case 'Size':
-          newOptions.sort((a, b) => b.localeCompare(a))
+        case "Size":
+          newOptions.sort((a, b) => b.localeCompare(a));
           break;
         //Sort these alphabetically
-        case 'Length':
+        case "Length":
         default:
-          newOptions.sort((a, b) => a.localeCompare(b))
+          newOptions.sort((a, b) => a.localeCompare(b));
           break;
       }
     }
     newOptions.unshift("Select");
     setQuantityDisabled(true);
-    if(productData.productOptions.length === 1) {
+    if (productData.productOptions.length === 1) {
       setOptionSelection(newOptions[1]);
       setQuantityDisabled(false);
     } else {
@@ -222,18 +227,16 @@ const ProductPage = (props) => {
           <AddedToCartWindow closeWindow={closeWindow} />
         </div>
       )}
-      {
-        !product ? (
-        <h2>404 Error - Product ID not found</h2>)
-      : product.isLoading ? (
+      {!product ? (
+        <h2>404 Error - Product ID not found</h2>
+      ) : product.isLoading ? (
         <LoadWheel />
       ) : (
-        <div id="product"
-        className="styled-box">
+        <div id="product" className="styled-box">
           <section id="product-image">
             <img
               alt="product"
-              src={`${process.env.REACT_APP_SERVER_URL}/images/${productData.largeImageFile}`}
+              src={`${serverUrl}/images/${productData.largeImageFile}`}
             />
           </section>
           <div id="product-page-spacer"></div>
@@ -252,15 +255,18 @@ const ProductPage = (props) => {
                 <p>{penniesToUSD(displayPrice)}</p>
               )}
             </div>
-              <div id="options">
-              {
-                productData.productOptions.length > 1 &&
+            <div id="options">
+              {productData.productOptions.length > 1 && (
                 <div className="option-box">
-                  <label className="option-label" htmlFor={productData.optionType}>
+                  <label
+                    className="option-label"
+                    htmlFor={productData.optionType}
+                  >
                     {productData.optionType}
                   </label>
                   <br />
-                  <select className="form-select form-select-sm"
+                  <select
+                    className="form-select form-select-sm"
                     onChange={handleOptionSlection}
                     name="option"
                     id="option-select"
@@ -274,19 +280,19 @@ const ProductPage = (props) => {
                     })}
                   </select>
                 </div>
-              }
-                <div className="option-box">
-                  <label className="option-label" htmlFor="quantity">
-                    Quantity{" "}
-                  </label>
-                  <br />
-                  <QuantitySelection
-                    ref={quantitySelectRef}
-                    amountInStock={currentAmountInStock}
-                    disabled={quantityDisabled}
-                  />
-                </div>
+              )}
+              <div className="option-box">
+                <label className="option-label" htmlFor="quantity">
+                  Quantity{" "}
+                </label>
+                <br />
+                <QuantitySelection
+                  ref={quantitySelectRef}
+                  amountInStock={currentAmountInStock}
+                  disabled={quantityDisabled}
+                />
               </div>
+            </div>
             {lowOnStockWarning && (
               <div className="input-warning-box">
                 <img alt="warning" src={warning} />
@@ -306,7 +312,11 @@ const ProductPage = (props) => {
               </div>
             )}
             <div id="product-footer">
-              <button data-testid="add-to-cart-button" onClick={addToCart} className="important-button">
+              <button
+                data-testid="add-to-cart-button"
+                onClick={addToCart}
+                className="important-button"
+              >
                 Add to cart
               </button>
             </div>

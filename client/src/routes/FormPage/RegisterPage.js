@@ -14,7 +14,6 @@ const RegisterPage = (props) => {
   const [nameInput, setNameInput] = useState("");
   const [passwordInputA, setPasswordInputA] = useState("");
   const [passwordInputB, setPasswordInputB] = useState("");
-
   const [emailError, setEmailError] = useState(null);
   const [nameError, setNameError] = useState(null);
   const [passwordAError, setPasswordAError] = useState(null);
@@ -129,11 +128,11 @@ const RegisterPage = (props) => {
   //On load, redirect the user to their profile if they're already logged in
   useEffect(() => {
     const getAuthData = async () => {
-      const response = await axios.get('/authenticated');
+      const response = await axios.get("/authenticated");
       if (response.data) {
         navigate(-1);
       }
-    }
+    };
     getAuthData();
   }, [navigate]);
 
@@ -203,7 +202,9 @@ const RegisterPage = (props) => {
         <h2>Create a new account</h2>
         <div className="form">
           <div className="input-item">
-            <label className="form-label" htmlFor="user-email">Email</label>
+            <label className="form-label" htmlFor="user-email">
+              Email
+            </label>
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
@@ -220,7 +221,9 @@ const RegisterPage = (props) => {
             )}
           </div>
           <div className="input-item">
-            <label className="form-label" htmlFor="name">Name</label>
+            <label className="form-label" htmlFor="name">
+              Name
+            </label>
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
@@ -237,7 +240,9 @@ const RegisterPage = (props) => {
             )}
           </div>
           <div className="input-item">
-            <label className="form-label" htmlFor="password">Password</label>
+            <label className="form-label" htmlFor="password">
+              Password
+            </label>
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
@@ -254,7 +259,9 @@ const RegisterPage = (props) => {
             )}
           </div>
           <div className="input-item">
-            <label className="form-label" htmlFor="password-confirm">Confirm Password</label>
+            <label className="form-label" htmlFor="password-confirm">
+              Confirm Password
+            </label>
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
@@ -276,7 +283,9 @@ const RegisterPage = (props) => {
             type="submit"
             value="Submit"
             onClick={handleSubmit}
-          >Submit</button>
+          >
+            Submit
+          </button>
         </div>
         <p className="form-page-footer">
           Already have an account? <Link to="/login">Sign in</Link>

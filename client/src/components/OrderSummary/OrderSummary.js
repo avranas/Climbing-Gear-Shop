@@ -1,9 +1,7 @@
-import penniesToUSD from '../../utils/penniesToUSD';
-import './OrderSummary.css';
+import penniesToUSD from "../../utils/penniesToUSD";
+import "./OrderSummary.css";
 
 const OrderSummary = (props) => {
-
-  //This also gets
   const shippingFee = 0;
   const estimatedTaxRate = 0.09125;
   const taxes = estimatedTaxRate * props.subTotal;
@@ -11,8 +9,8 @@ const OrderSummary = (props) => {
   return (
     <table id="order-summary" className="styled-box">
       <colgroup>
-        <col span="1" style={{width: "70%"}}/>
-        <col span="1" style={{width: "15%"}}/>
+        <col span="1" style={{ width: "70%" }} />
+        <col span="1" style={{ width: "15%" }} />
       </colgroup>
       <thead>
         <tr>
@@ -35,7 +33,12 @@ const OrderSummary = (props) => {
         </tr>
         <tr>
           <td>Total</td>
-          <td><strong> {penniesToUSD(props.subTotal + shippingFee + taxes)}</strong></td>
+          <td>
+            <strong>
+              {" "}
+              {penniesToUSD(props.subTotal + shippingFee + taxes)}
+            </strong>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -43,14 +46,3 @@ const OrderSummary = (props) => {
 };
 
 export default OrderSummary;
-
-
-
-
-
-
-
-
-
-
-

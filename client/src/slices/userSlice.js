@@ -6,17 +6,17 @@ const userSlice = createSlice({
     userEmail: "",
     name: "",
     homeAddress: "",
-    rewardsPoints: ""
+    rewardsPoints: "",
   },
   reducers: {
-    loadUserData(state, action){
+    loadUserData(state, action) {
       const payload = action.payload;
       state.userEmail = payload.userEmail;
       state.name = payload.name;
       state.homeAddress = payload.homeAddress;
       state.rewardsPoints = payload.rewardsPoints;
     },
-    eraseUserData(state, action){
+    eraseUserData(state, action) {
       state.userEmail = "";
       state.name = "";
       state.homeAddress = "";

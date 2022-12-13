@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import './SearchBar.css';
+import "./SearchBar.css";
 
 const SearchBar = (props) => {
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const SearchBar = (props) => {
 
   const clearText = () => {
     setSearchBarText("");
-  }
+  };
 
   return (
     <div id="search-bar" data-testid="searchbar">
@@ -38,13 +38,13 @@ const SearchBar = (props) => {
         value={searchBarText}
         onChange={handleChange}
         onKeyUp={handleKeyPress}
-      >
-      </input>
-<     button id='search-button' data-testid="searchbar-button" onClick={handleSubmit} />
-      {
-        searchBarText !== "" &&
-        <button id="clear-button" onClick={clearText} />
-      }
+      ></input>
+      <button
+        id="search-button"
+        data-testid="searchbar-button"
+        onClick={handleSubmit}
+      />
+      {searchBarText !== "" && <button id="clear-button" onClick={clearText} />}
     </div>
   );
 };

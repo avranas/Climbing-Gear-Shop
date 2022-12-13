@@ -5,15 +5,15 @@ const newestCartItemSlice = createSlice({
   initialState: {
     data: {
       productId: 0,
-      optionSelection: '',
-      quantity: 0
-    }
+      optionSelection: "",
+      quantity: 0,
+    },
   },
   reducers: {
     setNewestCartItem(state, action) {
       state.data = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const selectNewestCartItem = (state) => state.newestCartItem.data;

@@ -1,5 +1,3 @@
-.direction-button-container {
-}
 #directional-buttons {
   display: flex;
 }
@@ -28,6 +26,7 @@
 #next-active:hover {
   background-color: #ebebeb;
 }
+
 #prev-active:active {
   background-color: #cccccc;
 }
@@ -36,18 +35,18 @@
   background-color: #cccccc;
 }
 
-
-
 @media only screen and (max-width: 770px) {
   #directional-buttons {
     justify-content: center;
   }
+  
   .direction-button {
     width: 8rem;
   }
 }
+
 @media only screen and (max-width: 512px) {
-.direction-button {
-  width: 6rem;
-}
+  .direction-button {
+    width: 6rem;
+  }
 }

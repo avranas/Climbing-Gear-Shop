@@ -16,7 +16,6 @@
   }
 }
 
-
 .overlay {
   position: absolute;
   top: 0;
@@ -43,11 +42,11 @@
   animation: fadeIn 200ms;
 }
 
-
 #added-to-cart-content {
   display: flex;
   justify-content: center;
 }
+
 #added-to-cart-head {
   justify-content: center;
   margin-bottom: 1rem;
@@ -66,7 +65,6 @@
 #added-to-cart-image img {
   max-height: 10rem;
 }
-
 
 #added-to-cart-details {
   margin-left: 2rem;
@@ -100,27 +98,31 @@
   #added-to-cart-image {
     text-align: center;
   }
-  #added-to-cart-details p{
+
+  #added-to-cart-details p {
     text-align: center;
   }
+
   #added-to-cart-image img {
     max-height: 8rem;
   }
+
   #added-to-cart-content {
     display: block;
   }
-
 }
 
 @media only screen and (max-width: 770px) {
   #added-to-cart-image img {
     max-height: 6rem;
   }
+
   #added-to-cart-buttons {
     margin: 0;
     display: block;
     text-align: center;
   }
+
   #added-to-cart-details {
     display: block;
   }
@@ -131,18 +133,23 @@
     padding: 0.25rem;
     margin: 0;
   }
+
   #added-to-cart-content {
     padding: 0;
   }
+
   #added-to-cart-image {
     margin-bottom: 0.5rem;
   }
-  #added-to-cart-content p{
+
+  #added-to-cart-content p {
     font-size: 0.75rem;
   }
+
   #added-to-cart-head {
     margin: 1rem 0 1rem 0;
   }
+  
   #added-to-cart-buttons button {
     margin: 0.125rem;
   }

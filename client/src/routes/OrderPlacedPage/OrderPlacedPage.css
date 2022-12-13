@@ -1,13 +1,15 @@
-#receipt table{
+#receipt table {
   width: auto;
   padding: 2rem;
   line-height: 1rem;
   box-shadow: 0.2rem 0.2rem 0 rgb(12 11 8 / 20%);
   line-height: 1rem;
 }
+
 #receipt {
   margin: 0 auto;
-  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
 #receipt td {
@@ -16,7 +18,7 @@
   padding-bottom: 1rem;
 }
 
-#receipt th{
+#receipt th {
   font-size: 1.25rem;
   padding-bottom: 1rem;
 }
@@ -28,13 +30,13 @@
 }
 
 #order-placed-header h2 {
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   font-weight: 600;
-  color:rgb(46, 116, 0);
+  color: rgb(46, 116, 0);
 }
 
 #order-placed {
-  color:rgb(27, 66, 0);
+  color: rgb(27, 66, 0);
   margin-top: 2rem;
   outline-style: solid;
   padding: 2rem;
@@ -43,8 +45,14 @@
   border-color: rgba(71, 179, 0, 0.2);
   outline-color: green;
   border-radius: 0.5rem;
-  background: linear-gradient(rgb(248, 253, 248) 0%, rgba(248, 253, 248, 0) 413px);
-  background-image: linear-gradient(rgb(248, 253, 249) 0%, rgba(248, 253, 248, 0) 413px);
+  background: linear-gradient(
+    rgb(248, 253, 248) 0%,
+    rgba(248, 253, 248, 0) 413px
+  );
+  background-image: linear-gradient(
+    rgb(248, 253, 249) 0%,
+    rgba(248, 253, 248, 0) 413px
+  );
 }
 
 #order-placed-header {
@@ -57,25 +65,26 @@
   text-align: center;
 }
 
-@media only screen and (max-width: 770px) { 
-
-  #receipt th{
+@media only screen and (max-width: 770px) {
+  #receipt th {
     font-size: 1rem;
   }
+
   #order-placed {
     font-size: 0.8rem;
   }
-  
 }
-@media only screen and (max-width: 512px) { 
+
+@media only screen and (max-width: 512px) {
   #order-placed {
     padding: 0.25rem;
   }
-  #receipt th{
+
+  #receipt th {
     font-size: 0.8rem;
   }
+
   #order-placed {
     font-size: 0.6rem;
   }
-  
 }

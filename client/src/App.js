@@ -38,16 +38,11 @@ function App() {
           "/cart",
           "/order-placed",
           "/order/:id",
-          "successful-login"
+          "successful-login",
         ].map((path) => (
           <Route key={path} exact path={path} element={<DetailedHeader />} />
         ))}
-        {[
-          "/checkout",
-          "/register",
-          "/login",
-          "/logout"
-      ].map((path) => (
+        {["/checkout", "/register", "/login", "/logout"].map((path) => (
           <Route key={path} exact path={path} element={<SimpleHeader />} />
         ))}
       </Routes>
@@ -74,7 +69,7 @@ function App() {
         />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/cart" element={<Cart />} />
-        <Route element={<ProtectedRoutes/>}>
+        <Route element={<ProtectedRoutes />}>
           <Route path="/orders/:page" element={<OrdersList />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/checkout" element={<Checkout />} />
@@ -87,10 +82,10 @@ function App() {
         <Notification message={i.message} id={i.id} key={key} />
       ))}
       <footer>
-          <div id="footer-spacer"></div>
-          <p>
-            Made with ❤️ by <a href="https://github.com/avranas">Alex Vranas</a>
-          </p>
+        <div id="footer-spacer"></div>
+        <p>
+          Made with ❤️ by <a href="https://github.com/avranas">Alex Vranas</a>
+        </p>
       </footer>
     </div>
   );

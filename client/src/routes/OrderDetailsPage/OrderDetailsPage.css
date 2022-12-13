@@ -2,7 +2,7 @@
   text-align: right;
 }
 
-#order-details-page h2{
+#order-details-page h2 {
   margin: 2rem;
 }
 
@@ -32,12 +32,11 @@
   list-style-type: none;
   font-size: 0.75rem;
 }
+
 #order-details-items {
-
   font-size: 0.8rem;
-  font-family:Verdana, Geneva, Tahoma, sans-serif
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
-
 
 .order-item {
   display: flex;
@@ -53,8 +52,8 @@
   list-style: none;
 }
 
-.order-item-content p{
-  margin: 0
+.order-item-content p {
+  margin: 0;
 }
 
 .order-item-image {
@@ -77,35 +76,32 @@
   bottom: 0;
 }
 
-#order-address ul{
+#order-address ul {
   padding: 0rem;
 }
 
-
 @media only screen and (max-width: 770px) {
-
   #order-details-page {
     width: auto;
   }
-  
 }
 
 @media only screen and (max-width: 512px) {
   #order-details-head h3 {
     font-size: 0.65rem;
   }
-  
+
   #order-details-head {
     padding: 0.25rem 0.5rem 0.25rem 0.5rem;
     font-size: 0.45rem;
   }
-.order-item-image {
-  width: 6rem;
-}
-.order-item-content {
-  font-size: 0.5rem;
-}
-.order-item-image img {
-  max-height: 5rem;
-}
+  .order-item-image {
+    width: 6rem;
+  }
+  .order-item-content {
+    font-size: 0.5rem;
+  }
+  .order-item-image img {
+    max-height: 5rem;
+  }
 }

@@ -8,7 +8,7 @@ const productListLimit = 3;
 const OrderCard = (props) => {
   return (
     <li id="order-card" className="styled-box styled-link-box">
-    <Link to={`/order/${props.order.id}`}>
+      <Link to={`/order/${props.order.id}`}>
         <table id="order-header">
           <colgroup>
             <col span="3" style={{ width: "33%" }} />

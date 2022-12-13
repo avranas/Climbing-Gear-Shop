@@ -45,12 +45,16 @@ const DetailedHeader = (props) => {
         <div className="header-item">
           <SearchBar />
         </div>
-          {loggedIn && user.name ?  (
-            <div className="header-item" id="welcome-message">
-              <p>Welcome,</p>
-              <p>{firstName}</p>
-            </div>
-          ): <div className="header-item" id="welcome-message"> </div>}
+        {loggedIn && user.name ? (
+          <div className="header-item" id="welcome-message">
+            <p>Welcome,</p>
+            <p>{firstName}</p>
+          </div>
+        ) : (
+          <div className="header-item" id="welcome-message">
+            {" "}
+          </div>
+        )}
         <div id="header-user-buttons-container" className="header-item">
           <HeaderUserButtons />
         </div>

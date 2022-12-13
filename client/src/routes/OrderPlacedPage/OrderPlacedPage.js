@@ -15,10 +15,9 @@ const OrderPlacedPage = (props) => {
     dispatch(loadNewestOrder());
   }, [dispatch, navigate]);
 
-  return (
-    order.isLoading ? (
+  return order.isLoading ? (
     <LoadWheel />
-  ) : 
+  ) : (
     <main className="container" id="order-placed">
       <div id="order-placed-header">
         <div id="green-checkmark"></div>
@@ -67,7 +66,9 @@ const OrderPlacedPage = (props) => {
           <tr>
             <td>Shipping & handling</td>
             <td></td>
-            <td className="price-col">{penniesToUSD(order.data.shippingFeeCharged)}</td>
+            <td className="price-col">
+              {penniesToUSD(order.data.shippingFeeCharged)}
+            </td>
           </tr>
           <tr>
             <td>Sales Tax</td>
@@ -83,8 +84,8 @@ const OrderPlacedPage = (props) => {
               <strong>
                 {penniesToUSD(
                   order.data.subTotal +
-                  order.data.shippingFeeCharged +
-                  order.data.taxCharged
+                    order.data.shippingFeeCharged +
+                    order.data.taxCharged
                 )}
               </strong>
             </td>

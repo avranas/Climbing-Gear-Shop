@@ -66,12 +66,15 @@ select {
   #product {
     display: block;
   }
+  
   #product-image {
     width: auto;
   }
+
   #product-image img{
     padding: 2rem 4rem 1rem 4rem;
   }
+
   #product-info {
     width: auto;
   }

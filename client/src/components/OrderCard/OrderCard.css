@@ -4,10 +4,12 @@
   list-style: none;
 }
 
-#order-card a:hover, #order-card a:visited, #order-card a:link, #order-card a:active
-{
-    text-decoration: none;
-    color: #111111;
+#order-card a:hover,
+#order-card a:visited,
+#order-card a:link,
+#order-card a:active {
+  text-decoration: none;
+  color: #111111;
 }
 
 #order-header {
@@ -22,18 +24,18 @@
 }
 
 #order-header th {
-  padding: 0.5rem 1rem 0rem 1rem
+  padding: 0.5rem 1rem 0rem 1rem;
 }
 
-#order-header td{
-  padding: 0 1rem 0.5rem 1rem
+#order-header td {
+  padding: 0 1rem 0.5rem 1rem;
 }
 
 #order-content {
   text-align: left;
   padding: 0rem;
   width: 100%;
-  margin: 0.5rem
+  margin: 0.5rem;
 }
 
 #order-content {
@@ -44,11 +46,10 @@
   line-height: 1.5rem;
   list-style-type: none;
   font-size: 0.75rem;
-  font-family:Verdana, Geneva, Tahoma, sans-serif
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
-
-@media only screen and (max-width: 770px) { 
+@media only screen and (max-width: 770px) {
   #order-card {
     width: auto;
   }
