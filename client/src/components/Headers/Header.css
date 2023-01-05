@@ -6,15 +6,13 @@
 }
 
 .header-item {
-  padding: 0 0.5rem 0 0.5rem;
+  padding: 0 1.5rem 0 1.5rem;
 }
 
 #detailed-header-content {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
-  width: 80%;
-  margin: 0 auto;
 }
 
 #simple-header-content {
@@ -48,7 +46,7 @@
 .cart-items-count {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: 600;
-  color: rgb(255, 94, 0)
+  color: rgb(255, 94, 0);
 }
 
 #double-digit {
@@ -73,7 +71,6 @@
   margin-top: auto;
   bottom: 0;
   bottom: auto;
-
 }
 
 #header-user-buttons {
@@ -85,7 +82,7 @@
   margin: 0;
 }
 
-#welcome-message p{
+#welcome-message p {
   text-align: center;
   font-size: 1rem;
 }
@@ -103,25 +100,29 @@
   .cart-items-count {
     font-size: 0.75rem;
   }
-  
+
   #double-digit {
     position: absolute;
     top: -0.9rem;
     left: 0.34rem;
   }
-  
+
   #single-digit {
     position: absolute;
     top: -1.02rem;
     left: 0.585rem;
   }
 
-  #welcome-message p{
+  #welcome-message p {
     font-size: 0.85rem;
   }
 
   .header {
     padding: 1rem 0 1rem 0;
+  }
+
+  .header-item {
+    padding: 0 0.25rem 0 0.25rem;
   }
 }
 
@@ -145,22 +146,21 @@
   .cart-items-count {
     font-size: 0.75rem;
   }
-  
+
   #double-digit {
     position: absolute;
     top: -0.87rem;
     left: 0.27rem;
   }
-  
+
   #single-digit {
     position: absolute;
     top: -0.9rem;
     left: 0.5rem;
   }
-  
-  #welcome-message p{
+
+  #welcome-message p {
     font-size: 0.5rem;
     line-height: 0.75rem;
   }
 }
-

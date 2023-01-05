@@ -7,6 +7,7 @@
   border-width: 2px;
   height: 3rem;
   background-color: white;
+  width: 100%;
 }
 
 #search-text:focus {

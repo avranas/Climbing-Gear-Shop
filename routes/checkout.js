@@ -1,9 +1,7 @@
 const express = require("express");
 const checkoutRouter = express.Router();
 const createHttpError = require("http-errors");
-const {
-  checkAuthenticated,
-} = require("./authentication-check");
+const { checkAuthenticated } = require("./authentication-check");
 const ProductOption = require("../models/productOptions");
 const getUserCartData = require("./getUserCartData");
 const User = require("../models/users");
@@ -115,13 +113,6 @@ checkoutRouter.post(
         success_url: `${process.env.CLIENT_URL}/order-placed`,
         cancel_url: `${process.env.CLIENT_URL}/adgerdfgf`,
       });
-      //Force session to expire after 5 minutes
-      //When a session expires, each product's amountInStock is incremented
-      setTimeout(async () => {
-        if (session.status === "open") {
-          await stripe.checkout.sessions.expire(session.id);
-        }
-      }, 1000 * 60 * 5);
       //Save session ID into the database, so it can be expired manually if the user goes back to
       //the checkout page
       await User.update(

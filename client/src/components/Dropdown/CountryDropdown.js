@@ -1,5 +1,4 @@
 import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
-import "./Dropdown.css";
 
 const CountryDropdown = forwardRef(
   ({ handleChange, checkStateErrorIfErrorExists }, _ref) => {

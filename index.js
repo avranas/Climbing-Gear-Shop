@@ -89,7 +89,12 @@ app.use((err, req, res, next) => {
   if (!res.headersSent) {
     res.status(err.status || 500).send(err.message);
   }
-  console.log(err);
+  //Log requests method
+  console.log(`${req.method} Request Received`);
+  //Log stack trace for error
+  console.error(err.stack)
+  //Log error message
+  console.log(err.message);
 });
 
 app.listen(PORT, () => {

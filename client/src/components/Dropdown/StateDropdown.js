@@ -1,5 +1,4 @@
 import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
-import "./Dropdown.css";
 import redX from "../../images/red-x.png";
 
 const StateDropdown = forwardRef(({ checkStateErrorIfErrorExists }, _ref) => {
