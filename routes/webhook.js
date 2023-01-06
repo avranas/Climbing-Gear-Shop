@@ -14,7 +14,7 @@ const endpointSecret = process.env.STRIPE_CLI_WEBHOOK_SECRET;
 stripeWebhook.post(
   "/",
   express.raw({ type: "application/json" }),
-  async (req, res, next) => {
+  async (req, res) => {
     const sig = req.headers["stripe-signature"];
     let event;
     try {
@@ -25,7 +25,7 @@ stripeWebhook.post(
     }
     // Handle the event
     switch (event.type) {
-      case "checkout.session.expired":
+      case "checkout.session.expired": {
         //Checkout session expired without payment. Increase amount in stock.
         const userId = event.data.object.metadata.userId;
         const cart = await getUserCartData(userId);
@@ -40,6 +40,7 @@ stripeWebhook.post(
           })
         );
         break;
+      }
       case "charge.succeeded":
         break;
       case "payment_intent.succeeded":

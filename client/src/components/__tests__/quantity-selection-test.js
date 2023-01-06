@@ -1,4 +1,4 @@
-import { render, cleanup } from "@testing-library/react";
+import { cleanup } from "@testing-library/react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
 import { BrowserRouter } from "react-router-dom";

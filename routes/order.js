@@ -95,7 +95,7 @@ orderRouter.get("/:id", checkAuthenticated, async (req, res, next) => {
   try {
     const orderId = req.params.id;
     const response = await getOrders(req.user.id, orderId);
-    if (!response) {
+    if (response.length === 0) {
       throw createHttpError(404, `Order with id#${orderId} not found`);
     } else {
       res.status(200).send(response[0]);

@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "start": "nodemon start"
+    "start": "nodemon start",
+    "lint": "eslint ./"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "eslint": "^8.31.0",
     "test": "^3.2.1"
   }
 }

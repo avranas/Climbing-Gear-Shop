@@ -86,7 +86,12 @@ app.get("/", (req, res) => {
   res.status(200).send("Hello world");
 });
 
-//Error handling
+/*
+  Error handling
+  Leaving next as a param is neccessary because this is how express finds
+  the error handler
+*/
+//eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   if (!res.headersSent) {
     res.status(err.status || 500).send(err.message);

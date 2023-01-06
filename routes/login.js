@@ -7,7 +7,7 @@ loginRouter.post(
   "/",
   checkNotAuthenticated,
   passport.authenticate("local"),
-  (req, res, next) => {
+  (req, res) => {
     res.status(200).send(`You are logged in as ${req.user.userEmail}`);
   }
 );
