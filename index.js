@@ -36,38 +36,14 @@ app.use(
   })
 );
 
-app.get(
-  "/auth/github",
-  checkNotAuthenticated,
-  passport.authenticate("github", { scope: ["user:email"] })
-);
-
-app.get(
-  "/auth/github/callback",
-  passport.authenticate("github", {
-    failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
-    successRedirect: `${process.env.CLIENT_URL}/successful-login`,
-  })
-);
-
-app.get(
-  "/auth/google",
-  checkNotAuthenticated,
-  passport.authenticate("google", { scope: ["email", "profile"] })
-);
-
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    successRedirect: `${process.env.CLIENT_URL}/successful-login`,
-    failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
-  })
-);
 /*
   Allows us to request images with the "/images" route in the "/assets/images"
   folder
 */
 app.use("/images", express.static(__dirname + "/assets/images"));
+//Serve static files from the React frontend app
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
 app.use("/register", require("./routes/register"));
 app.use("/login", require("./routes/login"));
@@ -102,6 +78,14 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   //Log error message
   console.log(err.message);
+});
+
+/*
+  After defining your routes, anything that doesn't match what's above,
+  we want to return index.html from our built React app
+*/
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/../client/public/index.html"));
 });
 
 app.listen(PORT, () => {

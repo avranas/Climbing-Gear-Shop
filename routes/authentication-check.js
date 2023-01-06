@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+//This route is for the back-end to check if users are authenticated
 const checkAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) {
     next();

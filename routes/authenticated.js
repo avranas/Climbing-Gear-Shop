@@ -1,6 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 
+//This route is for the front end to check if users are authenticated
 const authenticatedRouter = express.Router();
 
 authenticatedRouter.get("/", async (req, res) => {
