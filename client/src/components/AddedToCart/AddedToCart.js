@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { selectNewestCartItem } from "../../slices/newestCartItemSlice";
 import { selectProduct } from "../../slices/productSlice";
-import "./AddedToCartWindow.css";
+import "./AddedToCart.css";
 const AddedToCart = (props) => {
   const newestCartItem = useSelector(selectNewestCartItem);
   const productData = useSelector(selectProduct).data;

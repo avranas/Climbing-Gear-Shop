@@ -63,8 +63,10 @@ app.get(
     failureRedirect: `${process.env.CLIENT_URL}/login?error=1`,
   })
 );
-
-//Allows us to request images with the "/images" route in the "/assets/images" folder
+/*
+  Allows us to request images with the "/images" route in the "/assets/images"
+  folder
+*/
 app.use("/images", express.static(__dirname + "/assets/images"));
 app.use("/user", require("./routes/user"));
 app.use("/register", require("./routes/register"));
@@ -92,7 +94,7 @@ app.use((err, req, res, next) => {
   //Log requests method
   console.log(`${req.method} Request Received`);
   //Log stack trace for error
-  console.error(err.stack)
+  console.error(err.stack);
   //Log error message
   console.log(err.message);
 });

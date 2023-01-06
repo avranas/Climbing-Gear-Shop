@@ -1,7 +1,7 @@
-const { DataTypes } = require('sequelize');
-const db = require('../db/db_setup');
+const { DataTypes } = require("sequelize");
+const db = require("../db/db_setup");
 
-const Order = db.define('orders', {
+const Order = db.define("orders", {
   subTotal: DataTypes.INTEGER,
   taxCharged: DataTypes.INTEGER,
   totalPrice: DataTypes.INTEGER,
@@ -14,8 +14,7 @@ const Order = db.define('orders', {
   deliveryState: DataTypes.TEXT,
   deliveryZipCode: DataTypes.TEXT,
   deliveryCountry: DataTypes.TEXT,
-  timeCreated: DataTypes.BIGINT
+  timeCreated: DataTypes.BIGINT,
 });
 
 module.exports = Order;
-

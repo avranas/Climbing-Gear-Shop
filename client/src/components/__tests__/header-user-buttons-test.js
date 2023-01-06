@@ -21,5 +21,3 @@ test("HeaderUserButtons matches snapshot", async () => {
   const tree = renderer.create(headerUserButtons).toJSON();
   expect(tree).toMatchSnapshot();
 });
-
-//Test after login

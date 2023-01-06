@@ -3,7 +3,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 const LocalStrategy = require("passport-local").Strategy;
 const GitHubStrategy = require("passport-github2").Strategy;
-const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+const GoogleStrategy = require("passport-google-oauth2").Strategy;
 const passport = require("passport");
 const User = require("./models/users");
 const bcrypt = require("bcrypt");
@@ -18,7 +18,7 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
       //If the user exists and doesn't have a password, that means it was
       //Created using oauth. Return an error here
       if (!user.password) {
-        return done(null, false)
+        return done(null, false);
       }
       if (await bcrypt.compare(password, user.password)) {
         return done(null, user);
@@ -39,31 +39,39 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
       authenticateUser
     )
   );
-    //const findOrCreate()
+  //const findOrCreate()
 
-  const handleOauthResponse = async (externalWebsite, id, email, name, done) => {
+  const handleOauthResponse = async (
+    externalWebsite,
+    id,
+    email,
+    name,
+    done
+  ) => {
     try {
       let whereCondition = {};
-      switch(externalWebsite) {
+      switch (externalWebsite) {
         case "github":
-          whereCondition = {githubId: id}
+          whereCondition = { githubId: id };
           break;
         case "google":
-          whereCondition = {googleId: id}
+          whereCondition = { googleId: id };
           break;
       }
       //If a user with this github id exists, return this user
       let userResponse = await User.findOne({
-        where: whereCondition
+        where: whereCondition,
       });
       if (userResponse) {
         return done(null, userResponse);
       }
-      //If a user with this github id does not exist, I want to create a new user
-      //If a user with the same email already exists, return an error
+      /*
+        If a user with this github id does not exist, I want to create a new
+        user If a user with the same email already exists, return an error
+      */
       userResponse = await User.findOne({
-        where: {userEmail : email}
-      })
+        where: { userEmail: email },
+      });
       if (userResponse) {
         return done(null, false);
       }
@@ -72,15 +80,15 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         defaults: {
           name: name,
           userEmail: email,
-          rewardsPoints: 0
-        }
+          rewardsPoints: 0,
+        },
       });
       return done(null, response[0]);
     } catch (err) {
       console.log(err);
       return done(err, false);
     }
-  }
+  };
 
   passport.use(
     new GitHubStrategy(
@@ -90,12 +98,16 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         callbackURL: process.env.GITHUB_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
-        await handleOauthResponse("github", profile.id, profile.emails[0].value, profile.displayName, done);
-       }
+        await handleOauthResponse(
+          "github",
+          profile.id,
+          profile.emails[0].value,
+          profile.displayName,
+          done
+        );
+      }
     )
   );
-
-
 
   passport.use(
     new GoogleStrategy(
@@ -106,17 +118,17 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         passReqToCallback: true,
       },
       async (request, accessToken, refreshToken, profile, done) => {
-        await handleOauthResponse("google", profile.id, profile.email, profile.displayName, done);
+        await handleOauthResponse(
+          "google",
+          profile.id,
+          profile.email,
+          profile.displayName,
+          done
+        );
         console.log("find user here");
       }
     )
   );
-
-
-
-
-
-
 
   passport.serializeUser((user, done) => done(null, user.id));
   passport.deserializeUser(async (id, done) =>

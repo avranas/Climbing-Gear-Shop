@@ -47,7 +47,10 @@ const OrderPlacedPage = (props) => {
                 {i.product.optionType === "None" ? (
                   <td>{`${i.product.brandName} ${i.product.productName}`}</td>
                 ) : (
-                  <td>{`${i.product.brandName} ${i.product.productName} ${i.product.optionType} ${i.optionSelection}`}</td>
+                  <td>
+                    {`${i.product.brandName} ${i.product.productName} ` +
+                      `${i.product.optionType} ${i.optionSelection}`}
+                  </td>
                 )}
                 <td className="price-col">{i.quantity}</td>
                 <td className="price-col">{penniesToUSD(i.price)}</td>
@@ -94,9 +97,18 @@ const OrderPlacedPage = (props) => {
       </table>
       <div id="receipt-footer">
         {order.data.deliveryStreetAddress2 ? (
-          <p>{`Shipping to ${order.data.deliveryStreetAddress1}, ${order.data.deliveryStreetAddress2}, ${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode} ${order.data.deliveryCountry}`}</p>
+          <p>
+            {`Shipping to ${order.data.deliveryStreetAddress1}, ` +
+              `${order.data.deliveryStreetAddress2}, ` +
+              `${order.data.deliveryCity}, ${order.data.deliveryState} ` +
+              `${order.data.deliveryZipCode} ${order.data.deliveryCountry}`}
+          </p>
         ) : (
-          <p>{`Shipping to ${order.data.deliveryStreetAddress1}, ${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode} ${order.data.deliveryCountry}`}</p>
+          <p>
+            {`Shipping to ${order.data.deliveryStreetAddress1}, ` +
+              `${order.data.deliveryCity}, ${order.data.deliveryState} ` +
+              `${order.data.deliveryZipCode} ${order.data.deliveryCountry}`}
+          </p>
         )}
       </div>
     </main>

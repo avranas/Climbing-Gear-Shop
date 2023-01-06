@@ -25,12 +25,12 @@ productRouter.get("/", async (req, res, next) => {
   }
 });
 
-//Request with an array of IDs, sends back an array of product data
-//If the product ID does not exist, nothing will be returned
 /*
-{
+  Request with an array of IDs, sends back an array of product data
+  If the product ID does not exist, nothing will be returned
+  {
     "ids": "[14,15,16]"
-}
+  }
 */
 productRouter.get("/ids", async (req, res, next) => {
   try {
@@ -124,12 +124,12 @@ productRouter.get("/:id", async (req, res, next) => {
 });
 
 /*
-Create a new productOption fora product with the productOptionID, option, amountInStock, and price
-{
-  "option": "Small",
-  "amountInStock": 2,
-  "price": 64.95
-}
+  Create a new productOption fora product with the productOptionID, option, amountInStock, and price
+  {
+    "option": "Small",
+    "amountInStock": 2,
+    "price": 64.95
+  }
 */
 productRouter.post(
   "/option/:id",
@@ -168,8 +168,9 @@ productRouter.post(
     }
   }
 );
+
 /*
-  //POST new product (example)
+  POST new product (example)
   {
       "productName": "VR9 9.8 mm Dry-Core Rope",
       "description": "Just getting into the sport or steadily moving through the ranks? The Sterling VR9 9.8 mm Dry-Core rope has a beefy core and 9.8 mm diameter for a lightweight rope on multi-pitch routes.",
@@ -180,24 +181,24 @@ productRouter.post(
       "largeImageFile": "rope1-3.jpg",
       "optionType": "Length",
       "options": [
-          {
-              "amountInStock": 5,
-              "price": 11995,
-              "option": "40M"
-          },
-          {
-              "amountInStock": 5,
-              "price": 18495,
-              "option": "60M"
-          },
-          {
-              "amountInStock": 5,
-              "price": 21995,
-              "option": "70M"
-          }
-      ]
+        {
+            "amountInStock": 5,
+            "price": 11995,
+            "option": "40M"
+        },
+        {
+            "amountInStock": 5,
+            "price": 18495,
+            "option": "60M"
+        },
+        {
+            "amountInStock": 5,
+            "price": 21995,
+            "option": "70M"
+        }
+    ]
   }
-  //POST new product (example)
+  POST new product (example)
   {
     "productName": "Metolius Super Chalk - 4.5 oz",
     "description": "This 4.5 oz. bag of Metolius Super chalk is perfect for keeping your hands dry on the wall. Keep it in your car for trips to the crag or the gym, or use it to refill your reusable chalk bag.",
@@ -231,7 +232,9 @@ productRouter.post("/", checkAuthenticatedAsAdmin, async (req, res, next) => {
     ) {
       throw createHttpError(
         400,
-        "Missing item in the body. Needs a productName, description, categoryName, brandName, smallImageFile1, smallImageFile2, largeImageFile, and optionType "
+        `Missing item in the body. Needs a productName, description, ` +
+          `categoryName, brandName, smallImageFile1, smallImageFile2, ` +
+          `largeImageFile, and optionType`
       );
     }
     body.options.forEach((e) => {
@@ -242,7 +245,8 @@ productRouter.post("/", checkAuthenticatedAsAdmin, async (req, res, next) => {
       ) {
         throw createHttpError(
           400,
-          "Missing item in option. All elements need an option, price and amountInStock"
+          `Missing item in option. All elements need an option, price and ` +
+            `amountInStock`
         );
       }
     });
@@ -283,12 +287,13 @@ productRouter.post("/", checkAuthenticatedAsAdmin, async (req, res, next) => {
 });
 
 /*
-Update a productOption with ID using any combination of option, amountInStock, and price
-{
-  "option": "Small",
-  "amountInStock": 2,
-  "price": 64.95
-}
+  Update a productOption with ID using any combination of option, amountInStock,
+  and price
+  {
+    "option": "Small",
+    "amountInStock": 2,
+    "price": 64.95
+  }
 */
 productRouter.put(
   "/option/:id",
@@ -339,19 +344,22 @@ productRouter.put(
         res
           .status(404)
           .send(`Unable to find product with id#${productOptionId}`);
-          return;
+        return;
       }
-      res.status(200).send(dbResponse[1][0]);61
+      res.status(200).send(dbResponse[1][0]);
+      61;
     } catch (err) {
       next(err);
     }
   }
 );
 
-//Increment amountInStock by a specified amount
-// {
-//   amount: 5
-// }
+/*
+  Increment amountInStock by a specified amount
+  {
+    amount: 5
+  }
+*/
 productRouter.put(
   "/option/increment/:id",
   checkAuthenticatedAsAdmin,
@@ -359,29 +367,35 @@ productRouter.put(
     const productOptionId = req.params.id;
     const amount = Number(req.body.amount);
     try {
-     if (!amount) {
-       throw createHttpError(400, "Request body needs an 'amount'");
-     } 
-     if (isNaN(amount)) {
-       throw createHttpError(400, "Amount must be a number");
-     }
-     if (amount < 1) {
-       throw createHttpError(400, "Amount must be greater than 0");
-     }
-     if (amount >= 1000) {
-       throw createHttpError(400, "Amount must be less than 1000");
-     }
-     await ProductOption.increment(
-       {
-         amountInStock: amount,
-       },
-       { where: { id: productOptionId } }
-     );
-       res.status(200).send(`Incremented product option with id: ${productOptionId} by ${amount}`)
+      if (!amount) {
+        throw createHttpError(400, "Request body needs an 'amount'");
+      }
+      if (isNaN(amount)) {
+        throw createHttpError(400, "Amount must be a number");
+      }
+      if (amount < 1) {
+        throw createHttpError(400, "Amount must be greater than 0");
+      }
+      if (amount >= 1000) {
+        throw createHttpError(400, "Amount must be less than 1000");
+      }
+      await ProductOption.increment(
+        {
+          amountInStock: amount,
+        },
+        { where: { id: productOptionId } }
+      );
+      res
+        .status(200)
+        .send(
+          `Incremented product option with id: ${productOptionId} by ${amount}`
+        );
     } catch (err) {
       next(err);
     }
-  });
+  }
+);
+
 /*
   Update product with ID using any combination of productName, description,
     categoryName, and brandName
@@ -458,8 +472,6 @@ productRouter.put("/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
         { where: { id: productId }, returning: true }
       );
     }
-
-
 
     //If the ID was found but none of the items in the body were valid
     if (dbResponse === null) {

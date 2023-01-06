@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
-import ProductNavigationBar from "../../components/ProductNavigationBar/ProductNavigationBar";
+import ProductNavigationBar from "../../components/ProductNavBar/ProductNavBar";
 import {
   selectProductList,
   loadProductList,
 } from "../../slices/productListSlice";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
 import "./ProductListPage.css";
-import NavigationButtons from "../../components/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../components/NavButtons/NavButtons";
 import LoadWheel from "../../components/LoadWheel/LoadWheel";
 
 const ProductListPage = ({ category, search }) => {

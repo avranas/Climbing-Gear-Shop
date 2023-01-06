@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require("express");
 const logoutRouter = express.Router();
-const { checkAuthenticated } = require('./authentication-check');
+const { checkAuthenticated } = require("./authentication-check");
 
-logoutRouter.get('/', checkAuthenticated, (req, res, next) => {
+logoutRouter.get("/", checkAuthenticated, (req, res, next) => {
   req.logout((err) => {
-    if (err) { return next(err); }
-      else
-    res.status(200).send('You are now logged out')
+    if (err) {
+      return next(err);
+    } else res.status(200).send("You are now logged out");
   });
 });
 

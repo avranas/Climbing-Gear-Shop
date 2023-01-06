@@ -44,7 +44,11 @@ const OrderDetailsPage = (props) => {
                   </tr>
                 )}
                 <tr>
-                  <td>{`${order.data.deliveryCity}, ${order.data.deliveryState} ${order.data.deliveryZipCode}`}</td>
+                  <td>
+                    {`${order.data.deliveryCity}, ` +
+                      `${order.data.deliveryState} ` +
+                      `${order.data.deliveryZipCode}`}
+                  </td>
                 </tr>
                 <tr>
                   <td>{order.data.deliveryCountry}</td>

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import SearchBar from "../SearchBar/SearchBar";
-import HeaderUserButtons from "../HeaderUserButtons/HeaderUserButtons";
+import HeaderUserButtons from "../HeaderButtons/HeaderButtons";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../slices/userSlice";
 import { useEffect, useState } from "react";

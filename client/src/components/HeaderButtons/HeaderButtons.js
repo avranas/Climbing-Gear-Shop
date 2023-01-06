@@ -2,7 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const HeaderUserButtons = (props) => {
+const HeaderButtons = (props) => {
   const navigate = useNavigate();
   const [userIsLoggedIn, setUserIsLoggedIn] = useState(null);
 
@@ -54,4 +54,4 @@ const HeaderUserButtons = (props) => {
   );
 };
 
-export default HeaderUserButtons;
+export default HeaderButtons;

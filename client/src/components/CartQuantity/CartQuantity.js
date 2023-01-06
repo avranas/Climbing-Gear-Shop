@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import "../QuantitySelection/QuantitySelection.css";
+import "../Quantity/Quantity.css";
 
 //For use in the Cart page
 //Props are a handleSelection function, cartItem, and a default value
-const CartQuantitySelection = (props) => {
+const CartQuantity = (props) => {
   const [options, setOptions] = useState([]);
   const [selection, setSelection] = useState(props.defaultValue);
 
@@ -56,4 +56,4 @@ const CartQuantitySelection = (props) => {
   );
 };
 
-export default CartQuantitySelection;
+export default CartQuantity;

@@ -25,7 +25,7 @@ stripeWebhook.post(
     }
     // Handle the event
     switch (event.type) {
-      case 'checkout.session.expired':
+      case "checkout.session.expired":
         //Checkout session expired without payment. Increase amount in stock.
         const userId = event.data.object.metadata.userId;
         const cart = await getUserCartData(userId);
@@ -40,11 +40,11 @@ stripeWebhook.post(
           })
         );
         break;
-      case 'charge.succeeded':
+      case "charge.succeeded":
         break;
-      case 'payment_intent.succeeded':
+      case "payment_intent.succeeded":
         break;
-      case 'payment_intent.created':
+      case "payment_intent.created":
         break;
       case "checkout.session.completed": {
         const paymentIntent = event.data.object;
@@ -72,7 +72,7 @@ stripeWebhook.post(
             deliveryZipCode: shippingAddress.postal_code,
             deliveryCountry: shippingAddress.country,
             shippingFeeCharged: paymentIntent.total_details.amount_shipping,
-            timeCreated: Date.now()
+            timeCreated: Date.now(),
           },
           {
             returning: true,

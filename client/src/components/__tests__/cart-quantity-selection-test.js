@@ -21,4 +21,3 @@ test("CartQuantitySelection matches snapshot", async () => {
   const tree = renderer.create(cartQuantitySelection).toJSON();
   expect(tree).toMatchSnapshot();
 });
-

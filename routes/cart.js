@@ -2,13 +2,10 @@ const express = require("express");
 const CartItem = require("../models/cartItems");
 const cartRouter = express.Router();
 var createHttpError = require("http-errors");
-const {
-  checkAuthenticated, 
-} = require("./authentication-check");
+const { checkAuthenticated } = require("./authentication-check");
 const Product = require("../models/products");
 const ProductOption = require("../models/productOptions");
 const getUserCartData = require("./getUserCartData");
-
 
 const performChecks = async (body) => {
   //quantity, productId and optionSelection are required
@@ -35,16 +32,17 @@ const performChecks = async (body) => {
     },
     include: [
       {
-        where: {option: body.optionSelection},
+        where: { option: body.optionSelection },
         attributes: ["amountInStock"],
-        model: ProductOption, as: "productOptions"
+        model: ProductOption,
+        as: "productOptions",
       },
     ],
   });
   if (!product) {
     throw createHttpError(404, "A product with this ID does not exist");
   }
-}
+};
 
 //Get current user's shopping cart
 cartRouter.get("/", checkAuthenticated, async (req, res, next) => {
@@ -61,16 +59,16 @@ cartRouter.get("/", checkAuthenticated, async (req, res, next) => {
   }
 });
 
-//Create new item in cart
-//If there is a matching item, add new quantity to existing item
 /*
+  Create new item in cart
+  If there is a matching item, add new quantity to existing item
   {
     quantity:
     productId:
     optionSelection:
   }
 */
-cartRouter.post('/', checkAuthenticated, async (req, res, next) => {
+cartRouter.post("/", checkAuthenticated, async (req, res, next) => {
   try {
     const body = req.body;
     const userId = req.user.id;
@@ -85,7 +83,7 @@ cartRouter.post('/', checkAuthenticated, async (req, res, next) => {
     let tooManyProductsRequested = false;
     let newCartItem = null;
     if (foundProduct) {
-      let newQuantity =  Number(body.quantity) + foundProduct.quantity;
+      let newQuantity = Number(body.quantity) + foundProduct.quantity;
       const amountInStock = cartData[0].product.productOptions[0].amountInStock;
       if (Number(newQuantity) > amountInStock) {
         tooManyProductsRequested = true;
@@ -93,7 +91,7 @@ cartRouter.post('/', checkAuthenticated, async (req, res, next) => {
       }
       newCartItem = await CartItem.update(
         {
-          quantity: newQuantity
+          quantity: newQuantity,
         },
         {
           where: {
@@ -121,21 +119,17 @@ cartRouter.post('/', checkAuthenticated, async (req, res, next) => {
       );
     }
     if (tooManyProductsRequested) {
-      res
-        .status(200)
-        .send("Not enough in stock. Setting to the max.");
+      res.status(200).send("Not enough in stock. Setting to the max.");
     }
-    res
-      .status(200)
-      .send(newCartItem);
+    res.status(200).send(newCartItem);
   } catch (err) {
     next(err);
   }
-})
+});
 
-//Modify existing item in cart. 
-//Sets new quantity
 /*
+  Modify existing item in cart.
+  Sets new quantity
   {
     quantity:
     productId:
@@ -154,7 +148,7 @@ cartRouter.put("/", checkAuthenticated, async (req, res, next) => {
         where: {
           userId: userId,
           productId: body.productId,
-          optionSelection: body.optionSelection
+          optionSelection: body.optionSelection,
         },
       });
       res
@@ -175,7 +169,7 @@ cartRouter.put("/", checkAuthenticated, async (req, res, next) => {
     if (foundProduct) {
       await CartItem.update(
         {
-          quantity: body.quantity
+          quantity: body.quantity,
         },
         {
           where: {
@@ -189,11 +183,12 @@ cartRouter.put("/", checkAuthenticated, async (req, res, next) => {
         }
       );
     } else {
-      throw createHttpError(404, "Unable to find matching product/product option");
+      throw createHttpError(
+        404,
+        "Unable to find matching product/product option"
+      );
     }
-    res
-      .status(200)
-      .send(newCartItem);
+    res.status(200).send(newCartItem);
   } catch (err) {
     next(err);
   }

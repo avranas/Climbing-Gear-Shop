@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import "./ProductNavigationBar.css";
+import "./ProductNavBar.css";
 
-const ProductNavigationBar = (props) => {
+const ProductNavBar = (props) => {
   return (
     <nav id="product-navigation-bar" className="container styled-box">
       <ul id="product-navigation-list">
@@ -28,4 +28,4 @@ const ProductNavigationBar = (props) => {
   );
 };
 
-export default ProductNavigationBar;
+export default ProductNavBar;

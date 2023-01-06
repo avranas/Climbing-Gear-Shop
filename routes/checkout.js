@@ -13,28 +13,19 @@ checkoutRouter.post(
   async (req, res, next) => {
     try {
       const items = await getUserCartData(req.user.id);
-
       //Double-check to confirm we have enough of every item in stock
       items.forEach((i) => {
         if (i.quantity > i.product.productOptions[0].amountInStock) {
           throw createHttpError(
             400,
-            `There is not enough of item: ${i.product.productName} ${i.product.optionType}: ${i.product.productOptions[0].option} in stock to fulfill your order. Please reduce the quantity`
+            `There is not enough of item: ` +
+              `${i.product.productName} ` +
+              `${i.product.optionType}: ` +
+              `${i.product.productOptions[0].option} ` +
+              `in stock to fulfill your order. Please reduce the quantity`
           );
         }
       });
-      //Now that we've confirmed we have enough of every item in stock
-      //Decrement amountInStock for each item
-      await Promise.all(
-        items.map(async (i) => {
-          ProductOption.increment(
-            {
-              amountInStock: i.quantity * -1,
-            },
-            { where: { id: i.product.productOptions[0].id } }
-          );
-        })
-      );
       //Take info from the request body and put it in the Stripe session
       const body = req.body;
       const phoneNumber = body.phoneNumber;
@@ -113,8 +104,20 @@ checkoutRouter.post(
         success_url: `${process.env.CLIENT_URL}/order-placed`,
         cancel_url: `${process.env.CLIENT_URL}/adgerdfgf`,
       });
-      //Save session ID into the database, so it can be expired manually if the user goes back to
-      //the checkout page
+      //Now that we've confirmed we have enough of every item in stock, and that
+      //session creation hasn't failed, decrement amountInStock for each item
+      await Promise.all(
+        items.map(async (i) => {
+          ProductOption.increment(
+            {
+              amountInStock: i.quantity * -1,
+            },
+            { where: { id: i.product.productOptions[0].id } }
+          );
+        })
+      );
+      //Save session ID into the database, so it can be expired manually
+      //if the user goes back to the checkout page
       await User.update(
         {
           checkoutSessionId: session.id,

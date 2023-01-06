@@ -15,14 +15,13 @@ const getOrders = async (userId, orderId) => {
   if (orderId) {
     whereOptions = {
       userId: userId,
-      id: orderId
-    }
+      id: orderId,
+    };
   } else {
     whereOptions = {
-      userId: userId
-    }
+      userId: userId,
+    };
   }
-  console.log(userId)
   const response = await Order.findAll({
     where: whereOptions,
     order: [["timeCreated", "DESC"]],
@@ -39,7 +38,7 @@ const getOrders = async (userId, orderId) => {
       "subTotal",
       "timeCreated",
       "orderStatus",
-      "id"
+      "id",
     ],
     include: [
       {
@@ -65,7 +64,7 @@ const getOrders = async (userId, orderId) => {
     subQuery: false,
   });
   return response;
-}
+};
 
 //Get all of a user's orders
 orderRouter.get("/", checkAuthenticated, async (req, res, next) => {
@@ -107,11 +106,11 @@ orderRouter.get("/:id", checkAuthenticated, async (req, res, next) => {
 });
 
 /*
-Update status of order
-{
-  "newStatus": "Shipped", "Complete", "On backorder", "Cancelled",
-    "Returning", "Returning-Shipped", "Returned" are all valid options
-}
+  Update status of order
+  {
+    "newStatus": "Shipped", "Complete", "On backorder", "Cancelled",
+      "Returning", "Returning-Shipped", "Returned" are all valid options
+  }
 */
 orderRouter.put("/:id", checkAuthenticatedAsAdmin, async (req, res, next) => {
   try {

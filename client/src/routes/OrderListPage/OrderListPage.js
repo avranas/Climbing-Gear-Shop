@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import LoadWheel from "../../components/LoadWheel/LoadWheel";
-import NavigationButtons from "../../components/NavigationButtons/NavigationButtons";
+import NavigationButtons from "../../components/NavButtons/NavButtons";
 import OrderCard from "../../components/OrderCard/OrderCard";
 import { selectOrdersList, loadOrders } from "../../slices/ordersListSlice";
 import "./OrderListPage.css";

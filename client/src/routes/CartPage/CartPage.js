@@ -9,7 +9,7 @@ import {
 import penniesToUSD from "../../utils/penniesToUSD";
 import { Link, useNavigate } from "react-router-dom";
 import "./CartPage.css";
-import CartQuantitySelection from "../../components/CartQuantitySelection/CartQuantitySelection";
+import CartQuantity from "../../components/CartQuantity/CartQuantity";
 import axios from "axios";
 import redX from "../../images/red-x.png";
 import LoadWheel from "../../components/LoadWheel/LoadWheel";
@@ -120,7 +120,7 @@ const CartPage = (props) => {
                   <p>{penniesToUSD(i.product.productOptions[0].price)}</p>
                 </strong>
                 <div className="cart-item-options">
-                  <CartQuantitySelection
+                  <CartQuantity
                     handleSelection={handleQuantitySelection}
                     cartItem={i}
                     defaultValue={i.quantity}

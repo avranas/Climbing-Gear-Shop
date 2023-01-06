@@ -1,13 +1,14 @@
-const express = require('express');
-const { checkNotAuthenticated } = require('./authentication-check');
+const express = require("express");
+const { checkNotAuthenticated } = require("./authentication-check");
 const loginRouter = express.Router();
-const passport = require('../passport-config');
+const passport = require("../passport-config");
 
-loginRouter.post('/',
+loginRouter.post(
+  "/",
   checkNotAuthenticated,
-  passport.authenticate('local'),
+  passport.authenticate("local"),
   (req, res, next) => {
-    res.status(200).send(`You are logged in as ${req.user.userEmail}`)
+    res.status(200).send(`You are logged in as ${req.user.userEmail}`);
   }
 );
 

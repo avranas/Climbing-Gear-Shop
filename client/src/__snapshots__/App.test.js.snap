@@ -248,11 +248,11 @@ exports[`renders learn react link 1`] = `
       id="about-us"
     >
       <p>
-        Fake Climbing Gear Shop is an e-commerce app made by 
+        Fake Climbing Gear Shop is an e-commerce app made by
         <a
           href="https://github.com/avranas"
         >
-          Alex Vranas
+           Alex Vranas
         </a>
          to practice building full stack web apps. No climbing gear is actually being sold here, but you can expect this site to do everything that you expect an e-commerce site is capable of.
       </p>

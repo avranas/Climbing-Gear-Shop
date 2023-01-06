@@ -80,7 +80,8 @@ const RegisterPage = (props) => {
       }
       if (!checkIfPasswordMeetsRequirements()) {
         setPasswordAError(
-          "Password must have at least 6 characters, 1 number, 1 letter, and 1 special character"
+          `Password must have at least 6 characters, 1 number, 1 letter, ` +
+            `and 1 special character`
         );
         errorFound = true;
       }

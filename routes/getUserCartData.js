@@ -1,4 +1,3 @@
-
 const CartItem = require("../models/cartItems");
 const { Sequelize, Op } = require("sequelize");
 const Product = require("../models/products");
@@ -10,12 +9,19 @@ const getUserCartData = async (userId) => {
     include: [
       {
         model: Product,
-        attributes: ["productName", "brandName", "optionType",  "smallImageFile1", "id"],
+        attributes: [
+          "productName",
+          "brandName",
+          "optionType",
+          "smallImageFile1",
+          "id",
+        ],
         required: true,
         include: [
           {
             attributes: ["price", "amountInStock", "id", "option"],
-            model: ProductOption, as: "productOptions"
+            model: ProductOption,
+            as: "productOptions",
           },
         ],
       },

@@ -18,7 +18,7 @@ const productNavigationBar = (
 );
 
 test("ProductNavigationBar matches snapshot", async () => {
-  render(productNavigationBar)
+  render(productNavigationBar);
   const tree = renderer.create(productNavigationBar).toJSON();
   expect(tree).toMatchSnapshot();
 });

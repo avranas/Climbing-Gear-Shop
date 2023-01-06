@@ -7,16 +7,17 @@
   justify-content: space-between;
 }
 
-#product-navigation-list ul{
+#product-navigation-list ul {
   margin: 0;
 }
 
-#product-navigation-list li{
+#product-navigation-list li {
   list-style: none;
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-weight: 100;
 }
- 
+
 #product-navigation-list a:visited,
 #product-navigation-list a:link {
   text-decoration: none;
@@ -25,7 +26,6 @@
 
 #product-navigation-list a:hover {
   text-decoration: underline;
-
 }
 
 #product-navigation-list a:active {
@@ -47,7 +47,6 @@
   #product-navigation-list {
     padding: 0.5rem;
   }
-
 }
 
 @media only screen and (max-width: 350px) {

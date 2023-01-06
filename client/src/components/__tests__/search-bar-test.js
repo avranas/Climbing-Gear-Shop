@@ -18,7 +18,7 @@ const searchBar = (
 );
 
 test("Searchbar matches snapshot", async () => {
-  render(searchBar)
+  render(searchBar);
   const tree = renderer.create(searchBar).toJSON();
   expect(tree).toMatchSnapshot();
 });

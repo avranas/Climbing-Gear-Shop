@@ -7,10 +7,10 @@ import redX from "../../images/red-x.png";
 import warning from "../../images/warning.png";
 import penniesToUSD from "../../utils/penniesToUSD";
 import axios from "axios";
-import ProductNavigationBar from "../../components/ProductNavigationBar/ProductNavigationBar";
-import AddedToCartWindow from "../../components/AddedToCartWindow/AddedToCartWindow";
+import ProductNavigationBar from "../../components/ProductNavBar/ProductNavBar";
+import AddedToCartWindow from "../../components/AddedToCart/AddedToCart";
 import { loadCartData } from "../../slices/cartSlice";
-import QuantitySelection from "../../components/QuantitySelection/QuantitySelection";
+import QuantitySelection from "../../components/Quantity/Quantity";
 import { v4 as uuidv4 } from "uuid";
 import LoadWheel from "../../components/LoadWheel/LoadWheel";
 

@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import "./NavigationButtons.css";
+import "./NavButtons.css";
 
 //Props are page,
-const NavigationButtons = (props) => {
+const NavButtons = (props) => {
   return (
     <div id="directional-buttons">
       <div className="direction-button-container">
@@ -43,4 +43,4 @@ const NavigationButtons = (props) => {
   );
 };
 
-export default NavigationButtons;
+export default NavButtons;
