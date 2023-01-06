@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "A full stack e-commerce app for selling things, but I haven't decided what I want to sell yet!",
   "main": "index.js",
+  "engines": {
+    "node": "16.15.1",
+    "npm": "8.11.0"
+  },
   "scripts": {
     "test": "test",
     "start": "nodemon start",
+    "heroku-postbuild": "cd client && npm install && npm run build",
     "lint": "eslint ./"
   },
   "repository": {

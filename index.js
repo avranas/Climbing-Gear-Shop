@@ -6,8 +6,10 @@ const passport = require("./passport-config");
 const session = require("express-session");
 const cors = require("cors");
 const morgan = require("morgan");
+const nodeEnv = process.env.NODE_ENV;
+const path = require("path");
 
-app.use(
+ app.use(
   cors({
     allowedHeaders: ["Content-Type"],
     origin: "*",
@@ -40,8 +42,15 @@ app.use(
   folder
 */
 app.use("/images", express.static(__dirname + "/assets/images"));
+
+
 //Serve static files from the React frontend app
-app.use(express.static(__dirname + "../client/build"));
+console.log("nodeEnv:", nodeEnv);
+if(nodeEnv === "production") {
+  app.use(express.static(path.join(__dirname, "client/build")));
+}
+
+
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
 app.use("/register", require("./routes/register"));
@@ -83,10 +92,11 @@ app.use((err, req, res, next) => {
   After defining your routes, anything that doesn't match what's above,
   we want to return index.html from our built React app
 */
-app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/client/public/index.html");
-});
-
+if(nodeEnv === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/build/index.html"));
+  });
+}
 app.listen(PORT, () => {
   console.log("Now listening on Port: " + PORT);
 });
