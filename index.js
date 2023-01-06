@@ -6,7 +6,6 @@ const passport = require("./passport-config");
 const session = require("express-session");
 const cors = require("cors");
 const morgan = require("morgan");
-const { checkNotAuthenticated } = require("./routes/authentication-check");
 
 app.use(
   cors({
@@ -42,7 +41,7 @@ app.use(
 */
 app.use("/images", express.static(__dirname + "/assets/images"));
 //Serve static files from the React frontend app
-app.use(express.static(path.join(__dirname, "../client/build")));
+app.use(express.static(__dirname + "../client/build"));
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
 app.use("/register", require("./routes/register"));
@@ -57,7 +56,7 @@ app.use("/authenticated", require("./routes/authenticated"));
 app.use("/webhook", require("./routes/webhook"));
 
 //Test route
-app.get("/", (req, res) => {
+app.get("/test", (req, res) => {
   console.log("Hello world");
   res.status(200).send("Hello world");
 });
@@ -85,7 +84,7 @@ app.use((err, req, res, next) => {
   we want to return index.html from our built React app
 */
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname + "/../client/public/index.html"));
+  res.sendFile(__dirname + "/client/public/index.html");
 });
 
 app.listen(PORT, () => {
