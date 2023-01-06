@@ -1,5 +1,6 @@
 #directional-buttons {
   display: flex;
+  justify-content: center;
 }
 
 .direction-button {
@@ -36,10 +37,6 @@
 }
 
 @media only screen and (max-width: 770px) {
-  #directional-buttons {
-    justify-content: center;
-  }
-  
   .direction-button {
     width: 8rem;
   }

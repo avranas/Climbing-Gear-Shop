@@ -1,27 +1,31 @@
-#product-list-head h2 {
+#product-list-title h2 {
   padding-top: 2rem;
+  text-align: center;
 }
-#product-list-head p {
+
+#product-list-title p {
   font-size: 0.75rem;
   padding-bottom: 2rem;
+  text-align: center;
 }
 
 #product-list-content ul {
   display: flex;
   flex-wrap: wrap;
-  justify-content: left;
+}
+
+#product-list-body {
+  margin: 0 auto;
+  width: 80%;
 }
 
 @media only screen and (max-width: 770px) {
-  #product-list-content {
-    justify-content: center;
-  }
 
-  #product-list-head h2 {
+  #product-list-title h2 {
     text-align: center;
   }
 
-  #product-list-head p {
+  #product-list-title p {
     text-align: center;
   }
 }

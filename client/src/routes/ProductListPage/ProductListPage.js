@@ -53,50 +53,52 @@ const ProductListPage = ({ category, search }) => {
   return (
     <main id="product-list-page" className="container">
       <ProductNavigationBar />
-      <div id="product-list-head">
-        {category ? (
-          <h2>{capitalizeFirstLetter(category)}</h2>
-        ) : (
-          <h2>All products</h2>
-        )}
-        {products.data.length === 1 ? (
-          <p>{`(1 product)`}</p>
-        ) : (
-          <p>{`(${products.data.length} products)`}</p>
-        )}
+      <div id="product-list-body">
+        <div id="product-list-title">
+          {category ? (
+            <h2>{capitalizeFirstLetter(category)}</h2>
+          ) : (
+            <h2>All products</h2>
+          )}
+          {products.data.length === 1 ? (
+            <p>{`(1 product)`}</p>
+          ) : (
+            <p>{`(${products.data.length} products)`}</p>
+          )}
+        </div>
+        <div id="product-list-content">
+          {products.isLoading ? (
+            <LoadWheel />
+          ) : products.data.length !== 0 ? (
+            <ul>
+              {" "}
+              {products.data.slice(firstProduct, lastProduct).map((i, key) => {
+                return (
+                  <ProductCard
+                    id={i.id}
+                    key={key}
+                    productName={i.productName}
+                    brandName={i.brandName}
+                    description={i.description}
+                    highestPrice={i.highestPrice}
+                    lowestPrice={i.lowestPrice}
+                    smallImageFile1={i.smallImageFile1}
+                    smallImageFile2={i.smallImageFile2}
+                  />
+                );
+              })}
+            </ul>
+          ) : (
+            <p>No products found</p>
+          )}
+        </div>
+        <NavigationButtons
+          prevDisabled={prevDisabled}
+          nextDisabled={nextDisabled}
+          prevLink={prevLink}
+          nextLink={nextLink}
+        />
       </div>
-      <div id="product-list-content">
-        {products.isLoading ? (
-          <LoadWheel />
-        ) : products.data.length !== 0 ? (
-          <ul>
-            {" "}
-            {products.data.slice(firstProduct, lastProduct).map((i, key) => {
-              return (
-                <ProductCard
-                  id={i.id}
-                  key={key}
-                  productName={i.productName}
-                  brandName={i.brandName}
-                  description={i.description}
-                  highestPrice={i.highestPrice}
-                  lowestPrice={i.lowestPrice}
-                  smallImageFile1={i.smallImageFile1}
-                  smallImageFile2={i.smallImageFile2}
-                />
-              );
-            })}
-          </ul>
-        ) : (
-          <p>No products found</p>
-        )}
-      </div>
-      <NavigationButtons
-        prevDisabled={prevDisabled}
-        nextDisabled={nextDisabled}
-        prevLink={prevLink}
-        nextLink={nextLink}
-      />
     </main>
   );
 };
