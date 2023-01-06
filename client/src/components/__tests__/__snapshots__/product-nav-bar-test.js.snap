@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ProductNavigationBar matches snapshot 1`] = `
+exports[`ProductNavBar matches snapshot 1`] = `
 <nav
   className="container styled-box"
   id="product-navigation-bar"

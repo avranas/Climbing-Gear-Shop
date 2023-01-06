@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CartQuantitySelection matches snapshot 1`] = `
+exports[`CartQuantity matches snapshot 1`] = `
 <div>
   <p
     className="option-label"

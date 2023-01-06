@@ -1,23 +1,24 @@
-import { cleanup } from "@testing-library/react";
+import { render, cleanup } from "@testing-library/react";
 import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../store";
-import CartQuantitySelection from "../CartQuantitySelection/CartQuantitySelection";
+import ProductNavBar from "../ProductNavBar/ProductNavBar";
 
 afterEach(() => {
   cleanup();
 });
 
-const cartQuantitySelection = (
+const productNavBar = (
   <Provider store={store}>
     <BrowserRouter>
-      <CartQuantitySelection />
+      <ProductNavBar />
     </BrowserRouter>
   </Provider>
 );
 
-test("CartQuantitySelection matches snapshot", async () => {
-  const tree = renderer.create(cartQuantitySelection).toJSON();
+test("ProductNavBar matches snapshot", async () => {
+  render(productNavBar);
+  const tree = renderer.create(productNavBar).toJSON();
   expect(tree).toMatchSnapshot();
 });

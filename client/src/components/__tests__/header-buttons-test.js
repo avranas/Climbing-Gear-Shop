@@ -3,21 +3,22 @@ import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../store";
-import HeaderUserButtons from "../HeaderUserButtons/HeaderUserButtons";
+import HeaderButtons from "../HeaderButtons/HeaderButtons";
 
 afterEach(() => {
   cleanup();
 });
 
-const headerUserButtons = (
+const headerButtons = (
   <Provider store={store}>
     <BrowserRouter>
-      <HeaderUserButtons />
+      <HeaderButtons />
     </BrowserRouter>
   </Provider>
 );
 
 test("HeaderUserButtons matches snapshot", async () => {
-  const tree = renderer.create(headerUserButtons).toJSON();
+  const tree = renderer.create(headerButtons).toJSON();
   expect(tree).toMatchSnapshot();
 });
+ 

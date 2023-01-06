@@ -125,7 +125,6 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
           profile.displayName,
           done
         );
-        console.log("find user here");
       }
     )
   );

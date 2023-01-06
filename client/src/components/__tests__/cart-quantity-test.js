@@ -3,21 +3,21 @@ import { Provider } from "react-redux";
 import renderer from "react-test-renderer";
 import { BrowserRouter } from "react-router-dom";
 import store from "../../store";
-import Quantity from "../Quantity/Quantity";
+import CartQuantity from "../CartQuantity/CartQuantity";
 
 afterEach(() => {
   cleanup();
 });
 
-const quantity = (
+const cartQuantity = (
   <Provider store={store}>
     <BrowserRouter>
-      <Quantity />
+      <CartQuantity />
     </BrowserRouter>
   </Provider>
 );
 
-test("Quantity matches snapshot", async () => {
-  const tree = renderer.create(quantity).toJSON();
+test("CartQuantity matches snapshot", async () => {
+  const tree = renderer.create(cartQuantity).toJSON();
   expect(tree).toMatchSnapshot();
 });
