@@ -55,6 +55,7 @@ const LoginPage = ({ next, error }) => {
       //If the passwords don't match, an error will be thrown
       const userData = await axios.get("/user");
       dispatch({ type: "user/loadUserData", payload: userData.data });
+      await moveGuestCartItemsToUserCart();
 
       if (next) {
         navigate(`/${next}`);
@@ -64,7 +65,6 @@ const LoginPage = ({ next, error }) => {
 
       createNotification(dispatch, "You are now logged in!");
 
-      await moveGuestCartItemsToUserCart();
 
       loadCartData(dispatch);
     } catch (err) {
