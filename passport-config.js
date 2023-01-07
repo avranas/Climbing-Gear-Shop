@@ -98,7 +98,11 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         callbackURL: process.env.GITHUB_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
+        console.log("???")
         console.log(profile.emails)
+        console.log(profile.id)
+        console.log(profile.displayName)
+        console.log("???")
         if (!profile.id || !profile.emails || !profile.displayName) {
           return done(
             new Error(
