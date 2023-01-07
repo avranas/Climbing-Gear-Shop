@@ -288,7 +288,7 @@ const RegisterPage = (props) => {
             Submit
           </button>
         </div>
-        <p className="form-page-footer">
+        <p className="form-page-footer"> 
           Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </div>

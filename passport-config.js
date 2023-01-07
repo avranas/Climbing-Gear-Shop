@@ -98,6 +98,17 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         callbackURL: process.env.GITHUB_CALLBACK_URL,
       },
       async (accessToken, refreshToken, profile, done) => {
+        console.log(profile.emails)
+        if (!profile.id || !profile.emails || !profile.displayName) {
+          return done(
+            new Error(
+              `Unable to retrieve the data required from GitHub to create an account. ` +
+                `Go to your profile settings, and make sure that your account id, email, ` +
+                `and name are all publicly accessible.`
+            ),
+            false
+          );
+        }
         await handleOauthResponse(
           "github",
           profile.id,
@@ -118,6 +129,16 @@ const initializePassport = async (passport, getUserByEmail, getUserById) => {
         passReqToCallback: true,
       },
       async (request, accessToken, refreshToken, profile, done) => {
+        if (!profile.id || !profile.emails || !profile.displayName) {
+          return done(
+            new Error(
+              `Unable to retrieve the data required from GitHub to create an account. ` +
+                `Go to your profile settings, and make sure that your account id, email, ` +
+                `and name are all publicly accessible.`
+            ),
+            false
+          );
+        }
         await handleOauthResponse(
           "google",
           profile.id,
