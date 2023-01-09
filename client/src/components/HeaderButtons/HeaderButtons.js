@@ -24,7 +24,9 @@ const HeaderButtons = (props) => {
 
   return (
     <div id="header-user-buttons">
-      {userIsLoggedIn === null || userIsLoggedIn === false ? (
+      {userIsLoggedIn === null ? (
+        <div></div>
+      ) : userIsLoggedIn === false ? (
         <div>
           <Link to="/login">
             <button id="left-button" className="small-button">

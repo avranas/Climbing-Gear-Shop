@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCart,
@@ -30,7 +30,6 @@ const CartPage = (props) => {
   const handleQuantitySelection = async (e, cartItem) => {
     const response = await axios("/authenticated");
     let value = e.target.value;
-
     //Check to make sure there are enough items in stock
     const amountInStock = cartItem.product.productOptions[0].amountInStock;
     if (value > amountInStock) {
@@ -86,6 +85,10 @@ const CartPage = (props) => {
   const backToProducts = async () => {
     navigate("/products/0");
   };
+
+  useEffect(() => {
+    loadCartData(dispatch);
+  }, [dispatch]);
 
   return (
     <main id="cart" className="container styled-box">
@@ -151,9 +154,11 @@ const CartPage = (props) => {
           </Link>
         ) : (
           <div id="cart-footer">
-            <p>{`Subtotal (${cartData.itemCount} items): ${penniesToUSD(
-              cartData.subTotal
-            )}`}</p>
+            {cartData.itemCount !== -1 && (
+              <p>{`Subtotal (${cartData.itemCount} items): ${penniesToUSD(
+                cartData.subTotal
+              )}`}</p>
+            )}
             <div id="cart-buttons">
               <button onClick={continueToCheckout} className="important-button">
                 Continue to checkout

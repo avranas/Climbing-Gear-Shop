@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { moveGuestCartItemsToUserCart } from "../../slices/cartSlice";
+import {
+  loadCartData,
+  moveGuestCartItemsToUserCart,
+} from "../../slices/cartSlice";
 import { createNotification } from "../../slices/notificationSlice";
 
 /*
@@ -11,24 +14,23 @@ import { createNotification } from "../../slices/notificationSlice";
   logged in" notificiation and redirects the user to the home page"
 */
 const SuccessfulLogin = (props) => {
-  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [actionsComplete, setSctionsComplete] = useState(false);
 
-
   useEffect(() => {
-    if(!actionsComplete) {
-      createNotification(dispatch, "You are now logged in");
-      moveGuestCartItemsToUserCart();
-      setSctionsComplete(true);
-    }
-    navigate("/");
-  }, [navigate, dispatch, actionsComplete])
-  
-  return (
-    null
-  );
-}
+    const doAsyncTasks = async () => {
+      if (!actionsComplete) {
+        await moveGuestCartItemsToUserCart();
+        loadCartData(dispatch);
+        createNotification(dispatch, "You are now logged in");
+        navigate("/");
+        setSctionsComplete(true);
+      }
+    };
+    doAsyncTasks();
+  }, [navigate, dispatch, actionsComplete]);
+  return null;
+};
 
 export default SuccessfulLogin;

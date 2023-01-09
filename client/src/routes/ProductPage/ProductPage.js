@@ -43,10 +43,10 @@ const ProductPage = (props) => {
     if (currentAmountInStock === 0) {
       return;
     }
-
     try {
+      const quantityToAdd = Number(quantitySelectRef.current.getSelection());
       const newCartItem = {
-        quantity: quantitySelectRef.current.getSelection(),
+        quantity: quantityToAdd,
         productId: productData.id,
         optionSelection: optionSelection,
       };
@@ -111,14 +111,13 @@ const ProductPage = (props) => {
         type: "newestCartItem/setNewestCartItem",
         payload: newCartItem,
       });
+      await loadCartData(dispatch);
       setAddedToCartWindowOpen(true);
-      loadCartData(dispatch);
       window.scrollTo(0, 0);
     } catch (err) {
       console.log(err);
     }
   };
-
   const closeWindow = () => {
     setAddedToCartWindowOpen(false);
   };

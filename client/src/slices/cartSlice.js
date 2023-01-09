@@ -2,6 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const loadCartData = async (dispatch) => {
+  //Reset cart item count at the start for people with slow connections
+  dispatch({ type: "cart/resetCartItemCount" });
   const response = await axios("/authenticated");
   if (response.data) {
     dispatch(getCartFromServer());
@@ -10,8 +12,10 @@ export const loadCartData = async (dispatch) => {
   }
 };
 
-//If there are items in the guest's cart, move the data to
-//the server and clear it in localStorage
+/*
+  If there are items in the guest's cart, move the data to
+  the server and clear it in localStorage
+*/
 export const moveGuestCartItemsToUserCart = async () => {
   const guestCart = JSON.parse(localStorage.getItem("guestCart"));
   if (!guestCart) {
@@ -138,7 +142,11 @@ const cartSlice = createSlice({
     isLoading: true,
     hasError: false,
   },
-  reducers: {},
+  reducers: {
+    resetCartItemCount(state, action) {
+      state.data.itemCount = -1;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCartFromServer.pending, (state, action) => {
@@ -171,4 +179,5 @@ const cartSlice = createSlice({
 });
 
 export const selectCart = (state) => state.cart;
+export const { resetCartItemCount } = cartSlice.actions;
 export default cartSlice.reducer;

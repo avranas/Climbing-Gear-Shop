@@ -11,9 +11,10 @@ import {
 } from "../../slices/cartSlice";
 import github from "../../images/github.png";
 import google from "../../images/google.png";
-
-//Next tells the login page where to navigate to after a successful login
-//Error is a code that tells the login page what error page to display to a user
+/*
+  Next tells the login page where to navigate to after a successful login
+  Error is a code that tells the login page what error page to display to a user
+*/
 const LoginPage = ({ next, error }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,10 +63,7 @@ const LoginPage = ({ next, error }) => {
       } else {
         navigate("/");
       }
-
       createNotification(dispatch, "You are now logged in!");
-
-
       loadCartData(dispatch);
     } catch (err) {
       console.log(err);

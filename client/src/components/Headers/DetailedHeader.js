@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../slices/userSlice";
 import { useEffect, useState } from "react";
 import "./Header.css";
-import { selectCart, loadCartData } from "../../slices/cartSlice";
+import { selectCart } from "../../slices/cartSlice";
 import axios from "axios";
 
 const DetailedHeader = (props) => {
@@ -28,7 +28,6 @@ const DetailedHeader = (props) => {
         console.log(err);
       }
     };
-    loadCartData(dispatch);
     getUserData();
   }, [dispatch]);
   let firstName = "";
@@ -61,7 +60,7 @@ const DetailedHeader = (props) => {
         <div className="header-item">
           <Link to="/cart">
             <div id="cart-icon">
-              {cartData.itemCount > 99 ? (
+              {cartData.itemCount === -1 ? null : cartData.itemCount > 99 ? (
                 <div className="cart-items-count" id="double-digit">
                   99+
                 </div>
