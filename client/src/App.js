@@ -38,11 +38,16 @@ function App() {
           "/cart",
           "/order-placed",
           "/order/:id",
-          "successful-login",
         ].map((path) => (
           <Route key={path} exact path={path} element={<DetailedHeader />} />
         ))}
-        {["/checkout", "/register", "/login", "/logout"].map((path) => (
+        {[
+          "/checkout",
+          "/register",
+          "/login",
+          "/logout",
+          "successful-login",
+        ].map((path) => (
           <Route key={path} exact path={path} element={<SimpleHeader />} />
         ))}
       </Routes>

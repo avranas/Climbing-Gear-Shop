@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../slices/userSlice";
 import { useEffect, useState } from "react";
 import "./Header.css";
-import { selectCart } from "../../slices/cartSlice";
+import { loadCartData, selectCart } from "../../slices/cartSlice";
 import axios from "axios";
 
 const DetailedHeader = (props) => {
@@ -28,6 +28,7 @@ const DetailedHeader = (props) => {
         console.log(err);
       }
     };
+    loadCartData(dispatch);
     getUserData();
   }, [dispatch]);
   let firstName = "";
