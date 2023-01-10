@@ -23,7 +23,7 @@ export const moveGuestCartItemsToUserCart = async () => {
   }
   await Promise.all(
     guestCart.map(async (i) => {
-      axios.post("/cart", i);
+      axios.post("/server-cart", i);
     })
   );
   localStorage.removeItem("guestCart");
@@ -52,7 +52,7 @@ const getCartFromServer = createAsyncThunk(
   "cart/getCartFromServer",
   async () => {
     try {
-      const response = await axios.get(`/cart`);
+      const response = await axios.get(`/server-cart`);
       //loop through data to find the total item count
       const payload = {
         cartItems: [],
@@ -90,7 +90,7 @@ const getCartFromLocalStorage = createAsyncThunk(
       }
       payload.cartItems = await Promise.all(
         guestCart.map(async (item) => {
-          const response = await axios.get(`/product/${item.productId}`);
+          const response = await axios.get(`/server-product/${item.productId}`);
           const product = response.data.product;
           //find the product option that matches the user's selection
           const foundOption = response.data.productOptions.find(

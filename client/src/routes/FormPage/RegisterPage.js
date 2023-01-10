@@ -118,7 +118,7 @@ const RegisterPage = (props) => {
         password: passwordInputA,
       };
 
-      const response = await axios.post("/register", requestBody);
+      const response = await axios.post("/server-register", requestBody);
       //Create notification for successful registration
       createNotification(dispatch, "Account successfully created!");
 

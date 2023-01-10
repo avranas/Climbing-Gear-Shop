@@ -104,13 +104,39 @@
   color: #111111;
 }
 
-@media only screen and (max-width: 770px) {
+@media only screen and (max-width: 991px) {
+  .product-card {
+    width: 24rem;
+    padding: 1rem;
+  }
+
+  .bottom-image img {
+    max-height: 7.5rem;
+    max-width: 18rem;
+  }
+
+  .top-image img {
+    max-height: 7.5rem;
+    max-width: 18rem;
+  }
+
+  .product-card h3 {
+    padding-top: 0.75rem;
+    font-size: 1.1rem;
+  }
+  
+  .product-card p {
+    font-size: 0.9rem;
+  }
+}
+
+@media only screen and (max-width: 512px) {
   #product-navigation-list {
     justify-content: center;
   }
 
   .product-card {
-    width: 12rem;
+    width: 16rem;
     padding: 1rem;
   }
 

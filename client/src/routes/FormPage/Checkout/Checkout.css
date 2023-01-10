@@ -50,23 +50,13 @@
 }
 
 .checkout-checkbox {
-  margin: 1rem;
-  align-items: center;
-}
-
-#same-as-billing-input {
   display: flex;
   align-items: center;
-}
-
-#disclaimer-input {
-  display: flex;
-  align-items: center;
-  margin-bottom: 2rem;
 }
 
 .checkout-checkbox label {
   margin: 1rem;
+  align-items: center;
 }
 
 #disclaimer-error {
@@ -85,19 +75,19 @@
   #checkout-form {
     width: 80%;
     margin: 0 auto;
-    padding: 4rem;
+    padding: 2rem;
   }
 }
 
 @media only screen and (max-width: 770px) {
   #checkout-form {
-    padding: 2rem;
+    padding: 1rem;
   }
 }
 
 @media only screen and (max-width: 512px) {
   #checkout-form {
-    padding: 1rem;
+    padding: 0.5rem;
     width: auto;
   }
 }

@@ -5,7 +5,7 @@ export const loadProduct = createAsyncThunk(
   "product/loadProduct",
   async (productID) => {
     try {
-      const response = await axios.get(`/product/${productID}`);
+      const response = await axios.get(`/server-product/${productID}`);
       const product = response.data.product;
       const productOptions = response.data.productOptions;
       let lowestPrice = Infinity;

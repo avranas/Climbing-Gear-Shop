@@ -171,8 +171,8 @@ input[type="checkbox"] {
 
   .small-button {
     font-size: 0.75rem;
-    width: 4.5rem;
-    height: 1.5rem;
+    width: 4.4rem;
+    height: 1.6rem;
   }
 
   .important-button {
@@ -191,7 +191,6 @@ input[type="checkbox"] {
 @media only screen and (max-width: 512px) {
   .small-button {
     font-size: 0.7rem;
-    width: 3.7rem;
   }
 
   .important-button {

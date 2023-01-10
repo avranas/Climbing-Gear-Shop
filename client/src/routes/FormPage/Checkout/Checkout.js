@@ -170,7 +170,7 @@ const Checkout = (props) => {
         billingAddress: billingAddress,
       };
       const response = await axios.post(
-        "/checkout/create-checkout-session",
+        "/create-checkout-session",
         requestBody
       );
       window.location.href = response.data.url;
@@ -213,26 +213,22 @@ const Checkout = (props) => {
           <h3>Billing Address</h3>
           <AddressForm ref={billingAddressRef} hidden={false} />
           <h3>Shipping Address</h3>
-          <div id="same-as-billing-input">
+          <div className="checkout-checkbox">
             <input
-              className="checkout-checkbox"
-              id="same-as-billing"
               type="checkbox"
               checked={sameAsBillingChecked}
               onChange={toggleSameAsBillingChecked}
             />
-            <label htmlFor="same-as-billing">Same as billing address</label>
+            <label>Same as billing address</label>
           </div>
           <AddressForm ref={shippingAddressRef} hidden={sameAsBillingChecked} />
-          <div id="disclaimer-input">
+          <div className="checkout-checkbox" id="disclaimer-input">
             <input
-              className="checkout-checkbox"
-              id="disclaimer"
               type="checkbox"
               checked={disclaimerChecked}
               onChange={toggleDisclaimerChecked}
             />
-            <label htmlFor="disclaimer">
+            <label>
               I understand that this is not a real store, and that I will not be
               recieving any of these items
             </label>
@@ -253,6 +249,7 @@ const Checkout = (props) => {
               </div>
             )}
           </div>
+          <div className="one-rem-spacer"></div>
           <div id="checkout-submit">
             <button
               className="important-button"

@@ -48,7 +48,7 @@ const CartPage = (props) => {
         optionSelection: cartItem.optionSelection,
       };
       //Change quantity in cart on server
-      await axios.put("/cart", requestBody);
+      await axios.put("/server-cart", requestBody);
     } else {
       //Change quantity in guest cart
       changeQuantityInGuestCart(cartItem, value);
@@ -62,7 +62,7 @@ const CartPage = (props) => {
       const response = await axios("/authenticated");
       if (response.data) {
         //Delete from cart on server
-        await axios.delete(`/cart/${id}`);
+        await axios.delete(`/server-cart/${id}`);
       } else {
         //Delete from guest cart
         deleteFromGuestCart(id);

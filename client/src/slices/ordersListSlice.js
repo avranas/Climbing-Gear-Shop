@@ -5,7 +5,7 @@ export const loadOrders = createAsyncThunk(
   "ordersList/loadOrders",
   async () => {
     try {
-      const response = await axios.get(`/order`);
+      const response = await axios.get(`/server-order`);
       return response.data;
     } catch (err) {
       console.log(err);

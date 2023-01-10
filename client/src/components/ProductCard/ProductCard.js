@@ -6,7 +6,7 @@ import penniesToUSD from "../../utils/penniesToUSD";
 //Props are productName, brandName, description, price, and imageURL,
 const ProductCard = (props) => {
   const serverUrl = process.env.REACT_APP_SERVER_URL;
-  
+
   return (
     <li className="product-card styled-box styled-link-box">
       <Link to={`/product/${props.id}`}>

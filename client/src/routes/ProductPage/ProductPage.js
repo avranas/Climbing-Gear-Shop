@@ -56,7 +56,7 @@ const ProductPage = (props) => {
       //This will return true if the user is logged in
       if (loggedInCheck.data) {
         //Add to cart in server
-        const response = await axios.post("/cart", newCartItem);
+        const response = await axios.post("/server-cart", newCartItem);
         console.log(response);
         if (response.data === "Not enough in stock. Setting to the max.") {
           setOutOfStockError(response.data);

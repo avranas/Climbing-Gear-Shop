@@ -5,7 +5,7 @@ export const loadNewestOrder = createAsyncThunk(
   "order/loadNewestOrder",
   async () => {
     try {
-      const response = await axios.get(`/order/newest`);
+      const response = await axios.get(`/server-order/newest`);
       return response.data;
     } catch (err) {
       console.log(err);
@@ -18,7 +18,7 @@ export const loadOrder = createAsyncThunk(
   "order/loadOrder",
   async (orderId) => {
     try {
-      const response = await axios.get(`/order/${orderId}`);
+      const response = await axios.get(`/server-order/${orderId}`);
       return response.data;
     } catch (err) {
       console.log(err);

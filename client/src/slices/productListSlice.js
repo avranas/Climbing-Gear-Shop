@@ -10,10 +10,10 @@ export const loadProductList = createAsyncThunk(
         const response = await axios.get(`/category/${category}`);
         return response.data;
       } else if (search) {
-        const response = await axios.get(`/product/search/${search}`);
+        const response = await axios.get(`/server-product/search/${search}`);
         return response.data;
       } else {
-        const response = await axios.get("/product");
+        const response = await axios.get("/server-product");
         return response.data;
       }
     } catch (err) {

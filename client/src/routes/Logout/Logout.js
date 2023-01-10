@@ -10,7 +10,7 @@ const Logout = (props) => {
   useEffect(() => {
     const logout = async () => {
       try {
-        await axios.get("/logout");
+        await axios.get("/server-logout");
         dispatch({ type: "user/eraseUserData" });
         createNotification(dispatch, "You are now logged out!");
       } catch (err) {

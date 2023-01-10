@@ -52,7 +52,7 @@ const LoginPage = ({ next, error }) => {
         userEmail: userEmailInput,
         password: passwordInput,
       };
-      await axios.post("/login", requestBody);
+      await axios.post("/server-login", requestBody);
       //If the passwords don't match, an error will be thrown
       const userData = await axios.get("/user");
       dispatch({ type: "user/loadUserData", payload: userData.data });
@@ -90,19 +90,19 @@ const LoginPage = ({ next, error }) => {
     }
   }, [error]);
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        // const response = await axios('/authenticated');
-        // if (response.data) {
-        //  navigate('/orders');
-        // }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    checkAuthentication();
-  }, [navigate]);
+  // useEffect(() => {
+  //   const checkAuthentication = async () => {
+  //     try {
+  //       // const response = await axios('/authenticated');
+  //       // if (response.data) {
+  //       //  navigate('/orders');
+  //       // }
+  //     } catch (err) {
+  //       console.log(err);
+  //     }
+  //   };
+  //   checkAuthentication();
+  // }, [navigate]);
 
   //Navigate to the home page if you're already logged in
   useEffect(() => {

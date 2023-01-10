@@ -12,6 +12,7 @@
 #product-list-content ul {
   display: flex;
   flex-wrap: wrap;
+  padding-left: 0;
 }
 
 #product-list-body {
@@ -19,13 +20,8 @@
   width: 80%;
 }
 
-@media only screen and (max-width: 770px) {
-
-  #product-list-title h2 {
-    text-align: center;
-  }
-
-  #product-list-title p {
-    text-align: center;
+@media only screen and (max-width: 991px) {
+  #product-list-content ul {
+    justify-content: center;
   }
 }

@@ -51,14 +51,14 @@ if (nodeEnv === "production") {
 
 app.use("/auth", require("./routes/auth"));
 app.use("/user", require("./routes/user"));
-app.use("/register", require("./routes/register"));
-app.use("/login", require("./routes/login"));
-app.use("/logout", require("./routes/logout"));
-app.use("/product", require("./routes/product"));
+app.use("/server-register", require("./routes/register"));
+app.use("/server-login", require("./routes/login"));
+app.use("/server-logout", require("./routes/logout"));
+app.use("/server-product", require("./routes/product"));
 app.use("/category", require("./routes/category"));
-app.use("/cart", require("./routes/cart"));
-app.use("/checkout", require("./routes/checkout"));
-app.use("/order", require("./routes/order"));
+app.use("/server-cart", require("./routes/cart"));
+app.use("/create-checkout-session", require("./routes/checkout"));
+app.use("/server-order", require("./routes/order"));
 app.use("/authenticated", require("./routes/authenticated"));
 app.use("/webhook", require("./routes/webhook"));
 
