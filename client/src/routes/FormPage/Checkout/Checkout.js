@@ -50,7 +50,7 @@ const Checkout = (props) => {
 
   useEffect(() => {
     loadCartData(dispatch);
-  }, [navigate, dispatch, cartData.itemCount]);
+  }, [dispatch]);
 
   //If a user goes back in the Stripe window, their old session should expire
   useEffect(() => {
