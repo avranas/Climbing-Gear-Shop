@@ -9,7 +9,6 @@ import { createNotification } from "../../slices/notificationSlice";
 const RegisterPage = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const [userEmailInput, setUserEmailInput] = useState("");
   const [nameInput, setNameInput] = useState("");
   const [passwordInputA, setPasswordInputA] = useState("");
@@ -18,22 +17,39 @@ const RegisterPage = (props) => {
   const [nameError, setNameError] = useState(null);
   const [passwordAError, setPasswordAError] = useState(null);
   const [passwordBError, setPasswordBError] = useState(null);
+  const maxInput = 64;
 
   const handleUserEmailChange = (e) => {
-    setUserEmailInput(e.target.value);
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
+    setUserEmailInput(newInput);
   };
 
   const handleNameChange = (e) => {
-    setNameInput(e.target.value);
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
+    setNameInput(newInput);
     setNameError(null);
   };
 
   const handlePasswordAChange = (e) => {
-    setPasswordInputA(e.target.value);
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
+    setPasswordInputA(newInput);
   };
 
   const handlePasswordBChange = (e) => {
-    setPasswordInputB(e.target.value);
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
+    setPasswordInputB(newInput);
   };
 
   //Copy and pasted from Stack Overflow
@@ -110,9 +126,9 @@ const RegisterPage = (props) => {
       return response;
     } catch (err) {
       console.log(err.response.data);
-      if (err.response.data === "A user with that name already exists") {
+      if (err.response.data === "A user with that email already exists") {
         setUserEmailInput("");
-        setEmailError("A user with that name already exists");
+        setEmailError("A user with that email already exists");
 
         return;
       }
@@ -120,11 +136,6 @@ const RegisterPage = (props) => {
       return err;
     }
   };
-
-  // const errorStyle = {
-  //   fontSize: "2em",
-  //   color: "red",
-  // };
 
   //On load, redirect the user to their profile if they're already logged in
   useEffect(() => {
@@ -140,17 +151,14 @@ const RegisterPage = (props) => {
   useEffect(() => {
     const clearEmailError = () => {
       setEmailError(false);
-      //change CSS back
     };
 
     const clearPasswordBError = () => {
       setPasswordBError(null);
-      //change CSS back
     };
 
     const clearPasswordAError = () => {
       setPasswordAError(null);
-      //change CSS back
     };
 
     if (passwordBError) {
@@ -177,20 +185,6 @@ const RegisterPage = (props) => {
     checkIfPasswordMeetsRequirements,
   ]);
 
-  useEffect(() => {
-    const checkAuthentication = async () => {
-      try {
-        // const response = await axios('/authenticated');
-        // if (response.data) {
-        //  navigate('/orders');
-        // }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    checkAuthentication();
-  }, [navigate]);
-
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       handleSubmit();
@@ -209,6 +203,7 @@ const RegisterPage = (props) => {
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
+              value={userEmailInput}
               type="email"
               id="user-email"
               name="user-email"
@@ -228,6 +223,7 @@ const RegisterPage = (props) => {
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
+              value={nameInput}
               type="text"
               id="name"
               name="name"
@@ -247,6 +243,7 @@ const RegisterPage = (props) => {
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
+              value={passwordInputA}
               type="password"
               id="password"
               name="password"
@@ -266,6 +263,7 @@ const RegisterPage = (props) => {
             <input
               className="form-control"
               onKeyUp={handleKeyPress}
+              value={passwordInputB}
               type="password"
               id="password-confirm"
               name="password-confirm"
@@ -288,7 +286,7 @@ const RegisterPage = (props) => {
             Submit
           </button>
         </div>
-        <p className="form-page-footer"> 
+        <p className="form-page-footer">
           Already have an account? <Link to="/login">Sign in</Link>
         </p>
       </div>

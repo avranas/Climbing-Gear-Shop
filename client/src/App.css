@@ -156,6 +156,10 @@ footer p {
   background-size: cover;
 }
 
+input[type="checkbox"] {
+  transform: scale(1.25);
+}
+
 @media only screen and (max-width: 770px) {
   h2 {
     text-align: center;
@@ -196,7 +200,7 @@ footer p {
     padding: 0rem;
     height: 2rem;
   }
-  
+
   .semi-important-button {
     width: 9rem;
     font-size: 0.8rem;

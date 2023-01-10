@@ -23,6 +23,7 @@ const AddressForm = forwardRef((props, _ref) => {
   const [cityError, setCityError] = useState("");
   const [zipCode, setZipCode] = useState("");
   const [zipCodeError, setZipCodeError] = useState("");
+  const maxInput = 64;
 
   const countryRef = useRef();
   const stateRef = useRef();
@@ -151,26 +152,51 @@ const AddressForm = forwardRef((props, _ref) => {
   };
 
   const handleFirstNameChange = (e) => {
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
     setFirstName(e.target.value);
   };
 
   const handleLastNameChange = (e) => {
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
     setLastName(e.target.value);
   };
 
   const handleStreetAddress1Change = (e) => {
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
     setStreetAddress1(e.target.value);
   };
 
   const handleStreetAddress2Change = (e) => {
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
     setStreetAddress2(e.target.value);
   };
 
   const handleCityChange = (e) => {
+    const newInput = e.target.value;
+    if (newInput.length > maxInput) {
+      return;
+    }
     setCity(e.target.value);
   };
 
   const handleZipCodeChange = (e) => {
+    const newInput = e.target.value;
+    //According to Stack Overflow, the world's longest postal codes are 12 characters long
+    if (newInput.length > 12) {
+      return;
+    }
     setZipCode(e.target.value);
   };
 
@@ -322,7 +348,7 @@ const AddressForm = forwardRef((props, _ref) => {
       </div>
       <div className="input-item-incomplete-half">
         <label className="form-label" htmlFor="zip-code">
-          Zip Code
+          Postal Code
         </label>
         <input
           type="text"

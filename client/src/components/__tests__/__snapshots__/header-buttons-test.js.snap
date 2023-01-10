@@ -4,29 +4,6 @@ exports[`HeaderUserButtons matches snapshot 1`] = `
 <div
   id="header-user-buttons"
 >
-  <div>
-    <a
-      href="/login"
-      onClick={[Function]}
-    >
-      <button
-        className="small-button"
-        id="left-button"
-      >
-        Login
-      </button>
-    </a>
-    <a
-      href="/register"
-      onClick={[Function]}
-    >
-      <button
-        className="small-button"
-        type="button"
-      >
-        Register
-      </button>
-    </a>
-  </div>
+  <div />
 </div>
 `;

@@ -49,22 +49,23 @@
   margin: 1.5rem;
 }
 
-#disclaimer-input {
-  display: flex;
-  align-items: center;
+.checkout-checkbox {
   margin: 1rem;
-}
-
-#disclaimer-input label {
-  margin-left: 1rem;
+  align-items: center;
 }
 
 #same-as-billing-input {
-  margin: 1rem;
+  display: flex;
   align-items: center;
 }
 
-#same-as-billing-input label {
+#disclaimer-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.checkout-checkbox label {
   margin: 1rem;
 }
 

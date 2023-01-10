@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import OrderSummary from "../../../components/OrderSummary/OrderSummary";
 import { loadCartData, selectCart } from "../../../slices/cartSlice";
 import "./Checkout.css";
@@ -9,7 +8,6 @@ import AddressForm from "../../../components/AddressForm/AddressForm";
 import redX from "../../../images/red-x.png";
 
 const Checkout = (props) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const cartData = cart.data;
@@ -44,8 +42,12 @@ const Checkout = (props) => {
   };
 
   const handlePhoneNumberChange = (e) => {
-    const newValue = normalizePhoneInput(e.target.value);
-    setPhoneNumber(newValue);
+    const newInput = e.target.value;
+    //World's longest phone number is 15 digits
+    if (newInput.length > 15) {
+      return;
+    }
+    setPhoneNumber(newInput);
   };
 
   useEffect(() => {
@@ -212,6 +214,7 @@ const Checkout = (props) => {
           <h3>Shipping Address</h3>
           <div id="same-as-billing-input">
             <input
+              className="checkout-checkbox"
               id="same-as-billing"
               type="checkbox"
               checked={sameAsBillingChecked}
@@ -222,6 +225,7 @@ const Checkout = (props) => {
           <AddressForm ref={shippingAddressRef} hidden={sameAsBillingChecked} />
           <div id="disclaimer-input">
             <input
+              className="checkout-checkbox"
               id="disclaimer"
               type="checkbox"
               checked={disclaimerChecked}

@@ -1655,7 +1655,7 @@ exports[`AddressForm matches snapshot 1`] = `
       className="form-label"
       htmlFor="zip-code"
     >
-      Zip Code
+      Postal Code
     </label>
     <input
       className="form-control"
