@@ -47,7 +47,8 @@ const Checkout = (props) => {
     if (newInput.length > 15) {
       return;
     }
-    setPhoneNumber(newInput);
+    const newPhoneNumber = normalizePhoneInput(newInput);
+    setPhoneNumber(newPhoneNumber);
   };
 
   useEffect(() => {
