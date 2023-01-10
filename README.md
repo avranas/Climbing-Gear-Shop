@@ -32,5 +32,5 @@ The Fake Climbing Gear Shop is an e-commerce app made by Alex Vranas. It was mad
 14. Jest
 
 ## Future Work
-1. Option to sort products with more options, including price, alphabetically descending, or ascending
+1. Option to sort products with more options like price
 2. Support for different color options on certain products
