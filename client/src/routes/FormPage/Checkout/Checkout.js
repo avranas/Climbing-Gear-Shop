@@ -215,20 +215,22 @@ const Checkout = (props) => {
           <h3>Shipping Address</h3>
           <div className="checkout-checkbox">
             <input
+              id="address-checkbox"
               type="checkbox"
               checked={sameAsBillingChecked}
               onChange={toggleSameAsBillingChecked}
             />
-            <label>Same as billing address</label>
+            <label htmlFor="address-checkbox">Same as billing address</label>
           </div>
           <AddressForm ref={shippingAddressRef} hidden={sameAsBillingChecked} />
           <div className="checkout-checkbox" id="disclaimer-input">
             <input
+              id="disclaimer-checkbox"
               type="checkbox"
               checked={disclaimerChecked}
               onChange={toggleDisclaimerChecked}
             />
-            <label>
+            <label htmlFor="disclaimer-checkbox">
               I understand that this is not a real store, and that I will not be
               recieving any of these items
             </label>
