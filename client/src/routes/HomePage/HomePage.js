@@ -7,7 +7,7 @@ const HomePage = (props) => {
   return (
     <main id="home-page">
       <section id="splash">
-        <h1>Welcome to Fake Climbing Gear Shop</h1>
+        <h1>Welcome to The Fake Climbing Gear Shop</h1>
       </section>
       <section id="shop-all-products-button-holder">
         <Link to="/products/0">
@@ -18,7 +18,7 @@ const HomePage = (props) => {
       <CategoryList />
       <h2 className='container'>About Us</h2>
       <section className='container' id="about-us">
-        <p>Fake Climbing Gear Shop is an e-commerce app made by
+        <p>The Fake Climbing Gear Shop is an e-commerce app made by
           <a href="https://github.com/avranas"> Alex Vranas</a> to practice
           building full stack web apps. No climbing gear is actually being sold
           here, but you can expect this site to do everything that you expect

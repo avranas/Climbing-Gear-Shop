@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProductCard from "../../components/ProductCard/ProductCard";
@@ -15,12 +15,27 @@ import LoadWheel from "../../components/LoadWheel/LoadWheel";
 const ProductListPage = ({ category, search }) => {
   const dispatch = useDispatch();
   const products = useSelector(selectProductList);
+  const [sortedProducts, setSortedProducts] = useState([]);
   const { page } = useParams();
 
   useEffect(() => {
     //load product list on page load
     dispatch(loadProductList({ category, search }));
   }, [dispatch, category, search]);
+
+  /*
+    Sort list of products alphabetically. If you decide to add options
+    for how the products should be sorted, you can add that logic here
+  */
+  useEffect(() => {
+    const unsorted = [...products.data];
+    const sorted = unsorted.sort((a, b) => {
+      const textA = a.productName.toUpperCase();
+      const textB = b.productName.toUpperCase();
+      return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+    });
+    setSortedProducts(sorted);
+  }, [products.data])
 
   const productsPerPage = 12;
   let firstProduct = 0;
@@ -69,10 +84,10 @@ const ProductListPage = ({ category, search }) => {
         <div id="product-list-content">
           {products.isLoading ? (
             <LoadWheel />
-          ) : products.data.length !== 0 ? (
+          ) : sortedProducts.length !== 0 ? (
             <ul>
               {" "}
-              {products.data.slice(firstProduct, lastProduct).map((i, key) => {
+              {sortedProducts.slice(firstProduct, lastProduct).map((i, key) => {
                 return (
                   <ProductCard
                     id={i.id}
