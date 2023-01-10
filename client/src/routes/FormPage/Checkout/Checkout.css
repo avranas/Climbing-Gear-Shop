@@ -7,6 +7,7 @@
 }
 
 #checkout-body {
+  padding-bottom: 4rem;
   display: flex;
   justify-content: space-around;
 }
@@ -50,6 +51,7 @@
 
 #disclaimer-input {
   display: flex;
+  align-items: center;
   margin: 1rem;
 }
 
@@ -59,7 +61,7 @@
 
 #same-as-billing-input {
   margin: 1rem;
-  display: flex;
+  align-items: center;
 }
 
 #same-as-billing-input label {
@@ -78,7 +80,7 @@
   #checkout-body {
     display: block;
   }
-  
+
   #checkout-form {
     width: 80%;
     margin: 0 auto;
