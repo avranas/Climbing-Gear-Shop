@@ -19,7 +19,7 @@ const HomePage = (props) => {
       <section className="container" id="about-us">
         <p>
           The Fake Climbing Gear Shop is an e-commerce app made by{" "}
-          <a href="https://github.com/avranas"> Alex Vranas.</a> It was made by
+          <a href="https://github.com/avranas"> Alex Vranas</a>. It was made by
           the developer to practice building full stack web apps. This site does
           not actually sell any climbing gear, but it can do just about
           everything that an e-commerce app should be capable of.

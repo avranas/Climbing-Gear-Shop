@@ -230,9 +230,9 @@ exports[`renders learn react link 1`] = `
         <a
           href="https://github.com/avranas"
         >
-           Alex Vranas.
+           Alex Vranas
         </a>
-         It was made by the developer to practice building full stack web apps. This site does not actually sell any climbing gear, but it can do just about everything that an e-commerce app should be capable of.
+        . It was made by the developer to practice building full stack web apps. This site does not actually sell any climbing gear, but it can do just about everything that an e-commerce app should be capable of.
       </p>
       <p>
         For payments, this site uses Stripe, which is currently set to test mode. If you would like to see how payments are processed, enter the credit card number: "4242 4242 4242 4242" with fake data for everything else.
